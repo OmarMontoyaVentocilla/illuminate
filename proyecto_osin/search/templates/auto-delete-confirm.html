@@ -1,0 +1,10 @@
+{% extends "layout.html" %} {% block title %}Inicio || Delete Auto {% endblock %} {% block content %}
+<h1>Nuevo Auto</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <h2>Esta seguro de eliminar a {{auto.nombres}}</h2>
+    <button type="submit">Confirm</button>
+</form>
+
+{% endblock %}

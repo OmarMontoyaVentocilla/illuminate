@@ -1,0 +1,12 @@
+{% extends "layout.html" %} {% block title %}Inicio || Add Auto {% endblock %} {% block content %}
+<h1>Nuevo Auto</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-control">
+        {{ form }}
+    </div>
+    <button type="submit">Guardar</button>
+</form>
+
+{% endblock %}

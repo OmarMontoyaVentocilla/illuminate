@@ -1,0 +1,45 @@
+{% extends "layout.html" %} {% block title %}Inicio || Search {% endblock %} {% block content %}
+<!-- <button><a href="{% url 'create_auto' %}">Add Auto +</a></button> -->
+
+<example></example>
+
+
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Nombres</th>
+                        <th>Email</th>
+                        <th>Descripción</th>
+                        <th>Edad</th>
+                        <th>Tiempo</th>
+                        <th>Cantidad de dinero</th>
+                        <th colspan="2">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for auto in autos %}
+                    <tr>
+                        <td>{{auto.placa}}</td>
+                        <td>{{auto.nombres}}</td>
+                        <td>{{auto.email}}</td>
+                        <td>{{auto.descripcion_vida}}</td>
+                        <td>{{auto.edad}}</td>
+                        <td>{{auto.tiempo_registro}}</td>
+                        <td>{{auto.cantidad_dinero}}</td>
+                        <td>
+                            <a class="btn btn-raised btn-primary" href="{% url 'update_auto' auto.id %}">Edit</a>
+                            <a class="btn btn-raised btn-primary" href="{% url 'delete_auto' auto.id %}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->
+{% endblock %}

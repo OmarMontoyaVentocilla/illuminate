@@ -1,0 +1,22 @@
+<!DOCTYPE html> {% load staticfiles %}
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-material-design.min.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+</head>
+
+<body>
+    <div id="app">
+        {% csrf_token %} {% block content %}{% endblock %}
+    </div>
+</body>
+
+{% block script %}{% endblock %}
+<script src="{% static 'public/bundle.js' %}"></script>
+
+</html>
