@@ -22,10 +22,19 @@ pip freeze
 ```
 python manage.py runserver
 
-npm install ..en el package json estan las dependencias......instalar webpack_loader para django
+npm install ..en el package json estan las dependencias......(guiarse del package.json)
+
+instalar para django:
+
+ -webpack_loader
+ -bootstrap_admin
+
+Para la base de datos:
+
+Se necesita crear la bd con ese nombre asi como lo configuraste en el proyecto que tienes.
+
 guiarse de https://github.com/michaelbukachi/django-vuejs-tutorial/wiki/Django-Vue.js-Integration-Tutorial
 ya esta configurado solo instalar ese webpack_loader
 ```
-
 
 
