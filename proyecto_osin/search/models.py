@@ -10,6 +10,8 @@ class Auto(models.Model):
     edad=models.IntegerField()
     tiempo_registro=models.DateTimeField(auto_now=True)
     cantidad_dinero=models.DecimalField(max_digits=5,decimal_places=2)
+    thumb=models.ImageField(default='default.png',blank=True)
+
 
     def __str__(self):
         return self.nombres

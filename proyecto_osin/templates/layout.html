@@ -2,21 +2,37 @@
 <html lang="es">
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap-material-design.min.css' %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
 
-<body>
-    <div id="app">
-        {% csrf_token %} {% block content %}{% endblock %}
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col menu_fixed">
+                <div class="left_col scroll-view">
+                    {% include 'sidebar-profile.html' %} {% include 'side-bar.html' %}
+                </div>
+            </div>
+            {% include 'top-nav.html' %}
+            <div class="right_col" role="main" id="app">
+                <div class="page-title">
+                    {% csrf_token %} {% block content %}{% endblock %}
+                </div>
+            </div>
+            {% include 'footer.html' %}
+        </div>
     </div>
-</body>
 
-{% block script %}{% endblock %}
-<script src="{% static 'public/bundle.js' %}"></script>
+    <script src="{% static 'public/bundle.js' %}"></script>
+    {% block script %}{% endblock %}
+
+</body>
 
 </html>

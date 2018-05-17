@@ -1,10 +1,8 @@
 <template>
 <div class="container">
       <div class="row">
-         <div class="col-lg-12">
+         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
              <div class="form-group" >  
-                 <!-- @keyup="getScrap()" -->
-                <!-- <input type="hidden" name="_token" :value="csrf"> -->
                 <label for="buscador" class="bmd-label-floating">Usuario</label>
                 <input type="text" class="form-control" name="buscador" id="buscador" v-model="buscador" autocomplete="off">
             </div>
@@ -18,13 +16,12 @@
                 <button class="btn btn-raised btn-primary" type="button" v-on:click.prevent="getScrap()">Buscar</button>
             </div> 
             <div class="form-group" v-show="loading">
-              <!-- <i class="fa fa-spinner fa-spin" style="font-size:24px"></i> -->
-              <i class="fas fa-spinner fa-spin" style="font-size:48px"></i> Cargando....
+              <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando....
             </div> 
          </div>    
       </div>     
       <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel panel-success">
            <div class="panel-body div1 table-responsive">
             <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">
@@ -59,13 +56,13 @@
           </div> 
       </div>
       <div class="row" v-show="loading_info">
-           <i class="fas fa-spinner fa-spin" style="font-size:48px"></i> Cargando info....
+           <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando info....
       </div><br>
       <div class="row" v-show="aparecer"> 
-              <div class="col-lg-6">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                <p class="text-center">Perfil:</p>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                  <p>Id: {{info_all.id}}</p> 
                  <p>Bio: {{info_all.bio}}</p>
                  <p>Nombres: {{info_all.name}}</p>
@@ -79,7 +76,7 @@
   
     export default{
         created(){
-           //this.getScrap();
+          
         },
         data(){ 
             return{

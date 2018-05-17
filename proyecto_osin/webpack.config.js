@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
-    entry: './static/js/App.js',
+    entry: ['./static/js/App.js', './static/js/custom.js'],
     output: {
         path: path.resolve(__dirname, './static/public'),
         publicPath: '/static/public/',

@@ -1,8 +1,4 @@
 # PROYECTO OSIN
-### Clonar Proyecto
-```
-https://brayanlp1@bitbucket.org/marinaproyecto/proyecto_osin.git
-```
 ** Dirigirse al proyecto.
 ### Requerimiento
 ```
@@ -25,6 +21,11 @@ pip freeze
 #### Correr Proyecto
 ```
 python manage.py runserver
+
+npm install ..en el package json estan las dependencias......instalar webpack_loader para django
+guiarse de https://github.com/michaelbukachi/django-vuejs-tutorial/wiki/Django-Vue.js-Integration-Tutorial
+ya esta configurado solo instalar ese webpack_loader
 ```
+
 
 

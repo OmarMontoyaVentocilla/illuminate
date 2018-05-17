@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'buscador.apps.BuscadorConfig',
+    'bootstrap_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
-    'search'
+    'search',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -71,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'proyecto_osin.wsgi.application'
-
+BOOTSTRAP_ADMIN_SIDEBAR_MENU = False
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -126,11 +128,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL  = '/media/'
 # STATIC_DIRS='static'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
