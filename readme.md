@@ -35,6 +35,8 @@ Se necesita crear la bd con ese nombre asi como lo configuraste en el proyecto q
 
 guiarse de https://github.com/michaelbukachi/django-vuejs-tutorial/wiki/Django-Vue.js-Integration-Tutorial
 ya esta configurado solo instalar ese webpack_loader
+
+Para webservices el que encontre es este : pip install suds
 ```
 
 

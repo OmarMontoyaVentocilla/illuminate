@@ -78,10 +78,10 @@ def get_studies(soup):
         academic_title = item.select_one("span[role=heading]").text
         if(academic_title == "Empleo"):
             for l in item.select("ul.fbProfileEditExperiences li.fbEditProfileViewExperience div div.clearfix div div a"):
-                work.append({academic_title : l.text})
+                work.append({"empleo" : l.text})
         elif(academic_title == "Formación académica"): 
             for l in item.select("ul.fbProfileEditExperiences li.fbEditProfileViewExperience div div.clearfix div div a"):
-                study.append({academic_title : l.text})
+                study.append({"formacion_academica" : l.text})
     
     response.append(work)
     response.append(study)
