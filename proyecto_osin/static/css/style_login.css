@@ -1,0 +1,20 @@
+body {
+    background: #9d9d9d;
+}
+
+button.btn.btn-lg.btn-success.btn-block {
+    border-color: #235767;
+    background: black;
+    color: white;
+}
+
+.login-panel.panel.panel-default.log_in {
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.panel-heading.titulo_login {
+    background: black;
+    color: white;
+}
