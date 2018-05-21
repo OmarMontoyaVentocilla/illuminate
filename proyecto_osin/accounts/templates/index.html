@@ -1,11 +1,18 @@
-{% extends "layout.html" %} {% block title %}Inicio || Accounts {% endblock %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<form action="{% url 'accounts:signup' %}" method="POST">
-    {% csrf_token %} {{form}}
-    <button type="submit" class="btn btn-default">Entrar</button>
-</form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registrate</title>
+</head>
 
+<body>
+    <form action="{% url 'accounts:signup' %}" method="POST">
+        {% csrf_token %} {{form}}
+        <button type="submit" class="btn btn-default">Entrar</button>
+    </form>
+</body>
 
-
-
-{% endblock %}
+</html>

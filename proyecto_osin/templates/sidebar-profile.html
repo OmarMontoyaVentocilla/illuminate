@@ -11,7 +11,10 @@
         <img src="/media/img.jpg" alt="..." class="img-circle profile_img">
     </div>
     <div class="prod_title">
-        <span>En línea <i class="fa fa-circle" aria-hidden="true" ></i></span>
+        <span>En línea <i class="fa fa-circle" aria-hidden="true" ></i></span> {% if user.is_authenticated %}
+        <h2 id="nombreAdmin">{{ user.username }} </h2>
+        {% else %}
         <h2 id="nombreAdmin">Admin </h2>
+        {% endif %}
     </div>
 </div>
