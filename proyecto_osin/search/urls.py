@@ -1,7 +1,7 @@
 # from django.contrib import admin
 from django.urls import path
 from .views import create_auto, list_auto, update_auto, delete_auto, getAuto, customSearch, get_details
-
+# from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
          path('', list_auto,name='list_auto'),

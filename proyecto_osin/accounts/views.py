@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login, logout
+from .forms import LoginForm
 # Create your views here.
 def signup(request):
     if (request.method=='POST'):
@@ -19,13 +20,13 @@ def signup(request):
 
 def login_view(request):
     if (request.method=='POST'):
-        form=AuthenticationForm(data=request.POST)
+        form=LoginForm(data=request.POST)
         if (form.is_valid()):
             user=form.get_user()
             login(request,user)
             return redirect('list_auto')
     else:
-        form=AuthenticationForm()
+        form=LoginForm()
     
     return render(request,'login.html',{'form':form})
 

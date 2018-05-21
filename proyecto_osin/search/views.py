@@ -9,6 +9,7 @@ from fullcontact import FullContact
 import urllib.request
 import clearbit
 from bs4 import BeautifulSoup
+from django.contrib.auth.decorators import login_required
 # # Create your views here.
 def create_auto(request):
     form=AutoForm(request.POST or None)
@@ -119,6 +120,7 @@ def gettw(request):
     soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omarmontoya&src=typd")
     return HttpResponse("dfdf") 
 
+@login_required(login_url="/accounts/login")
 def getAuto(request):
     buscador=request.GET.get('buscador')
     pag=request.GET.get('pag')
@@ -135,7 +137,7 @@ def getAuto(request):
 def customSearch(request):
     return render(request,'custom.html')    
       
-
+@login_required(login_url="/accounts/login")
 def list_auto(request):
     autos=Auto.objects.all()
     return render(request,'auto.html',{'autos':autos})
