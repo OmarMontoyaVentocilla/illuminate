@@ -18,9 +18,11 @@ if (token) {
 
 import Vue from 'vue';
 import example from './components/Example.vue';
+import persona from './components/Persona.vue';
 const app = new Vue({
     el: '#app',
     components: {
-        example
+        example,
+        persona
     }
 });

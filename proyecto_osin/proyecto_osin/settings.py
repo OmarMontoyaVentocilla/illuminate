@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpack_loader',
     'search',
-    'accounts'
+    'accounts',
+    'persona',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -143,4 +145,6 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
+
+
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')

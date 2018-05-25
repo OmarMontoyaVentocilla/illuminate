@@ -154,7 +154,8 @@
                                      pag:pag
                                     }
                         })
-                        .then(response=>{   
+                        .then(response=>{ 
+                              console.log(response);
                                 this.lista=response.data.valor;
                                  this.loading = false;
                                

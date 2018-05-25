@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .routers import router
 from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('buscador/', include('buscador.urls')),
@@ -26,6 +28,10 @@ urlpatterns = [
     path('', views.index,name="index"),
     path('search/',include('search.urls')),
     path('accounts/',include('accounts.urls')),
+    path('persona/',include('persona.urls')),
+    # TemplateView.as_view(template_name='persona.html')
+    #path('persona/',view=TemplateView.as_view(template_name='persona.html')),
+    path('api/', include(router.urls))
 ]
 
 urlpatterns +=staticfiles_urlpatterns()
