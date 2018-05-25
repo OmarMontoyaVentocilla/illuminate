@@ -35,10 +35,18 @@ def deletepersona(request, id):
         mensaje['message']="Se elimno exitosamente"
     return JsonResponse(mensaje)
 
+@login_required(login_url="/accounts/login")
 def editpersona(request,id):
-    valor="mi id es: {}".format(id)
-    # persona=Persona.objects.get(id=id)
-    return HttpResponse(valor)
+    persona=Persona.objects.get(id=id)
+    valor=json.loads(request.body.decode("utf-8"))
+    nombre = valor['nombre'].strip()
+    apodo = valor['apodo'].strip()
+    persona.nombre=nombre
+    persona.apodo=apodo
+    persona.save()
+    msg={}
+    msg['message']="Se edito exitosamente"
+    return JsonResponse(msg)
 
 
 @login_required(login_url="/accounts/login")

@@ -157,11 +157,10 @@ export default{
                      };
              axios.patch(url_edit,dataedit,config)
                 .then(response => {  
-                   console.log(response); 
-                // selfx.mensaje(response.data.mensaje, 'Excelente', 'success');
-                // selfx.getAutor();
-                // selfx.reset();
-                //$('#myModal').modal('hide');
+                    this.mensaje(response.data.message,'','success');
+                    this.getPersona();
+                    this.limpiar(); 
+                    $('#myModal').modal('hide');
                 })
                 .catch(error=>{
                     console.log(error);
