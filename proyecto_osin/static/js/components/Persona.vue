@@ -38,7 +38,7 @@
                     <td>{{list.nombre}}</td>
                     <td>{{list.apodo}}</td>
                     <td align="center">
-                <button type="button" class="btn btn-raised btn-primary">Editar</button>
+                <button type="button" class="btn btn-raised btn-primary" v-on:click.prevent="infopersona(list)">Editar</button>
                 <button type="button" class="btn btn-raised btn-danger" v-on:click.prevent="deletepersona(list)">Eliminar</button>
                     </td>  
                  </tr>
@@ -54,6 +54,41 @@
                 </div>
           </div>
       </div>  
+
+      
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editar:</h4>
+      </div>
+      <div class="modal-body">
+         <form v-on:submit.prevent="editPersona(persona.id)">
+            <div class="form-group">
+        <label for="nombre_edit">Nombre:</label>
+        <input type="text" class="form-control" id="nombre_edit" v-model="persona.nombre_edit">
+           </div>
+           <div class="form-group">
+        <label for="apodo_edit">Apodo:</label>
+        <input type="text" class="form-control" id="apodo_edit" v-model="persona.apodo_edit">
+           </div>
+          <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+   <button type="submit" class="btn btn-primary">Guardar</button>
+       </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
       </div>
 </template>
 <script>
@@ -71,7 +106,10 @@ export default{
         return{
            persona:{
                  nombre:'',
-                 apodo:''
+                 id:'',
+                 apodo:'',
+                 nombre_edit:'',
+                 apodo_edit:''
            },
            lista:[] 
         }
@@ -92,6 +130,8 @@ export default{
         limpiar(){
           this.persona.nombre='';
           this.persona.apodo='';
+          this.persona.nombre_edit='';
+          this.persona.apodo_edit='';
         },
         getPersona(){
            axios.get('/api/persona/')
@@ -101,6 +141,31 @@ export default{
            .catch(error=>{
                console.log(error);
            })
+        },
+        infopersona(info){
+          this.persona.nombre_edit=info.nombre;
+          this.persona.apodo_edit=info.apodo;
+          this.persona.id=info.id;
+          $('#myModal').modal('show'); 
+        },
+        editPersona(info){
+              //var selfx = this;
+              let url_edit="http://127.0.0.1:8000/persona/editpersona/"+info+"/";
+              var dataedit={
+                     nombre: this.persona.nombre_edit,
+                     apodo: this.persona.apodo_edit
+                     };
+             axios.patch(url_edit,dataedit,config)
+                .then(response => {  
+                   console.log(response); 
+                // selfx.mensaje(response.data.mensaje, 'Excelente', 'success');
+                // selfx.getAutor();
+                // selfx.reset();
+                //$('#myModal').modal('hide');
+                })
+                .catch(error=>{
+                    console.log(error);
+                })
         },
         deletepersona(info){
                let url_delete="http://127.0.0.1:8000/persona/deletepersona/"+info.id;
@@ -122,7 +187,7 @@ export default{
                          console.log(error);
                    });
                     } else {
-                    alert("xxxxxxx");
+                    console.log("");
                     }
                });
         },

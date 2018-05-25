@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.core import serializers
 import requests
 import json
 from .models import Persona
@@ -33,6 +34,12 @@ def deletepersona(request, id):
         mensaje={}
         mensaje['message']="Se elimno exitosamente"
     return JsonResponse(mensaje)
+
+def editpersona(request,id):
+    valor="mi id es: {}".format(id)
+    # persona=Persona.objects.get(id=id)
+    return HttpResponse(valor)
+
 
 @login_required(login_url="/accounts/login")
 def listpersona(request):
