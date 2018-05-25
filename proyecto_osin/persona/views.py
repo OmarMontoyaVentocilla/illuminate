@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required(login_url="/accounts/login")
 def createpersona(request):
     if(request.method == 'POST'):
         valor=json.loads(request.body.decode("utf-8"))
@@ -23,8 +24,15 @@ def createpersona(request):
         else:
             mensaje['fail']="No se guardo"                
     return JsonResponse(mensaje)
-        
 
+@login_required(login_url="/accounts/login")      
+def deletepersona(request, id):
+    persona=Persona.objects.get(id=id)
+    delete=persona.delete()
+    if(delete):
+        mensaje={}
+        mensaje['message']="Se elimno exitosamente"
+    return JsonResponse(mensaje)
 
 @login_required(login_url="/accounts/login")
 def listpersona(request):

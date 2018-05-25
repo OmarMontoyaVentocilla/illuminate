@@ -22,8 +22,7 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel panel-success panel_estilo_persona">
            <div class="panel-body div1 table-responsive">
-            <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">
-             
+            <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">   
              <thead>
                  <tr>
                      <th>#</th>
@@ -39,8 +38,8 @@
                     <td>{{list.nombre}}</td>
                     <td>{{list.apodo}}</td>
                     <td align="center">
-                <button class="btn btn-raised btn-primary">Editar</button>
-                <button class="btn btn-raised btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-raised btn-primary">Editar</button>
+                <button type="button" class="btn btn-raised btn-danger" v-on:click.prevent="deletepersona(list)">Eliminar</button>
                     </td>  
                  </tr>
                  </template>
@@ -56,11 +55,14 @@
           </div>
       </div>  
       </div>
-
 </template>
 <script>
 
 import swal from 'sweetalert';
+var crf_tok = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': crf_tok}
+};
 export default{
     created(){
        this.getPersona();
@@ -97,14 +99,35 @@ export default{
                this.lista=response.data;
            })
            .catch(error=>{
-               console.log(response);
+               console.log(error);
            })
+        },
+        deletepersona(info){
+               let url_delete="http://127.0.0.1:8000/persona/deletepersona/"+info.id;
+               var selfdel=this;
+               swal({
+                    title: "Estas seguro?",
+                    text: "Eliminara a "+info.nombre,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+              })
+              .then((willDelete) => {
+                    if (willDelete) {
+                   axios.delete(url_delete,config).then(response => {
+                       selfdel.mensaje('Excelente',response.data.message,'success');
+                       selfdel.getPersona();
+                        })
+                        .catch(error => {
+                         console.log(error);
+                   });
+                    } else {
+                    alert("xxxxxxx");
+                    }
+               });
         },
         createPersona(){
              var crf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-             var config = {
-                headers: {'X-CSRFToken': crf_token}
-            };
             var data={
                      nombre: this.persona.nombre,
                      apodo: this.persona.apodo
