@@ -1,4 +1,4 @@
-# PROYECTO OSIN
+# PROYECTO ILLUMINATE
 ** Dirigirse al proyecto.
 ### Requerimiento
 ```
