@@ -12,7 +12,7 @@
               <input type="text" class="form-control" name="apodo" id="apodo" v-model.trim="persona.apodo" autocomplete="off">
            </div>
             <div class="form-group">
-                <button class="btn btn-raised btn-primary" type="submit" id="envio">Agregar</button>
+                <button class="btn btn-raised btn-primary" type="submit" id="envio"><i class="fa fa-plus-circle"></i> Agregar</button>
             </div> 
             </form>
               </div>
@@ -28,6 +28,7 @@
                      <th>#</th>
                      <th>Nombre</th>
                      <th>Apodo</th>
+                     <th>Fecha registro</th>
                      <th>Acción</th>
                  </tr>
             </thead>
@@ -37,15 +38,16 @@
                     <td>{{index+1}}</td>
                     <td>{{list.nombre}}</td>
                     <td>{{list.apodo}}</td>
+                    <td>{{format_date(list.tiempo_registro)}}</td>
                     <td align="center">
-                <button type="button" class="btn btn-raised btn-primary" v-on:click.prevent="infopersona(list)">Editar</button>
-                <button type="button" class="btn btn-raised btn-danger" v-on:click.prevent="deletepersona(list)">Eliminar</button>
+                <button type="button" class="btn btn-raised btn-primary" v-on:click.prevent="infopersona(list)"><i class="fa fa-pencil"></i></button>
+                <button type="button" class="btn btn-raised btn-danger" v-on:click.prevent="deletepersona(list)"><i class="fa fa-trash"></i></button>
                     </td>  
                  </tr>
                  </template>
                  <template v-else>
                     <tr>
-        	        <td colspan="4" align="center">No hay resultados disponibles</td>	
+        	        <td colspan="5" align="center">No hay resultados disponibles</td>	
         	        </tr>
                 </template>    
             </tbody>
@@ -87,13 +89,14 @@
   </div>
 </div>
 
-
-
       </div>
 </template>
 <script>
 
 import swal from 'sweetalert';
+import moment from 'moment';
+import 'moment/locale/es';
+moment.locale('es');
 var crf_tok = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 var config = {
      headers: {'X-CSRFToken': crf_tok}
@@ -123,6 +126,9 @@ export default{
                  button: true,
                  timer: 1500
               })
+        },
+        format_date(fecha){
+           return  moment(fecha).format('LLLL');
         },
         disabl(valor){
          $("#envio").prop('disabled', valor);

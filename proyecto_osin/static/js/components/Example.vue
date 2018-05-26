@@ -13,7 +13,7 @@
                </select>
            </div>
             <div class="form-group">
-                <button class="btn btn-raised btn-primary" type="button" v-on:click.prevent="getScrap()">Buscar</button>
+                <button class="btn btn-raised btn-primary" type="button" v-on:click.prevent="getScrap()"><i class="fa fa-search"></i> Buscar</button>
             </div> 
             <div class="form-group" v-show="loading">
               <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando....
@@ -49,7 +49,7 @@
                           </table>
                       </td>
                       <td align="center">
-                <button class="btn btn-raised btn-primary" v-on:click.prevent="getInfo(list)">Ver</button>
+                <button class="btn  btn-info" v-on:click.prevent="getInfo(list)"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
                      <td align="center"><input type="checkbox" name=""></td> 
                      </tr>   

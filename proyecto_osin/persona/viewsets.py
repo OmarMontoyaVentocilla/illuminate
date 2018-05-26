@@ -3,5 +3,5 @@ from .models import Persona
 from .serializers import PersonaSerializer
 
 class PersonaViewSet(viewsets.ModelViewSet):
-    queryset = Persona.objects.all()
+    queryset = Persona.objects.filter(estado="1")
     serializer_class = PersonaSerializer

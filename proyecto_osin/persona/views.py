@@ -29,10 +29,10 @@ def createpersona(request):
 @login_required(login_url="/accounts/login")      
 def deletepersona(request, id):
     persona=Persona.objects.get(id=id)
-    delete=persona.delete()
-    if(delete):
-        mensaje={}
-        mensaje['message']="Se elimno exitosamente"
+    persona.estado='0'
+    persona.save()
+    mensaje={}
+    mensaje['message']="Se elimno exitosamente"
     return JsonResponse(mensaje)
 
 @login_required(login_url="/accounts/login")
