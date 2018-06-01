@@ -117,8 +117,60 @@ def get_details(request):
     return JsonResponse(data)
    
 def gettw(request):
-    soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omarmontoya&src=typd")
-    return HttpResponse("dfdf") 
+    soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omar%20mv&src=typd")
+    response=[]
+    for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
+        result={}
+        result['link_tw']= "https://twitter.com{}".format(item.select_one("div > span > a")['href'])
+        #infot=get_doc(result['link_tw'])
+        infot=get_doc("https://twitter.com/OmarMv372")
+        if(infot.select_one(".ProfileCanopy-nav > div > ul > li > a > span:nth-of-type(3)")):
+            result['tweets']=infot.select_one(".ProfileCanopy-nav > div > ul > li > a > span:nth-of-type(3)").text.strip()
+        else:
+            result['tweets']="0 tweets"
+        
+        if(infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(2) > a > span:nth-of-type(3)")):
+            result['siguiendo']=infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(2) > a > span:nth-of-type(3)").text.strip() 
+        else:
+            result['siguiendo']="0 following"
+
+        if(infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(3) > a > span:nth-of-type(3)")):
+            result['seguidores']=infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(3) > a > span:nth-of-type(3)").text.strip() 
+        else:
+            result['seguidores']="0 followers"
+        
+        if(infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(4) > a > span:nth-of-type(3)")):
+            result['likes']=infot.select_one(".ProfileCanopy-nav > div > ul > li:nth-of-type(4) > a > span:nth-of-type(3)").text.strip() 
+        else:
+            result['likes']="0 likes"
+        
+        if(infot.select_one(".ProfileHeaderCard-location > span:nth-of-type(2) > a")):
+            result['ubicacion']=infot.select_one(".ProfileHeaderCard-location > span:nth-of-type(2) > a").text 
+        else:
+            result['ubicacion']="ninguna"
+        
+        if(infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")):
+            result['pagina']=infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")['title']
+        else:
+            result['pagina']="ninguna"
+        
+        if(infot.select_one(".ProfileHeaderCard-joinDate > span:nth-of-type(2)")):
+            result['inicio_tw']=infot.select_one(".ProfileHeaderCard-joinDate > span:nth-of-type(2)").text
+        else:
+            result['inicio_tw']="ninguna"
+    
+        result['img_tw']= item.select_one("a > img")['src']
+        result['nombre_tw']= "@{}".format(item.select_one("div > span > a > span > b").text)
+        result['biografia'] = item.select_one("div > p").text
+        result['prueba']={
+            'fdfdf':'fdf',
+            'dfdfd':'dfdfd'
+        }
+        response.append(result)
+     
+    data={'info_all':response}
+    return JsonResponse(data) 
+
 
 @login_required(login_url="/accounts/login")
 def getAuto(request):
