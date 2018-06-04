@@ -115,7 +115,9 @@ def get_details(request):
         'info_all':response
     }
     return JsonResponse(data)
-   
+
+
+@login_required(login_url="/accounts/login") 
 def gettw(request):
     soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omar%20mv&src=typd")
     response=[]
@@ -123,7 +125,7 @@ def gettw(request):
         result={}
         result['link_tw']= "https://twitter.com{}".format(item.select_one("div > span > a")['href'])
         #infot=get_doc(result['link_tw'])
-        infot=get_doc("https://twitter.com/OmarMv372")
+        infot=get_doc(result['link_tw'])
 
         if(infot.select_one(".ProfileCanopy-nav > div > ul > li > a > span:nth-of-type(3)")):
             result['tweets']=infot.select_one(".ProfileCanopy-nav > div > ul > li > a > span:nth-of-type(3)").text.strip()
@@ -163,29 +165,29 @@ def gettw(request):
         result['img_tw']= item.select_one("a > img")['src']
         result['nombre_tw']= "@{}".format(item.select_one("div > span > a > span > b").text)
         result['biografia'] = item.select_one("div > p").text
-        # result['info']={
-        #                 'tweets':gettwts("https://twitter.com/OmarMv372")
-        #                }
+        result['info']={
+                        'tweets':gettwts(result['link_tw'])
+                       }
     
         response.append(result)
       
     data={'info_all':response}
     return JsonResponse(data) 
 
-def gettwts(request):
-    infotws=get_doc("https://twitter.com/OmarMv372")
+
+def gettwts(url):
+    infotws=get_doc(url)
     response=[]
     for item in infotws.select('.ProfileTimeline > div > div:nth-of-type(2) > ol > li > div > div:nth-of-type(2)'):
         result={}
         result['cabezera_fecha']= item.select_one("div > small > a")['title']
-        # if(item.select_one("div:nth-of-type(2) > p")):
-        #     result['texto_tweet']="bien"
-        # else:
-        #     result['texto_tweet']="mal"
+        if(item.select_one(".js-tweet-text-container > p")):
+            result['texto_tweet']=item.select_one(".js-tweet-text-container > p").text   
+        else:
+            result['texto_tweet']="mal"
         response.append(result)
-    
-    data={'info_all':response}
-    return JsonResponse(data)
+    #data={'info_all':response}
+    return response
 
 @login_required(login_url="/accounts/login")
 def getAuto(request):
