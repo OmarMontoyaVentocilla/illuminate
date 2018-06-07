@@ -8,6 +8,7 @@ from .forms import AutoForm
 from fullcontact import FullContact
 import urllib.request
 import clearbit
+import json
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 # # Create your views here.
@@ -29,7 +30,11 @@ def get_fullcontact(email):
     data = json.dumps({
       "email": email
     }).encode("utf-8")
-    return urllib.request.urlopen(req,data).read()
+    response = urllib.request.urlopen(req,data)
+    data={
+        "response":response
+    }
+    return JsonResponse(data)
 
 def get_doc(url):
     google=requests.get(url)
@@ -117,6 +122,34 @@ def get_details(request):
     return JsonResponse(data)
 
 
+def gethit(request):
+    soup=get_doc("https://github.com/search?q=omar&type=Users")
+    response=[] 
+    for item in soup.select(".column.three-fourths.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
+        result={}
+        result['img_github']=item.select_one("div:nth-of-type(2) > a > img")['src']
+        result['nick_github']="https://github.com/{}".format(item.select_one("div:nth-of-type(2) > div > a").text)   
+        result['nombre_github']=item.select_one("div:nth-of-type(2) > div > span").text
+        result['pais_github']=item.select_one("div:nth-of-type(2) > div > ul > li").text.strip()
+        result['fullcontact']=get_clearbit("omarmontoya372@gmail.com")
+        if(item.select_one("div:nth-of-type(2) > div > p")):
+            result['biografia_github']=item.select_one("div:nth-of-type(2) > div > p").text.strip()
+        else:
+            result['biografia_github']="No existe biografia"
+
+        if(item.select_one("div:nth-of-type(2) > div > ul > li:nth-of-type(2) ")):
+            result['mail_github']="bien"
+        else:
+            result['mail_github']="No existe correo"
+            
+        
+        response.append(result) 
+
+    data={'info_all':response}
+    return JsonResponse(data) 
+
+
+
 @login_required(login_url="/accounts/login") 
 def gettw(request):
     soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omar%20mv&src=typd")
@@ -124,7 +157,6 @@ def gettw(request):
     for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
         result={}
         result['link_tw']= "https://twitter.com{}".format(item.select_one("div > span > a")['href'])
-        #infot=get_doc(result['link_tw'])
         infot=get_doc(result['link_tw'])
 
         if(infot.select_one(".ProfileCanopy-nav > div > ul > li > a > span:nth-of-type(3)")):
@@ -184,7 +216,7 @@ def gettwts(url):
         if(item.select_one(".js-tweet-text-container > p")):
             result['texto_tweet']=item.select_one(".js-tweet-text-container > p").text   
         else:
-            result['texto_tweet']="mal"
+            result['texto_tweet']="no hay dato"
         response.append(result)
     #data={'info_all':response}
     return response
