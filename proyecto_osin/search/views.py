@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import requests
+import re, urllib.request as ur
 from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -121,6 +122,17 @@ def get_details(request):
     }
     return JsonResponse(data)
 
+def gethits(username):
+    f = ur.urlopen("https://api.github.com/users/{}/events/public".format(username))
+    s = f.read().decode('utf-8')
+    number=re.findall(r"\+\d{2}\s?0?\d{10}",s)
+    email=re.findall(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}",s)
+    if(len(email)>0):
+        data=email[0]
+    else:
+        data="No existe email"  
+    return data
+   
 
 def gethit(request):
     soup=get_doc("https://github.com/search?q=omar&type=Users")
@@ -130,21 +142,19 @@ def gethit(request):
         result['img_github']=item.select_one("div:nth-of-type(2) > a > img")['src']
         result['nick_github']="https://github.com/{}".format(item.select_one("div:nth-of-type(2) > div > a").text)   
         result['nombre_github']=item.select_one("div:nth-of-type(2) > div > span").text
-        result['pais_github']=item.select_one("div:nth-of-type(2) > div > ul > li").text.strip()
-        result['fullcontact']=get_clearbit("omarmontoya372@gmail.com")
+        result['email_github']=gethits(item.select_one("div:nth-of-type(2) > div > a").text)
+        # if(result['email']!='No existe email'):
+        #     result['fullcontact']=get_clearbit(result['email'])
+            
         if(item.select_one("div:nth-of-type(2) > div > p")):
             result['biografia_github']=item.select_one("div:nth-of-type(2) > div > p").text.strip()
         else:
             result['biografia_github']="No existe biografia"
-
-        if(item.select_one("div:nth-of-type(2) > div > ul > li:nth-of-type(2) ")):
-            result['mail_github']="bien"
-        else:
-            result['mail_github']="No existe correo"
-            
         
-        response.append(result) 
-
+        for i in item.select("div:nth-of-type(2) > div > ul > li"):
+            result['pais_github']=i.text.strip()
+            response.append(result) 
+  
     data={'info_all':response}
     return JsonResponse(data) 
 
