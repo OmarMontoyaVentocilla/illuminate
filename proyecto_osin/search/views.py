@@ -158,7 +158,8 @@ def getgit(url_nick):
 
 def gethit(request):
     soup=get_doc("https://github.com/search?q=omar&type=Users")
-    response=[] 
+    response=[]
+
     for item in soup.select(".column.three-fourths.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
         result={}
         result['img_github']=item.select_one("div:nth-of-type(2) > a > img")['src']
@@ -178,7 +179,28 @@ def gethit(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
+def getinsta(request):
+    soup=get_doc("https://web.stagram.com/search?query=omar")
+    response=[]
+    response_inta=[]
+    for i in soup.select(".row.photolist > .col-6.col-xs-12.col-sm-6.col-md-4.col-lg-3.mb-4"):
+        result_inta={}
+        result_inta['logo_inta']=i.select_one("div > a > img")['src'] 
+        result_inta['nick_inta']=i.select_one("div > a > div > h4").text
+        result_inta['name_inta']=i.select_one("div > a > div > p").text
+        response_inta.append(result_inta)
+    
+    for item in soup.select(".row.photolist > .col-6.col-sm-4.col-md-3.mb-4"):
+        result={}
+        result['logo_inta']="https://web.stagram.com{}".format(item.select_one("div > a > img")['src'])   
+        result['nick_inta']=item.select_one("div > a > div > h4").text
+        result['name_inta']=item.select_one("div > a > div > span").text
+        response.append(result) 
 
+    data={'info_post':response,'info_users':response_inta}
+    return JsonResponse(data) 
+    
+    
 
 @login_required(login_url="/accounts/login") 
 def gettw(request):
