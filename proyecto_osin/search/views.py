@@ -132,7 +132,29 @@ def gethits(username):
     else:
         data="No existe email"  
     return data
-   
+
+
+def getgit(url_nick):
+    soup=get_doc("https://github.com/{}".format(url_nick))
+    response=[]
+    for i in soup.select("ul.vcard-details.border-top.border-gray-light.py-3 > li"):
+        result={}
+        result['web']=i.text.strip()     
+        response.append(result)
+    
+    error_res="No existe página web"
+    if(4==len(response)):
+        data=response[3]
+    elif(3==len(response)):
+        data=error_res
+    elif(2==len(response)):
+        data=error_res
+    elif(1==len(response)):
+        data=error_res   
+    else:
+        data=error_res
+    return data 
+    
 
 def gethit(request):
     soup=get_doc("https://github.com/search?q=omar&type=Users")
@@ -143,9 +165,7 @@ def gethit(request):
         result['nick_github']="https://github.com/{}".format(item.select_one("div:nth-of-type(2) > div > a").text)   
         result['nombre_github']=item.select_one("div:nth-of-type(2) > div > span").text
         result['email_github']=gethits(item.select_one("div:nth-of-type(2) > div > a").text)
-        # if(result['email']!='No existe email'):
-        #     result['fullcontact']=get_clearbit(result['email'])
-            
+        result['pagina_github']=getgit(item.select_one("div:nth-of-type(2) > div > a").text)
         if(item.select_one("div:nth-of-type(2) > div > p")):
             result['biografia_github']=item.select_one("div:nth-of-type(2) > div > p").text.strip()
         else:
