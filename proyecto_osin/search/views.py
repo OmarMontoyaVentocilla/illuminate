@@ -12,6 +12,7 @@ import clearbit
 import json
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
+from django.utils.html import strip_tags
 # # Create your views here.
 def create_auto(request):
     form=AutoForm(request.POST or None)
@@ -154,7 +155,30 @@ def getgit(url_nick):
     else:
         data=error_res
     return data 
-    
+
+
+def getcomercio(request):
+    buscador=request.GET.get('buscador')
+    url=request.GET.get('url')
+    sauce = urllib.request.urlopen(url).read()
+    soup = BeautifulSoup(sauce,'lxml')
+    textohtml= ''
+    strip = ''
+    variable = []
+    textohtml = soup.prettify()
+    strip = strip_tags(textohtml) 
+    listap = strip.split()
+    frecuenciaPalab = []
+    for w in listap:
+        frecuenciaPalab.append(listap.count(w))
+        variable = ([i for i in zip(listap, frecuenciaPalab)])
+        var = listap.count(buscador)
+    data={
+      'titulo' : soup.title.string,
+      'coincidencias' : var
+    }
+    return JsonResponse(data)
+
 def getgoogle(request):
     soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
     response=[]

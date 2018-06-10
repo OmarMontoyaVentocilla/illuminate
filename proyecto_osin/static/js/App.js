@@ -22,6 +22,7 @@ import persona from './components/Persona.vue';
 import twiter from './components/Twitter.vue';
 import github from './components/Github.vue';
 import instagram from './components/Instagram.vue';
+import clave from './components/Clave.vue';
 const app = new Vue({
     el: '#app',
     components: {
@@ -29,6 +30,7 @@ const app = new Vue({
         persona,
         twiter,
         github,
-        instagram
+        instagram,
+        clave
     }
 });
