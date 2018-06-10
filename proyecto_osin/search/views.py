@@ -203,7 +203,8 @@ def getgoogle(request):
 
 
 def gethit(request):
-    soup=get_doc("https://github.com/search?q=omar&type=Users")
+    buscador=request.GET.get('buscador')
+    soup=get_doc("https://github.com/search?q={}&type=Users".format(buscador))
     response=[]
 
     for item in soup.select(".column.three-fourths.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
