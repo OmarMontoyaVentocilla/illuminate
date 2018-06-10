@@ -226,15 +226,32 @@ def gethit(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
+
+def getinstadet(url):
+    soup=get_doc("https://web.stagram.com/{}".format(url))
+    response=[]
+    for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
+        for x in i.select("span"):
+            result={}
+            result['resultado']=x.text
+            response.append(result)
+    
+    # data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
+    #data={'post':response[0]}
+    return response
+
+
 def getinsta(request):
-    soup=get_doc("https://web.stagram.com/search?query=omar")
+    buscador=request.GET.get('buscador')
+    soup=get_doc("https://web.stagram.com/search?query={}".format(buscador))
     response=[]
     response_inta=[]
     for i in soup.select(".row.photolist > .col-6.col-xs-12.col-sm-6.col-md-4.col-lg-3.mb-4"):
         result_inta={}
         result_inta['logo_inta']=i.select_one("div > a > img")['src'] 
-        result_inta['nick_inta']=i.select_one("div > a > div > h4").text
+        result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
         result_inta['name_inta']=i.select_one("div > a > div > p").text
+        #result_inta['detalles'] = getinstadet(i.select_one("div > a > div > h4").text)[0]
         response_inta.append(result_inta)
     
     for item in soup.select(".row.photolist > .col-6.col-sm-4.col-md-3.mb-4"):

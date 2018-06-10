@@ -21,12 +21,14 @@ import example from './components/Example.vue';
 import persona from './components/Persona.vue';
 import twiter from './components/Twitter.vue';
 import github from './components/Github.vue';
+import instagram from './components/Instagram.vue';
 const app = new Vue({
     el: '#app',
     components: {
         example,
         persona,
         twiter,
-        github
+        github,
+        instagram
     }
 });

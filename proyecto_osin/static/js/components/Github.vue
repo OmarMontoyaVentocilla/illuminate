@@ -84,7 +84,7 @@
                   <tr>
                             <td><p class="text-center"><strong>{{data_info.pais_github}}</strong></p></td>
                             <td><p class="text-center"><strong>{{data_info.email_github}}</strong></p></td> 
-                            <td><p class="text-center"><strong>ddsd</strong></p></td> 
+                            <td><p class="text-center"><strong>{{data_info.pagina_github}}</strong></p></td> 
                   </tr>
                   <tr>
                             <td class="info_style" colspan="3"><p class="text-center"><strong>Biografía</strong></p></td>
@@ -120,6 +120,7 @@ import swal from 'sweetalert';
            loading_info: false,
            aparecer:false,
            info_all:[],
+           git_web:'',
            buscador:'',
            data_info:[]     
          }
@@ -158,8 +159,12 @@ import swal from 'sweetalert';
            },
            getInfo(info){
                this.data_info=info;
+               this.git_web=this.data_info.pagina_github;
                console.log(info);
                $('#myModal3').modal('show');
+           },
+           validarwebgit(){
+               
            }
        } 
     }
