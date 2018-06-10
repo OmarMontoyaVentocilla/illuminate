@@ -155,6 +155,28 @@ def getgit(url_nick):
         data=error_res
     return data 
     
+def getgoogle(request):
+    soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
+    response=[]
+    for item in soup.select(".H68wj.t1KkGe > .NzRmxf.vCjazd"):
+        result={}
+        result['img_google']=item.select_one("a > img")['src']
+        result['id_google']=item.select_one("a")['href'].replace("./", "")
+        result['nombre_google']=item.select_one("a > div > div").text
+        if(item.select_one("a > div:nth-of-type(2) > span")):
+            result['info_google']=item.select_one("a > div:nth-of-type(2) > span").text
+        else:
+            result['info_google']="No hay info"
+        response.append(result) 
+  
+    data={'info_all':response}
+    return JsonResponse(data) 
+
+
+
+
+    
+
 
 def gethit(request):
     soup=get_doc("https://github.com/search?q=omar&type=Users")
@@ -270,7 +292,6 @@ def gettwts(url):
         else:
             result['texto_tweet']="no hay dato"
         response.append(result)
-    #data={'info_all':response}
     return response
 
 @login_required(login_url="/accounts/login")
