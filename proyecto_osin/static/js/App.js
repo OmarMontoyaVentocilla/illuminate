@@ -19,10 +19,14 @@ if (token) {
 import Vue from 'vue';
 import example from './components/Example.vue';
 import persona from './components/Persona.vue';
+import twiter from './components/Twitter.vue';
+import github from './components/Github.vue';
 const app = new Vue({
     el: '#app',
     components: {
         example,
-        persona
+        persona,
+        twiter,
+        github
     }
 });

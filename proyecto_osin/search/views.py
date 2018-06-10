@@ -172,7 +172,7 @@ def getgoogle(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
-def getlinken(request):
+# def getlinken(request):
     # soup=get_doc("https://pe.linkedin.com/pub/dir/Omar/Montoya")
     # response=[]
     # result={}
@@ -183,7 +183,7 @@ def getlinken(request):
     # response.append(result)
     # data={'info_all':response}
     # return JsonResponse(data) 
-    return ''
+    # return ''
         
     # for item in soup.select(".primary-section > .professionals.section.blue-cta-enabled > ul.content > li"):
     #     result={}
@@ -250,7 +250,8 @@ def getinsta(request):
 
 @login_required(login_url="/accounts/login") 
 def gettw(request):
-    soup=get_doc("https://twitter.com/search?f=users&vertical=default&q=omar%20mv&src=typd")
+    buscador=request.GET.get('buscador')
+    soup=get_doc("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
     response=[]
     for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
         result={}
@@ -280,25 +281,31 @@ def gettw(request):
         if(infot.select_one(".ProfileHeaderCard-location > span:nth-of-type(2) > a")):
             result['ubicacion']=infot.select_one(".ProfileHeaderCard-location > span:nth-of-type(2) > a").text 
         else:
-            result['ubicacion']="ninguna"
+            result['ubicacion']="Ninguna"
         
         if(infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")):
             result['pagina']=infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")['title']
         else:
-            result['pagina']="ninguna"
+            result['pagina']="Ninguna"
         
         if(infot.select_one(".ProfileHeaderCard-joinDate > span:nth-of-type(2)")):
             result['inicio_tw']=infot.select_one(".ProfileHeaderCard-joinDate > span:nth-of-type(2)").text
         else:
-            result['inicio_tw']="ninguna"
+            result['inicio_tw']="Ninguna"
         
         result['img_tw']= item.select_one("a > img")['src']
         result['nombre_tw']= "@{}".format(item.select_one("div > span > a > span > b").text)
-        result['biografia'] = item.select_one("div > p").text
-        result['info']={
-                        'tweets':gettwts(result['link_tw'])
-                       }
-    
+        
+        if(item.select_one("div > p")):
+            if(item.select_one("div > p").text!=''):
+                result['biografia'] = item.select_one("div > p").text
+            else:
+                result['biografia'] = "Ninguna"         
+        else:
+            result['biografia']="Ninguna"
+            
+        result['info']=gettwts(result['link_tw'])
+
         response.append(result)
       
     data={'info_all':response}
@@ -316,7 +323,7 @@ def gettwts(url):
         else:
             result['texto_tweet']="no hay dato"
         response.append(result)
-    return response
+    return len(response)
 
 @login_required(login_url="/accounts/login")
 def getAuto(request):
