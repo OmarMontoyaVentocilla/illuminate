@@ -172,7 +172,31 @@ def getgoogle(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
+def getlinken(request):
+    # soup=get_doc("https://pe.linkedin.com/pub/dir/Omar/Montoya")
+    # response=[]
+    # result={}
+    # if(soup.select(".primary-section > .professionals.section.blue-cta-enabled > ul.content > li.has-country-specific-link")):
+    #      result['x']="bien"
+    # else:
+    #     result['x']="mal"
+    # response.append(result)
+    # data={'info_all':response}
+    # return JsonResponse(data) 
+    return ''
+        
+    # for item in soup.select(".primary-section > .professionals.section.blue-cta-enabled > ul.content > li"):
+    #     result={}
+    #     result['fff']="fdfdf"
+    #     # result['link_linkend']=item.select_one("div > a")['href']
+    #     # result['foto_linkend']=item.select_one("a > img")['src']
+    #     # result['user_linkend']=item.select_one("div > h3 > a").text
+    #     # result['info_trabactu_linkend']=item.select_one("div > p").text
+    #     # result['info_lugar_linkend']=item.select_one("div > dl").text
+    #     response.append(result)
 
+    # data={'info_all':response}
+    # return JsonResponse(data) 
 
 
     

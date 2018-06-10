@@ -1,6 +1,7 @@
 .titulo_busqueda {
     background: #2a3f54;
     color: white;
+    cursor: pointer;
 }
 
 .formLogout {
