@@ -9,3 +9,14 @@
     color: #2a3f54;
     margin-top: -17px;
 }
+
+.sombra_caja {
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.sombra_caja:active {
+    background: #d9dee4;
+    color: black;
+}
