@@ -163,6 +163,7 @@ def getcomercio(request):
     sauce = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(sauce,'lxml')
     textohtml= ''
+
     strip = ''
     variable = []
     textohtml = soup.prettify()
@@ -260,11 +261,11 @@ def getinstadet(url):
             result['resultado']=x.text
             response.append(result)
     
-    # data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
+    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
     #data={'post':response[0]}
     return response
 
-
+ 
 def getinsta(request):
     buscador=request.GET.get('buscador')
     soup=get_doc("https://web.stagram.com/search?query={}".format(buscador))
@@ -275,7 +276,7 @@ def getinsta(request):
         result_inta['logo_inta']=i.select_one("div > a > img")['src'] 
         result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
         result_inta['name_inta']=i.select_one("div > a > div > p").text
-        #result_inta['detalles'] = getinstadet(i.select_one("div > a > div > h4").text)[0]
+        #result_inta['detalles'] = getinstadet(i.select_one("div > a > div > h4").text)
         response_inta.append(result_inta)
     
     for item in soup.select(".row.photolist > .col-6.col-sm-4.col-md-3.mb-4"):
@@ -288,15 +289,42 @@ def getinsta(request):
     data={'info_post':response,'info_users':response_inta}
     return JsonResponse(data) 
     
+def getlinks(request):
+    soup=get_doc('https://www.armada.cl/')
+    response=[]
+    if(soup.find('a')):
+        result={}
+        result['res']= soup.find('a').attrs['href']
+    else:
+        result['res']= "mal"
+
+    response.append(result)
+    data={'info_all':response}
+    return JsonResponse(data)
+        
+        
+    # for link in soup.findAll('a', href=True, text='TEXT'):
+    #     result={}
+    #     result['links']= link['href']
+    #     response.append(result)
+
     
+
+        
+        
+    
+
+
 
 @login_required(login_url="/accounts/login") 
 def gettw(request):
     buscador=request.GET.get('buscador')
     soup=get_doc("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
     response=[]
+    iterador=0
     for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
         result={}
+        result['id']= iterador+1
         result['link_tw']= "https://twitter.com{}".format(item.select_one("div > span > a")['href'])
         infot=get_doc(result['link_tw'])
 
