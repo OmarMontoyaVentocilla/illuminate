@@ -8,6 +8,8 @@ from .models import Auto
 from .forms import AutoForm
 from fullcontact import FullContact
 import urllib.request
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import clearbit
 import json
 from bs4 import BeautifulSoup
@@ -39,7 +41,7 @@ def get_fullcontact(email):
     return JsonResponse(data)
 
 def get_doc(url):
-    google=requests.get(url)
+    google=requests.get(url, verify=False)
     soup=BeautifulSoup(google.content,"html.parser")
     to_extract=soup.findAll("script")
     for item in to_extract:
@@ -157,28 +159,95 @@ def getgit(url_nick):
     return data 
 
 
-def getcomercio(request):
-    buscador=request.GET.get('buscador')
-    url=request.GET.get('url')
-    sauce = urllib.request.urlopen(url).read()
-    soup = BeautifulSoup(sauce,'lxml')
-    textohtml= ''
+def getlinks(url):
+    soup=get_doc(url)
+    response=[]
+    for a in soup.find_all('a', href=True):
+        result={}
+        if(a['href']=="#"):
+            response.append(a['href'])
+            response.remove("#")
+        elif(a['href']=="/"):
+            response.append(a['href'])
+            response.remove("/")
+        else:
+            response.append(a['href'])
+    
+    resp=sorted(list(set(response)))
+    new_lista=list(filter(lambda x: ('#tabs' or '#tab') not in x, resp))
+    valor=[]
+    odd_num=list(filter(lambda x: 'http' not in x, new_lista))
 
-    strip = ''
-    variable = []
-    textohtml = soup.prettify()
-    strip = strip_tags(textohtml) 
-    listap = strip.split()
-    frecuenciaPalab = []
-    for w in listap:
-        frecuenciaPalab.append(listap.count(w))
-        variable = ([i for i in zip(listap, frecuenciaPalab)])
-        var = listap.count(buscador)
-    data={
-      'titulo' : soup.title.string,
-      'coincidencias' : var
+    for itemr in odd_num:
+        new_lista.remove(itemr)
+        valor.append(url+itemr)
+    
+    for itemx in valor:
+        new_lista.append(itemx)
+ 
+    return new_lista 
+
+
+
+
+def getcomercio(request):
+    #buscador=request.GET.get('buscador')
+    #url=request.GET.get('url')
+    buscador="almirante"
+    url="https://www.armada.cl/"
+    response=getlinks(url)
+    data=[]
+    for urlitem in response:
+        result={}
+        #soup=get_doc(urlitem)   
+        result['xxx']=urlitem
+        data.append(result)
+
+    res={
+        'info':data
     }
-    return JsonResponse(data)
+    return JsonResponse(res)
+
+        # sauce = urllib.request.urlopen(urlitem).read()
+        # soup = BeautifulSoup(sauce,'lxml')
+        # textohtml= ''
+        # strip = ''
+        # textohtml = soup.prettify()
+        # strip = strip_tags(textohtml)
+        # listap = strip.split()
+        # frecuenciaPalab = []
+        # for w in listap:
+        #     frecuenciaPalab.append(listap.count(w))
+        #     var = listap.count(buscador)
+        # data={
+        # 'titulo' : soup.title.string,
+        # 'coincidencias' : var
+        # }
+    #return JsonResponse(data)
+
+
+
+        
+
+    # sauce = urllib.request.urlopen(url).read()
+    # soup = BeautifulSoup(sauce,'lxml')
+    # textohtml= ''
+
+    # strip = ''
+    # variable = []
+    # textohtml = soup.prettify()
+    # strip = strip_tags(textohtml) 
+    # listap = strip.split()
+    # frecuenciaPalab = []
+    # for w in listap:
+    #     frecuenciaPalab.append(listap.count(w))
+    #     variable = ([i for i in zip(listap, frecuenciaPalab)])
+    #     var = listap.count(buscador)
+    # data={
+    #   'titulo' : soup.title.string,
+    #   'coincidencias' : var
+    # }
+    #return JsonResponse(data)
 
 def getgoogle(request):
     soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
@@ -289,32 +358,9 @@ def getinsta(request):
     data={'info_post':response,'info_users':response_inta}
     return JsonResponse(data) 
     
-def getlinks(request):
-    soup=get_doc('https://www.armada.cl/')
-    response=[]
-    if(soup.find('a')):
-        result={}
-        result['res']= soup.find('a').attrs['href']
-    else:
-        result['res']= "mal"
-
-    response.append(result)
-    data={'info_all':response}
-    return JsonResponse(data)
-        
-        
-    # for link in soup.findAll('a', href=True, text='TEXT'):
-    #     result={}
-    #     result['links']= link['href']
-    #     response.append(result)
-
-    
-
-        
-        
-    
 
 
+ 
 
 @login_required(login_url="/accounts/login") 
 def gettw(request):
