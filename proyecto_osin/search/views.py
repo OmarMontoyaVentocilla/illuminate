@@ -5,6 +5,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Auto
+from .models import Facebook
 from .forms import AutoForm
 from fullcontact import FullContact
 import urllib.request
@@ -15,6 +16,7 @@ import json
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 from django.utils.html import strip_tags
+from requests_html import HTMLSession
 # # Create your views here.
 def create_auto(request):
     form=AutoForm(request.POST or None)
@@ -72,30 +74,31 @@ def get_places(soup):
     response=[]
     places_c=[]
     places=[]
-    for item in soup.select(".fbProfileEditExperiences li div div div.clearfix div:nth-of-type(2) div span"):
-        places.append(item.text)
-    for item in soup.select(".fbProfileEditExperiences li div div div.clearfix div:nth-of-type(2) div div.fsm"):
-        places_c.append(item.text)
-    for index, place in enumerate(places):
-        response.append({places_c[index] : place})
-    return response
+    for item in soup.select("ul.uiList.fbProfileEditExperiences._4kg._4ks #current_city"):
+        result={}
+        result['ciudad_actual']=item.select_one("div > div > div > div > div > div:nth-of-type(2) > span > a").text
+        places.append(result)
+    return places
 
 def get_studies(soup):
-    response = []
     study = []
+    for item in soup.select("#pagelet_eduwork > div > div"):
+        academic_title = item.select_one("span[role=heading]").text  
+        if(academic_title == "Formación académica"): 
+            for l in item.select("ul.fbProfileEditExperiences li.fbEditProfileViewExperience div div.clearfix div div a"):
+                study.append({"formacion_academica":l.text})
+
+    return study
+
+def get_work(soup):
     work = []
     for item in soup.select("#pagelet_eduwork > div > div"):
         academic_title = item.select_one("span[role=heading]").text
         if(academic_title == "Empleo"):
             for l in item.select("ul.fbProfileEditExperiences li.fbEditProfileViewExperience div div.clearfix div div a"):
-                work.append({"empleo" : l.text})
-        elif(academic_title == "Formación académica"): 
-            for l in item.select("ul.fbProfileEditExperiences li.fbEditProfileViewExperience div div.clearfix div div a"):
-                study.append({"formacion_academica" : l.text})
-    
-    response.append(work)
-    response.append(study)
-    return response
+                work.append({"empleo":l.text})
+
+    return work
 
 def search_by_name(url,pag):
     soup=get_doc("https://www.facebook.com/public/{}?page={}".format(url,pag))
@@ -109,6 +112,39 @@ def search_by_name(url,pag):
     
     return response
 
+
+@login_required(login_url="/accounts/login") 
+def createfacebook(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        idfb = valor['idfb']
+        name = valor['name']
+        biografia= valor['biografia']
+        foto=valor['foto']
+        url=valor['url']
+        cstudies=valor['cstudies']
+        clugares=valor['clugares']
+        ctrabajo=valor['ctrabajo']
+        estado=1
+        mensaje={}
+        try:
+            facebook=Facebook.objects.create(idfb=idfb,nombres=name,biografia=biografia,foto=foto,url=url,trabajo=ctrabajo,lugar=clugares,estudio=cstudies,estado=estado)
+            if(facebook):
+                mensaje['success']="Se guardo exitosamente"
+            else:
+                mensaje['fail']="No se guardo ya existe el registro"
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo ya existe el registro"
+
+    return JsonResponse(mensaje)
+
+def getlistfacebook(request):
+    fb=Facebook.objects.filter(estado=1)
+    data=json.dumps({"fb":fb})
+    return data
+
+
+@login_required(login_url="/accounts/login") 
 def get_details(request):
     url=request.GET.get('url')
     doc = get_doc(url)
@@ -119,6 +155,7 @@ def get_details(request):
     response['bio'] = get_bio(doc)
     response['places'] = get_places(doc)
     response['studies'] = get_studies(doc)
+    response['work'] = get_work(doc)
     response['url'] = url
     data={
         'info_all':response
@@ -159,95 +196,9 @@ def getgit(url_nick):
     return data 
 
 
-def getlinks(url):
-    soup=get_doc(url)
-    response=[]
-    for a in soup.find_all('a', href=True):
-        result={}
-        if(a['href']=="#"):
-            response.append(a['href'])
-            response.remove("#")
-        elif(a['href']=="/"):
-            response.append(a['href'])
-            response.remove("/")
-        else:
-            response.append(a['href'])
-    
-    resp=sorted(list(set(response)))
-    new_lista=list(filter(lambda x: ('#tabs' or '#tab') not in x, resp))
-    valor=[]
-    odd_num=list(filter(lambda x: 'http' not in x, new_lista))
-
-    for itemr in odd_num:
-        new_lista.remove(itemr)
-        valor.append(url+itemr)
-    
-    for itemx in valor:
-        new_lista.append(itemx)
- 
-    return new_lista 
 
 
-
-
-def getcomercio(request):
-    #buscador=request.GET.get('buscador')
-    #url=request.GET.get('url')
-    buscador="almirante"
-    url="https://www.armada.cl/"
-    response=getlinks(url)
-    data=[]
-    for urlitem in response:
-        result={}
-        #soup=get_doc(urlitem)   
-        result['xxx']=urlitem
-        data.append(result)
-
-    res={
-        'info':data
-    }
-    return JsonResponse(res)
-
-        # sauce = urllib.request.urlopen(urlitem).read()
-        # soup = BeautifulSoup(sauce,'lxml')
-        # textohtml= ''
-        # strip = ''
-        # textohtml = soup.prettify()
-        # strip = strip_tags(textohtml)
-        # listap = strip.split()
-        # frecuenciaPalab = []
-        # for w in listap:
-        #     frecuenciaPalab.append(listap.count(w))
-        #     var = listap.count(buscador)
-        # data={
-        # 'titulo' : soup.title.string,
-        # 'coincidencias' : var
-        # }
-    #return JsonResponse(data)
-
-
-
-        
-
-    # sauce = urllib.request.urlopen(url).read()
-    # soup = BeautifulSoup(sauce,'lxml')
-    # textohtml= ''
-
-    # strip = ''
-    # variable = []
-    # textohtml = soup.prettify()
-    # strip = strip_tags(textohtml) 
-    # listap = strip.split()
-    # frecuenciaPalab = []
-    # for w in listap:
-    #     frecuenciaPalab.append(listap.count(w))
-    #     variable = ([i for i in zip(listap, frecuenciaPalab)])
-    #     var = listap.count(buscador)
-    # data={
-    #   'titulo' : soup.title.string,
-    #   'coincidencias' : var
-    # }
-    #return JsonResponse(data)
+         
 
 def getgoogle(request):
     soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
@@ -295,7 +246,7 @@ def getgoogle(request):
 
     
 
-
+@login_required(login_url="/accounts/login") 
 def gethit(request):
     buscador=request.GET.get('buscador')
     soup=get_doc("https://github.com/search?q={}&type=Users".format(buscador))
@@ -334,7 +285,7 @@ def getinstadet(url):
     #data={'post':response[0]}
     return response
 
- 
+@login_required(login_url="/accounts/login") 
 def getinsta(request):
     buscador=request.GET.get('buscador')
     soup=get_doc("https://web.stagram.com/search?query={}".format(buscador))
@@ -454,7 +405,8 @@ def getAuto(request):
         'valor':valor
     }
     return JsonResponse(data)
-       
+
+@login_required(login_url="/accounts/login")        
 def customSearch(request):
     return render(request,'custom.html')    
       

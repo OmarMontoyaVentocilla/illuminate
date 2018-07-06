@@ -30,7 +30,6 @@
                      <th>#</th>
                      <th>Datos</th>
                      <th>Info</th>
-                     <th>Asignar</th>
                  </tr>
                  </thead>
                 <tbody>
@@ -51,7 +50,6 @@
                       <td align="center">
                 <button class="btn  btn-info" v-on:click.prevent="getInfo(list)"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
-                     <td align="center"><input type="checkbox" name=""></td> 
                      </tr>   
                      </template>
                      <template v-else>
@@ -78,17 +76,26 @@
         <div v-show="loading_info">
            <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando info....
         </div>
+         
         <div class="row" v-show="aparecer"> 
+           <form v-on:submit.prevent="getaddInfo()">
               <table class="table table-bordered tablita">
                   <tbody>
                         <tr>
-                            <td rowspan="5" align="center">
+                            <td rowspan="7" align="center">
                               <center><img :src="info_all.photo"></center>
-                                </td>
-                            <td><p>Id: {{info_all.id}}</p></td>
+                            </td>
+                            <td><p>ID: {{info_all.id}}</p></td>
                         </tr>
                         <tr>
-                            <td><p>Biografía: {{info_all.bio}}</p></td> 
+                            <td>
+                               <template v-if="info_all.bio!=''"> 
+                                <p>Biografía: {{info_all.bio}}</p>
+                               </template>
+                               <template v-else>
+                                <p>Biografía: No tiene biografía</p>   
+                               </template>
+                            </td> 
                         </tr>
                          <tr>
                             <td><p>Nombres: {{info_all.name}}</p></td>
@@ -98,16 +105,46 @@
                         </tr>
                          <tr>
                             <td>
-                               <p>{{ciudad}}</p>
+                               <template v-if="info_all.places!=''">   
+                             <p v-for="item in info_all.places"> Ciudad Actual: {{item.ciudad_actual}}</p>
+                                 </template>
+                              <template v-else>
+                            <p> Ciudad Actual: No existe</p>
+                              </template>     
                             </td>
+                        </tr>
+                        <tr>
+                             <td>
+                            <template v-if="info_all.studies!=''"> 
+                      <p v-for="(item,index)  in info_all.studies"> Formacion Academica {{index+1}}: {{item.formacion_academica}}</p>
+                            </template>
+                            <template v-else>
+                      <p> Formacion Academica: No existe </p>   
+                            </template>
+                             
+                             </td>
+                        </tr>
+                        <tr>
+                             <td>
+                                <template v-if="info_all.work!=''"> 
+                                <p v-for="item in info_all.work"> Empleo: {{item.empleo}}</p>
+                               </template>
+                               <template v-else>
+                                 <p> Empleo: No existe empleo</p>   
+                               </template>
+                            
+                             </td>
                         </tr>
                   </tbody>
               </table>
+              <div class="modal-footer">
+             <button type="submit" class="btn btn-primary" id="enviofb">Guardar</button>      
+             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+             </div>
+           </form> 
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
+      
     </div>
 
   </div>
@@ -116,7 +153,11 @@
 </div>     
 </template>
 <script>
-  
+import swal from 'sweetalert';
+var token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': token}
+};
     export default{
         created(){
           
@@ -143,6 +184,15 @@
             }
         },
         methods:{
+            mensaje(titulo,texto,icono){
+             swal({
+                 icon: icono,
+                 title: titulo,
+                 text: texto,
+                 button: true,
+                 timer: 1500
+              })
+            },
            getScrap(){
               let buscador=this.buscador;
               this.loading = true;
@@ -157,7 +207,7 @@
                         .then(response=>{ 
                               console.log(response);
                                 this.lista=response.data.valor;
-                                 this.loading = false;
+                                this.loading = false;
                                
                         })
                         .catch(error=>{
@@ -167,6 +217,83 @@
                       console.log("Dato no ingresado");
                   } 
            },
+            disabl(valor){
+               $("#enviofb").prop('disabled', valor);
+            },
+           getaddInfo(){
+               var crf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+                var biografia=''
+               if(this.info_all.bio!=''){
+                  biografia=this.info_all.bio;
+               }else{
+                  biografia="No existe biografia";
+               }
+               var idfb=this.info_all.id;
+               var name=this.info_all.name;
+               var foto=this.info_all.photo;
+               var url=this.info_all.url;
+               
+               var cadena_studies=[],cadena_lugares=[],cadena_trabajo=[], cstudies='', clugares='', ctrabajo='';
+               if(this.info_all.studies!=''){
+                   var studies=this.info_all.studies;
+                     for(var i in studies){  
+                        cadena_studies.push(studies[i].formacion_academica) 
+                     }
+                   cstudies=cadena_studies.toString();
+               }else{
+                   cstudies="No existe estudios";
+               }
+
+               if(this.info_all.places!=''){
+                   var places=this.info_all.places;
+                     for(var i in places){  
+                        cadena_lugares.push(places[i].ciudad_actual) 
+                     }
+                   clugares=cadena_lugares.toString();
+               }else{
+                   clugares="No existe lugares";
+               }
+
+               if(this.info_all.work!=''){
+                   var work=this.info_all.work;
+                     for(var i in work){  
+                        cadena_trabajo.push(work[i].empleo) 
+                     }
+                   ctrabajo=cadena_trabajo.toString();
+               }else{
+                   ctrabajo="No existe empleo";
+               }
+              
+               var data={
+                     idfb:idfb,
+                     name: name,
+                     biografia: biografia,
+                     foto:foto,
+                     url:url,
+                     cstudies:cstudies,
+                     clugares:clugares,
+                     ctrabajo:ctrabajo
+                     };
+            var sel_thi=this;
+            sel_thi.disabl(true);
+            setTimeout(function(){sel_thi.disabl(false); }, 2000);         
+            axios.post('http://127.0.0.1:8000/search/addfacebook',data,config)
+                .then(response=>{
+                         console.log(response);
+                          if(response.data.success){
+                           this.mensaje(response.data.success,'','success');
+                          }else if(response.data.fail){
+                           this.mensaje(response.data.fail,'','error');
+                          } 
+                     })
+                .catch(error=>{
+                     if(error.response.status==500){
+                          this.mensaje('Ya existe este registro','','error');
+                          console.clear();
+                     }
+                
+                })
+           },
            getInfo(info){
              $('#myModal').modal('show');
              let url=info.link; 
@@ -174,7 +301,7 @@
               this.aparecer=false;
                axios.get('http://127.0.0.1:8000/search/getdet',{ params: { url: url}})
                .then(response=>{
-                 console.log(response.data.info_all);    
+               //  console.log(response.data.info_all);    
                  console.log(response.data.info_all.places);  
                 this.info_all=response.data.info_all;
                 

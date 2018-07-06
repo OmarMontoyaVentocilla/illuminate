@@ -25,20 +25,24 @@
             <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">
                  <thead>
                  <tr>
+                     <th>Nro.</th>
+                     <th>Link</th>
                      <th>Titulo</th>
                      <th>Coincidencia</th>
                  </tr>
                  </thead>
                 <tbody>
                 <template v-if="lista!=''">
-                    <tr>
-                    <td>{{lista.titulo}}</td>
-                    <td>{{lista.coincidencias}}</td>
+                    <tr v-for="(list,index) in lista">
+                    <td>{{index+1}}</td>
+                    <td><a :href="list.link" target="_blank" >{list.link}}</a></td>
+                    <td>{{list.titulo}}</td>
+                    <td>{{list.coincidencias}}</td>
                     </tr> 
                  </template> 
                   <template v-else>
                       	<tr>
-        	          <td colspan="2" align="center">No hay resultados disponibles</td>	
+        	          <td colspan="4" align="center">No hay resultados disponibles</td>	
         	          </tr>
                      </template>   
                 </tbody>
@@ -91,7 +95,7 @@ import swal from 'sweetalert';
                         })
                         .then(response=>{ 
                               console.log(response);
-                                this.lista=response.data;
+                                this.lista=response.data.info;
                                 this.loading = false;
                                
                         })

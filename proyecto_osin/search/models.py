@@ -16,4 +16,14 @@ class Auto(models.Model):
     def __str__(self):
         return self.nombres
 
- 
+
+class Facebook(models.Model):
+    idfb=models.CharField(unique=True,null=True,max_length=17)
+    nombres=models.CharField(max_length=100)
+    biografia=models.TextField()
+    foto=models.TextField()
+    url=models.TextField()
+    trabajo=models.CharField(max_length=300)
+    lugar=models.CharField(max_length=300)
+    estudio=models.CharField(max_length=300)
+    estado=models.CharField(max_length=2)

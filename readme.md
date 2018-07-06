@@ -39,6 +39,8 @@ ya esta configurado solo instalar ese webpack_loader
 Instalar: pip install djangorestframework y colocarla en el sttings : 'rest_framework'
 
 Para webservices el que encontre es este : pip install zeep
+
+Instala HTML Request : https://html.python-requests.org/    --> pip install requests-html
 ```
 
 
