@@ -35,7 +35,7 @@
                 <template v-if="lista!=''">
                     <tr v-for="(list,index) in lista">
                     <td>{{index+1}}</td>
-                    <td><a :href="list.link" target="_blank" >{list.link}}</a></td>
+                    <td><a :href="list.link" target="_blank" >{{list.link}}</a></td>
                     <td>{{list.titulo}}</td>
                     <td>{{list.coincidencias}}</td>
                     </tr> 

@@ -24,7 +24,6 @@
                      <th>#</th>
                      <th>Datos</th>
                      <th>Info</th>
-                     <th>Asignar</th>
                  </tr>
                  </thead>
                 <tbody>
@@ -34,7 +33,7 @@
                       <td>
                           <table class="table table-bordered">
                                <tr>
-                                    <td rowspan="2" class="estilo_wi_rows"><img :src="list.img_github"></td>
+                                    <td rowspan="2" class="estilo_wi_rows"><img :src="list.img_github" height="96" width="96" ></td>
                                     <td class="nombre_info">{{list.nombre_github}}</td>
                                </tr>
                                <tr>
@@ -45,12 +44,12 @@
                       <td align="center">
                 <button v-on:click.prevent="getInfo(list)" class="btn  btn-info"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
-                     <td align="center"><input type="checkbox" name=""></td> 
+    
                      </tr>   
                      </template>
                      <template v-else>
                       	<tr>
-        	          <td colspan="4" align="center">No hay resultados disponibles</td>	
+        	          <td colspan="3" align="center">No hay resultados disponibles</td>	
         	          </tr>
                      </template>   
                 </tbody>
@@ -58,7 +57,22 @@
         </div>
                 </div>
           </div> 
-        </div>   
+        </div>
+         <div class="row" v-if="lista!=''">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                       <paginate
+                            :page-count="100"
+                            :page-range="3"
+                            :margin-pages="1"
+                            :click-handler="clickTwitter"
+                            :prev-text="'Anterior'"
+                            :next-text="'Siguiente'"
+                            :container-class="'pagination'"
+                            :page-class="'page-item'">
+                        </paginate>
+          </div>
+       
+      </div>   
     
       <!-- Modal INFO-->
     <div id="myModal3" class="modal fade" role="dialog">
@@ -69,6 +83,7 @@
         <h4 class="modal-title">Información</h4>
       </div>
       <div class="modal-body">
+           <form v-on:submit.prevent="getaddGit()">
           <table class="table table-bordered tablita table-responsive">
               <tbody>
                   <tr>
@@ -94,10 +109,11 @@
                   </tr>
               </tbody>
           </table>
-      
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         <div class="modal-footer">
+             <button type="submit" class="btn btn-primary" id="enviogh">Guardar</button>      
+             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+         </form> 
       </div>
     </div>
 
@@ -110,9 +126,17 @@
 </template>
 <script>
 import swal from 'sweetalert';
+import Paginate from 'vuejs-paginate';
+var tokens = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': tokens}
+};
     export default{
        created(){
        },
+       components: {
+         'Paginate':Paginate
+        },
        data(){
           return{
            lista:[],
@@ -120,7 +144,7 @@ import swal from 'sweetalert';
            loading_info: false,
            aparecer:false,
            info_all:[],
-           git_web:'',
+           pag:'',
            buscador:'',
            data_info:[]     
          }
@@ -135,20 +159,59 @@ import swal from 'sweetalert';
                  timer: 1500
               })
            },
+            disabl(valor){
+               $("#enviogh").prop('disabled', valor);
+            },
+           getaddGit(){
+                 var data={
+                     biografia_github:this.data_info.biografia_github,
+                     email_github: this.data_info.email_github,
+                     img_github: this.data_info.img_github,
+                     nick_github:this.data_info.nick_github,
+                     nombre_github:this.data_info.nombre_github,
+                     pagina_github:this.data_info.pagina_github,
+                     pais_github:this.data_info.pais_github,            
+                     };
+                 var sel_thi=this;
+                 sel_thi.disabl(true);
+                 setTimeout(function(){sel_thi.disabl(false); }, 2000);         
+            axios.post('http://127.0.0.1:8000/search/addgit',data,config)
+                .then(response=>{
+                         console.log(response);
+                          if(response.data.success){
+                           this.mensaje(response.data.success,'','success');
+                          }else if(response.data.fail){
+                           this.mensaje(response.data.fail,'','error');
+                          } 
+                     })
+                .catch(error=>{
+                     if(error.response.status==500){
+                          this.mensaje('Ya existe este registro','','error');
+                          console.clear();
+                     }
+                
+                })
+
+           },
+           clickTwitter (pageNum){
+                  this.pag=pageNum;
+                  this.getScrap_git();
+            },
            getScrap_git(){
               let buscador=this.buscador;
               this.loading = true;
+              let pagina=this.pag;
                    if(buscador!=''){
                      axios.get('http://127.0.0.1:8000/search/gethit',{ 
                             params: { 
-                                     buscador: buscador.trim()
+                                     buscador: buscador.trim(),
+                                     pagina:pagina
                                     }
                         })
                         .then(response=>{ 
-                              console.log(response);
                                 this.lista=response.data.info_all;
                                 this.loading = false;
-                               
+                                
                         })
                         .catch(error=>{
                                 console.log(error);
@@ -159,8 +222,6 @@ import swal from 'sweetalert';
            },
            getInfo(info){
                this.data_info=info;
-               this.git_web=this.data_info.pagina_github;
-               console.log(info);
                $('#myModal3').modal('show');
            },
            validarwebgit(){

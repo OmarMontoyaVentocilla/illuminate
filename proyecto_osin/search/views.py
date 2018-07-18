@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Auto
 from .models import Facebook
+from .models import Twitter
+from .models import Github
+from .models import PersonaRedes
 from .forms import AutoForm
 from fullcontact import FullContact
 import urllib.request
@@ -17,6 +20,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 from django.utils.html import strip_tags
 from requests_html import HTMLSession
+from django.contrib.sessions.models import Session
 # # Create your views here.
 def create_auto(request):
     form=AutoForm(request.POST or None)
@@ -138,11 +142,99 @@ def createfacebook(request):
 
     return JsonResponse(mensaje)
 
-def getlistfacebook(request):
-    fb=Facebook.objects.filter(estado=1)
-    data=json.dumps({"fb":fb})
-    return data
 
+@login_required(login_url="/accounts/login")
+def creategit(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        biografia_github = valor['biografia_github']
+        email_github = valor['email_github']
+        img_github= valor['img_github']
+        nick_github=valor['nick_github']
+        nombre_github=valor['nombre_github']
+        pagina_github=valor['pagina_github']
+        pais_github=valor['pais_github']
+        mensaje={}
+        try:
+            github_exist=Github.objects.filter(nick_github=nick_github).exists()
+            if(github_exist):
+                mensaje['fail']="No se guardo, ya existe el registro"
+            else:
+                git=Github.objects.create(biografia_github=biografia_github,email_github=email_github,img_github=img_github,nick_github=nick_github,nombre_github=nombre_github,pagina_github=pagina_github,pais_github=pais_github,estado=1)
+                if(git):
+                    mensaje['success']="Se guardo exitosamente"
+                else:
+                    mensaje['fail']="No se guardo el registro"
+             
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo el registro"
+
+    return JsonResponse(mensaje)
+    
+@login_required(login_url="/accounts/login")
+def createasig(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        idfb_id=valor['idfb_id']
+        idpersona_id=valor['idpersona_id']
+        idtw_id=valor['idtw_id']
+        idusuario_id = request.session["id_user"]
+        estado=1
+        mensaje={}
+        try:
+            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idusuario_id=idusuario_id).count()
+            if(cantidadRegistros<1):
+                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idusuario_id=idusuario_id,estado=1)
+                if(perreds):
+                    mensaje['success']="Se guardo exitosamente"
+                else:
+                    mensaje['fail']="No se guardo el registro" 
+            else:
+                mensaje['fail']="Ya se guardo anteriormente el registro."
+ 
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo el registro"
+
+    return JsonResponse(mensaje)
+
+    
+    
+
+@login_required(login_url="/accounts/login")
+def createtw(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        inicio_tw = valor['inicio_tw']
+        cant_tw = valor['cant_tw']
+        url= valor['url']
+        img_tw=valor['img_tw']
+        nombre_tw=valor['nombre_tw']
+        nombre_cuenta_tw=valor['nombre_cuenta_tw']
+        pagina_web=valor['pagina_web']
+        biografia=valor['biografia']
+        seguidores=valor['seguidores']
+        siguiendo=valor['siguiendo']
+        tweets=valor['tweets']
+        ubicacion=valor['ubicacion']
+        likes=valor['likes']
+        estado=1
+        mensaje={}
+        try:
+            twitter_exist=Twitter.objects.filter(url=url).exists()
+            if(twitter_exist):
+                mensaje['fail']="No se guardo, ya existe el registro"
+            else:
+                twiiter=Twitter.objects.create(inicio_tw=inicio_tw,cant_tw=cant_tw,url=url,img_tw=img_tw,nombre_tw=nombre_tw,nombre_cuenta_tw=nombre_cuenta_tw,pagina_web=pagina_web,biografia=biografia,seguidores=seguidores,siguiendo=siguiendo,tweets=tweets,ubicacion=ubicacion,likes=likes,estado=1)
+                if(twiiter):
+                    mensaje['success']="Se guardo exitosamente"
+                else:
+                    mensaje['fail']="No se guardo el registro "
+             
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo el registro"
+
+    return JsonResponse(mensaje)
+    
 
 @login_required(login_url="/accounts/login") 
 def get_details(request):
@@ -178,9 +270,8 @@ def getgit(url_nick):
     soup=get_doc("https://github.com/{}".format(url_nick))
     response=[]
     for i in soup.select("ul.vcard-details.border-top.border-gray-light.py-3 > li"):
-        result={}
-        result['web']=i.text.strip()     
-        response.append(result)
+        result={}    
+        response.append(i.text.strip())
     
     error_res="No existe página web"
     if(4==len(response)):
@@ -196,10 +287,122 @@ def getgit(url_nick):
     return data 
 
 
+def getlinks(url):
+    session = HTMLSession()
+    soup = session.get(url)
+    response=[]
+    for a in soup.html.links:
+        result={}
+        if(a=="#"):
+            response.append(a)
+            response.remove("#")
+        elif(a=="/"):
+            response.append(a)
+            response.remove("/")
+        else:
+            response.append(a)
+    
+    resp=sorted(list(set(response)))
+    new_lista=list(filter(lambda x: ('#tabs' or '#tab') not in x, resp))
+    valor=[]
+    odd_num=list(filter(lambda x: 'http' not in x, new_lista))
+
+    for itemr in odd_num:
+        new_lista.remove(itemr)
+        valor.append(url+itemr)
+    
+    for itemx in valor:
+        new_lista.append(itemx)
+    
+    return new_lista 
 
 
+
+@login_required(login_url="/accounts/login") 
+def getcomercio(request):
+    buscador=request.GET.get('buscador')
+    url=request.GET.get('url')
+    response=getcodersp(url)
+    data=[]
+    for urlitem in response:
+        if(urlitem!='No hay data'):
+            data.append(item_comercio(urlitem,buscador))
+        else:
+            data.append("No hay data")
+    res={
+    'info':data
+    }
+    return JsonResponse(res)
+    
+
+
+def getcodersp(url): 
+    lista=getlinks(url)
+    if(lista):
+        response=[]
+        for item in lista:
+            rest={}
+            try:
+                result = requests.get(item)
+                if(result.status_code != 404 ):
+                    response.append(item)   
+            except requests.exceptions.RequestException as e:
+                response.append("UrlInvalida") 
+
+        new_lista_x=list(filter(lambda x: 'UrlInvalida' not in x, response))
+        return new_lista_x
+    else:
+        new_lista_x=[]
+        new_lista_x.append('No hay data')
+        return new_lista_x
+    
          
 
+    
+def item_comercio(urlitem,buscador):
+    resp = requests.get(urlitem,verify=False)
+    txt = resp.text
+    mayuscula_buscador=buscador.upper()
+    minuscular_buscador=buscador.lower()
+    capital_buscador=buscador.capitalize()
+    getHtml=BeautifulSoup(txt,"html.parser")
+
+    if(getHtml.findAll(['script', 'style'])):
+        [x.extract() for x in getHtml.findAll(['script', 'style'])]
+    
+    if(getHtml.findAll(['meta'])):
+        [y.extract() for y in getHtml.findAll(['meta'])]
+        
+    if(getHtml.findAll(['noscript'])):  
+        [z.extract() for z in getHtml.findAll(['noscript'])]
+
+    if(getHtml.findAll(['link'])):
+        [a.extract() for a in getHtml.findAll(['link'])]
+ 
+    variable=''
+    if(getHtml.title):
+        variable=getHtml.title.string
+    else:
+        variable="Pagina sin titulo"
+
+    cadena=getHtml.text
+    strip = strip_tags(cadena)
+
+    minuscula=strip.count(minuscular_buscador)
+    mayuscula=strip.count(mayuscula_buscador)
+    capital=strip.count(capital_buscador)
+    res=minuscula+mayuscula+capital
+   
+    data={
+        'link':urlitem,
+        'titulo' : variable,
+        'coincidencias' : res
+    }
+
+    return data
+
+
+@login_required(login_url="/accounts/login")
 def getgoogle(request):
     soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
     response=[]
@@ -249,7 +452,12 @@ def getgoogle(request):
 @login_required(login_url="/accounts/login") 
 def gethit(request):
     buscador=request.GET.get('buscador')
-    soup=get_doc("https://github.com/search?q={}&type=Users".format(buscador))
+    pagina=request.GET.get('pagina')
+    if(pagina!=''):
+        soup=get_doc("https://github.com/search?p={}&q={}&type=Users".format(pagina,buscador))
+    else:
+        soup=get_doc("https://github.com/search?p={}&q={}&type=Users".format(1,buscador))
+        
     response=[]
 
     for item in soup.select(".column.three-fourths.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
@@ -266,7 +474,8 @@ def gethit(request):
         
         for i in item.select("div:nth-of-type(2) > div > ul > li"):
             result['pais_github']=i.text.strip()
-            response.append(result) 
+        
+        response.append(result) 
   
     data={'info_all':response}
     return JsonResponse(data) 
@@ -318,10 +527,9 @@ def gettw(request):
     buscador=request.GET.get('buscador')
     soup=get_doc("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
     response=[]
-    iterador=0
     for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
         result={}
-        result['id']= iterador+1
+        result['nombre']=item.select_one(".ProfileCard-userFields > div > div > a").text
         result['link_tw']= "https://twitter.com{}".format(item.select_one("div > span > a")['href'])
         infot=get_doc(result['link_tw'])
 
@@ -388,7 +596,7 @@ def gettwts(url):
         if(item.select_one(".js-tweet-text-container > p")):
             result['texto_tweet']=item.select_one(".js-tweet-text-container > p").text   
         else:
-            result['texto_tweet']="no hay dato"
+            result['texto_tweet']=""
         response.append(result)
     return len(response)
 

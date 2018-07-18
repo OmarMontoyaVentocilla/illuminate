@@ -24,6 +24,8 @@ def login_view(request):
         if (form.is_valid()):
             user=form.get_user()
             login(request,user)
+            if request.user.is_authenticated:
+                request.session["id_user"] = user.id
             return redirect('list_auto')
     else:
         form=LoginForm()
@@ -32,5 +34,6 @@ def login_view(request):
 
 def logout_view(request):
     if (request.method=='POST'):
+        del request.session['id_user']
         logout(request)
         return redirect('accounts:login')

@@ -1,50 +1,17 @@
 {% extends "layout.html" %} {% block title %}Inicio || Busqueda {% endblock %} {% block content %}
-<!-- <button><a href="{% url 'create_auto' %}">Add Auto +</a></button> -->
 <br><br><br>
 <div class="container">
-    <div class="row well titulo_busqueda">
+    <div class="row well titulo_busqueda sombra_caja">
         <div class="col-lg-12">
-            Busqueda de datos
+            Asignación de datos
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <asignacion></asignacion>
+
         </div>
     </div>
 </div>
 
-
-<!-- <div class="container">
-    <div class="row">
-        <div class="col-lg-12 table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Placa</th>
-                        <th>Nombres</th>
-                        <th>Email</th>
-                        <th>Descripción</th>
-                        <th>Edad</th>
-                        <th>Tiempo</th>
-                        <th>Cantidad de dinero</th>
-                        <th colspan="2">Accion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for auto in autos %}
-                    <tr>
-                        <td>{{auto.placa}}</td>
-                        <td>{{auto.nombres}}</td>
-                        <td>{{auto.email}}</td>
-                        <td>{{auto.descripcion_vida}}</td>
-                        <td>{{auto.edad}}</td>
-                        <td>{{auto.tiempo_registro}}</td>
-                        <td>{{auto.cantidad_dinero}}</td>
-                        <td>
-                            <a class="btn btn-raised btn-primary" href="{% url 'update_auto' auto.id %}">Edit</a>
-                            <a class="btn btn-raised btn-primary" href="{% url 'delete_auto' auto.id %}">Delete</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div> -->
 {% endblock %}

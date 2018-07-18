@@ -24,7 +24,6 @@
                      <th>#</th>
                      <th>Datos</th>
                      <th>Info</th>
-                     <th>Asignar</th>
                  </tr>
                  </thead>
                 <tbody>
@@ -45,12 +44,11 @@
                       <td align="center">
                 <button v-on:click.prevent="getInfo(list)" class="btn  btn-info"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
-                     <td align="center"><input type="checkbox" name=""></td> 
                      </tr>   
                      </template>
                      <template v-else>
                       	<tr>
-        	          <td colspan="4" align="center">No hay resultados disponibles</td>	
+        	          <td colspan="3" align="center">No hay resultados disponibles</td>	
         	          </tr>
                      </template>   
                 </tbody>
@@ -62,15 +60,22 @@
     
       <!-- Modal INFO-->
     <div id="myModal2" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Información</h4>
       </div>
       <div class="modal-body">
+          <form v-on:submit.prevent="getaddTw()">
           <table class="table table-bordered tablita table-responsive">
               <tbody>
+                  <tr>
+                   <td align="center" colspan="6" class="info_style">Nombre</td>
+                  </tr>
+                  <tr>
+                   <td align="center" colspan="6" >{{data_info.nombre}}</td>
+                  </tr>
                   <tr>
                             <td  rowspan="2" align="center">
                       <center><img :src="data_info.img_tw"></center>
@@ -111,11 +116,13 @@
                   </tr>
               </tbody>
           </table>
-      
+       <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="enviotw">Guardar</button>   
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </form>
       </div>
+     
     </div>
 
   </div>
@@ -127,6 +134,11 @@
 </template>
 <script>
 import swal from 'sweetalert';
+var tokent = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': tokent}
+};
+
     export default{
        created(){
        },
@@ -150,6 +162,63 @@ import swal from 'sweetalert';
                  button: true,
                  timer: 1500
               })
+           },
+            disabl(valor){
+               $("#enviotw").prop('disabled', valor);
+            },
+           getaddTw(){
+               var crf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+               var biografia=this.data_info.biografia;
+               var img_tw=this.data_info.img_tw;
+               var cant_tw=this.data_info.info;
+               var inicio_tw=this.data_info.inicio_tw;
+               var likes=this.data_info.likes;
+               var link_tw=this.data_info.link_tw;
+               var nombre_tw=this.data_info.nombre_tw;
+               var nombre_cuenta_tw=this.data_info.nombre;    
+               var pagina_web=this.data_info.pagina;
+               var seguidores=this.data_info.seguidores;
+               var siguiendo=this.data_info.siguiendo;
+               var tweets=this.data_info.tweets;
+               var ubicacion=this.data_info.ubicacion;
+               
+               var data={
+                     inicio_tw:inicio_tw,
+                     cant_tw: cant_tw,
+                     url: link_tw,
+                     img_tw:img_tw,
+                     nombre_tw:nombre_tw,
+                     nombre_cuenta_tw:nombre_cuenta_tw,
+                     pagina_web:pagina_web,
+                     biografia:biografia,
+                     seguidores:seguidores,
+                     siguiendo:siguiendo,
+                     tweets:tweets,
+                     ubicacion:ubicacion,
+                     likes:likes
+                     };
+            var sel_thi=this;
+            sel_thi.disabl(true);
+            setTimeout(function(){sel_thi.disabl(false); }, 2000);  
+            axios.post('http://127.0.0.1:8000/search/addtwi',data,config)
+                .then(response=>{
+                         console.log(response);
+                          if(response.data.success){
+                           this.mensaje(response.data.success,'','success');
+                          }else if(response.data.fail){
+                           this.mensaje(response.data.fail,'','error');
+                          } 
+                     })
+                .catch(error=>{
+                     if(error.response.status==500){
+                          this.mensaje('Ya existe este registro','','error');
+                          console.clear();
+                     }
+                
+                })
+            
+
+
            },
            getScrap_tw(){
               let buscador=this.buscador;

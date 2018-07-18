@@ -23,7 +23,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('buscador/', include('buscador.urls')),
+    path('asignacion/', include('buscador.urls')),
     path('admin/', admin.site.urls),
     path('', views.index,name="index"),
     path('search/',include('search.urls')),

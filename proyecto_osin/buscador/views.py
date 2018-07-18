@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from zeep import Client
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 
 # Create your views here.
 def list_people(request):

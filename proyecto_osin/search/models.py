@@ -1,5 +1,7 @@
 #encoding:utf-8
 from django.db import models
+from django.contrib.auth.models import User
+from persona.models import *
 
 # Create your models here.
 class Auto(models.Model):
@@ -26,4 +28,40 @@ class Facebook(models.Model):
     trabajo=models.CharField(max_length=300)
     lugar=models.CharField(max_length=300)
     estudio=models.CharField(max_length=300)
+    estado=models.CharField(max_length=2)
+
+
+class Twitter(models.Model):
+    inicio_tw=models.CharField(max_length=100)
+    cant_tw=models.CharField(max_length=50)
+    url=models.TextField()
+    img_tw=models.TextField()
+    nombre_tw=models.CharField(max_length=50)
+    nombre_cuenta_tw=models.CharField(max_length=150)
+    pagina_web=models.TextField()
+    biografia=models.TextField()
+    seguidores=models.CharField(max_length=50)
+    siguiendo=models.CharField(max_length=50)
+    tweets=models.CharField(max_length=50)
+    ubicacion=models.CharField(max_length=50)
+    likes=models.CharField(max_length=50)
+    estado=models.CharField(max_length=2)
+
+
+class PersonaRedes(models.Model):
+    idfb=models.ForeignKey(Facebook,on_delete=models.CASCADE)
+    idtw=models.ForeignKey(Twitter,on_delete=models.CASCADE) 
+    idusuario=models.ForeignKey(User,on_delete=models.CASCADE)
+    idpersona=models.ForeignKey(Persona,on_delete=models.CASCADE)
+    estado=models.CharField(max_length=2)
+
+
+class Github(models.Model):
+    biografia_github=models.TextField()
+    email_github=models.CharField(max_length=100)
+    img_github=models.CharField(max_length=250)
+    nick_github=models.CharField(max_length=100)
+    nombre_github=models.CharField(max_length=150)
+    pagina_github=models.TextField()
+    pais_github=models.CharField(max_length=100)
     estado=models.CharField(max_length=2)

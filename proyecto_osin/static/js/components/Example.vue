@@ -6,12 +6,6 @@
                 <label for="buscador" class="bmd-label-floating">Usuario</label>
                 <input type="text" class="form-control" name="buscador" id="buscador" v-model="buscador" autocomplete="off">
             </div>
-           <div class="form-group">
-               <select class="form-control input-sm" v-model="pag" @change="getScrap()">
-                 <option value="">Seleccione</option>
-                 <option v-for="sel in seleccion" :value="sel.id">{{sel.nombre}}</option>
-               </select>
-           </div>
             <div class="form-group">
                 <button class="btn btn-raised btn-primary" type="button" v-on:click.prevent="getScrap()"><i class="fa fa-search"></i> Buscar</button>
             </div> 
@@ -63,7 +57,21 @@
         </div>
           </div> 
       </div>
-
+      <div class="row" v-if="lista!=''">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                       <paginate
+                            :page-count="5"
+                            :page-range="3"
+                            :margin-pages="1"
+                            :click-handler="clickCallback"
+                            :prev-text="'Anterior'"
+                            :next-text="'Siguiente'"
+                            :container-class="'pagination'"
+                            :page-class="'page-item'">
+                        </paginate>
+          </div>
+       
+      </div>
     <!-- Modal INFO-->
     <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -154,6 +162,7 @@
 </template>
 <script>
 import swal from 'sweetalert';
+import Paginate from 'vuejs-paginate';
 var token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 var config = {
      headers: {'X-CSRFToken': token}
@@ -161,6 +170,9 @@ var config = {
     export default{
         created(){
           
+        },
+        components: {
+         'Paginate':Paginate
         },
         data(){ 
             return{
@@ -193,6 +205,10 @@ var config = {
                  timer: 1500
               })
             },
+            clickCallback (pageNum){
+                  this.pag=pageNum;
+                  this.getScrap();
+            },
            getScrap(){
               let buscador=this.buscador;
               this.loading = true;
@@ -222,7 +238,7 @@ var config = {
             },
            getaddInfo(){
                var crf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-                var biografia=''
+               var biografia=''
                if(this.info_all.bio!=''){
                   biografia=this.info_all.bio;
                }else{
