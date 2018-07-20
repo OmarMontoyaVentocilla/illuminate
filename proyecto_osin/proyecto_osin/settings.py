@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'search',
     'accounts',
     'persona',
+    'reporte',
     'rest_framework'
 ]
 
