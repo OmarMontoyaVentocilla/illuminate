@@ -23,6 +23,7 @@
                      <th>Apodo</th>
                      <th>Facebook</th>
                      <th>Twitter</th>
+                     <th>Acción</th>
                  </tr>
             </thead>
             <tbody>
@@ -32,6 +33,9 @@
                      <td>{{list.apodo_persona}}</td>
                      <td><img :src="list.foto_fb" width="100" height="100"></td>
                      <td><img :src="list.img_tw" width="100" height="100"></td>
+                     <td><button class="btn btn-success"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
+                         <button class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar</button>
+                    </td>
                  </tr>
                  </template>
                  <template v-else>
