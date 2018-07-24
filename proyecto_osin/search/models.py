@@ -49,10 +49,10 @@ class Twitter(models.Model):
 
 
 class PersonaRedes(models.Model):
-    idfb=models.ForeignKey(Facebook,on_delete=models.CASCADE)
-    idtw=models.ForeignKey(Twitter,on_delete=models.CASCADE) 
-    idusuario=models.ForeignKey(User,on_delete=models.CASCADE)
-    idpersona=models.ForeignKey(Persona,on_delete=models.CASCADE)
+    idfb=models.ForeignKey(Facebook,related_name='facebookdata',on_delete=models.CASCADE)
+    idtw=models.ForeignKey(Twitter,related_name='twitterdata',on_delete=models.CASCADE) 
+    idusuario=models.ForeignKey(User,related_name='usuariodata',on_delete=models.CASCADE)
+    idpersona=models.ForeignKey(Persona,related_name='personadata',on_delete=models.CASCADE)
     estado=models.CharField(max_length=2)
 
 

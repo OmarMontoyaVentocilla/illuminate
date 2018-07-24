@@ -24,7 +24,7 @@ import github from './components/Github.vue';
 import instagram from './components/Instagram.vue';
 import clave from './components/Clave.vue';
 import asignacion from './components/Asignacion.vue';
-
+import reporte from './components/Reporte.vue';
 
 
 const app = new Vue({
@@ -36,6 +36,7 @@ const app = new Vue({
         github,
         instagram,
         clave,
-        asignacion
+        asignacion,
+        reporte
     }
 });

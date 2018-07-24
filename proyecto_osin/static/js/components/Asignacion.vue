@@ -126,7 +126,7 @@ export default{
             if(this.idfb.id!='' && this.idpersona.id!='' &&  this.idtw.id!=''){ 
             axios.post('http://127.0.0.1:8000/search/addasignacion',data,config)
                 .then(response=>{
-                         console.log(response);
+                         
                           if(response.data.success){
                            this.mensaje(response.data.success,'','success');
                           }else if(response.data.fail){
