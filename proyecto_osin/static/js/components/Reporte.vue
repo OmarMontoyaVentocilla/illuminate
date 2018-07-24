@@ -33,8 +33,8 @@
                      <td>{{list.apodo_persona}}</td>
                      <td><img :src="list.foto_fb" width="100" height="100"></td>
                      <td><img :src="list.img_tw" width="100" height="100"></td>
-                     <td><button class="btn btn-success"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
-                         <button class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar</button>
+                     <td><button class="btn btn-success" v-on:click.prevent="getexInfo(list)"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
+                         <button class="btn btn-danger"> <i class="fa fa-trash-o"></i> Eliminar</button>
                     </td>
                  </tr>
                  </template>
@@ -54,6 +54,7 @@
 
 <script>
 import swal from 'sweetalert';
+import jsPDF from 'jspdf';
 export default {
  created(){
     this.getDataAll();   
@@ -77,8 +78,15 @@ export default {
                  timer: 1500
               })
      },
-     maybeLoad(value){
-     return console.log(value); 
+     getexInfo(value){
+         var doc = new jsPDF({
+                orientation: 'landscape',
+                unit: 'in',
+                format: [4, 2]
+        })
+
+        doc.text('Hello world!', 1, 1)
+        doc.save('two-by-four.pdf')
      },
      getPersonaAs(){
             axios.get('http://127.0.0.1:8000/api/persona/',{})
