@@ -114,7 +114,14 @@ export default {
         })
 
         doc.text('Hello world!', 1, 1)
-        doc.save('two-by-four.pdf')
+        //doc.save('two-by-four.pdf')
+        var string = doc.output('datauristring');
+        var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
+        var x = window.open();
+        x.document.open();
+        x.document.write(iframe);
+        x.document.close();
+        //doc.output('dataurlnewwindow'); 
      },
      getPersonaAs(){
             axios.get('http://127.0.0.1:8000/api/persona/',{})
