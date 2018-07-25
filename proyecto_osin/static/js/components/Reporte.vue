@@ -34,7 +34,7 @@
                      <td><img :src="list.foto_fb" width="100" height="100"></td>
                      <td><img :src="list.img_tw" width="100" height="100"></td>
                      <td><button class="btn btn-success" v-on:click.prevent="getexInfo(list)"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
-                         <button class="btn btn-danger"> <i class="fa fa-trash-o"></i> Eliminar</button>
+                         <button class="btn btn-danger" v-on:click.prevent="getexDelete(list)"> <i class="fa fa-trash-o"></i> Eliminar</button>
                     </td>
                  </tr>
                  </template>
@@ -55,6 +55,10 @@
 <script>
 import swal from 'sweetalert';
 import jsPDF from 'jspdf';
+var crf_tok = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': crf_tok}
+};
 export default {
  created(){
     this.getDataAll();   
@@ -77,6 +81,30 @@ export default {
                  button: true,
                  timer: 1500
               })
+     },
+     getexDelete(list){
+             let url_delete="http://127.0.0.1:8000/reporte/deletereporte/"+list.id;
+               var selfdel=this;
+               swal({
+                    title: "Estas seguro?",
+                    text: "Eliminara a "+list.nombre_persona,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+              })
+              .then((willDelete) => {
+                    if (willDelete) {
+                   axios.delete(url_delete,config).then(response => {
+                       selfdel.mensaje('Excelente',response.data.message,'success');
+                       selfdel.getDataAll();
+                        })
+                        .catch(error => {
+                         console.log(error);
+                   });
+                    } else {
+                    console.log("");
+                    }
+               });
      },
      getexInfo(value){
          var doc = new jsPDF({

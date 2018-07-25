@@ -19,6 +19,15 @@ def listreport(request):
     return render(request,'xxx.html',{'obt':obt})
 
 @login_required(login_url="/accounts/login")
+def deletereporte(request, id):
+    reporte=PersonaRedes.objects.get(id=id)
+    reporte.estado='0'
+    reporte.save()
+    mensaje={}
+    mensaje['message']="Se elimno exitosamente"
+    return JsonResponse(mensaje)
+
+@login_required(login_url="/accounts/login")
 def consultall(request):
     id_persona=request.GET.get('id_persona')
     queryset = list(PersonaRedes.objects.prefetch_related('idfb','idtw','idpersona').filter(idusuario_id=request.session["id_user"],idpersona_id=id_persona,estado=1).all())
