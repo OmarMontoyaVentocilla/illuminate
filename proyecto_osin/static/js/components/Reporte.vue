@@ -114,13 +114,42 @@ export default {
                });
      },
      getexInfo(value){
-         var doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'in',
-                format: [4, 2]
-        })
+      var apodo_persona=value.apodo_persona;
+      var biografia_fb=value.biografia_fb;
+      var biografia_tw=value.biografia_tw;
+      var cant_tw=value.cant_tw;
+      var estudio_fb=value.estudio_fb;
+      var foto_fb=value.foto_fb;
+      var img_tw=value.img_tw;
+      var inicio_tw=value.inicio_tw;
+      var likes_tw=value.likes_tw;
+      var lugar_fb=value.lugar_fb;
+      var nombre_cuenta_tw=value.nombre_cuenta_tw;
+      var nombre_persona=value.nombre_persona;
+      var nombre_tw=value.nombre_tw;
+      var nombres_fb=value.nombres_fb;
+      var pagina_web_tw=value.pagina_web_tw;
+      var seguidores_tw=value.seguidores_tw;
+      var siguiendo_tw=value.siguiendo_tw;
+      var trabajo_fb=value.trabajo_fb;
+      var tregistro_persona=value.tregistro_persona;
+      var tweets_tw=value.tweets_tw;
+      var ubicacion_tw=value.ubicacion_tw;
+      var url_fb=value.url_fb;
+      var url_tw=value.url_tw;
 
-        doc.text('Hello world!', 1, 1);
+
+         var doc = new jsPDF({
+                // orientation: 'landscape',
+                // unit: 'in',
+                // format: [4, 2]
+        })
+        doc.text(20, 20, apodo_persona);
+        doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+        doc.addPage();
+        doc.text(20, 20, 'Do you like that?');
+
+        // doc.text('Hello world!', 1, 1);
         $("#pdf_preview").attr("src", doc.output('datauristring'));
         //doc.save('two-by-four.pdf')
         //var string = doc.output('datauristring');
