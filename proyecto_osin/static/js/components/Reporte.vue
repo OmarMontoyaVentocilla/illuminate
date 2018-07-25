@@ -1,7 +1,7 @@
 <template>
 <div class="container">
      <div class="row">
-          <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
          <div class="form-group">
                  <label for="persona">Persona</label>
                 <select class="form-control input-sm" v-model="combo" @change="getDataAll()">
@@ -11,9 +11,12 @@
                 
         </div>
           </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    
+          </div>
      </div>
       <div class="row">
-         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
              <div class="panel panel-success panel_estilo">
            <div class="panel-body div1 table-responsive">
             <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">
@@ -48,7 +51,11 @@
             </div>
             </div>
           </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <iframe id="pdf_preview" type="application/pdf" src="" width="530" height="400"></iframe>
+           </div>
       </div>
+   
 </div>      
 </template>
 
@@ -113,14 +120,15 @@ export default {
                 format: [4, 2]
         })
 
-        doc.text('Hello world!', 1, 1)
+        doc.text('Hello world!', 1, 1);
+        $("#pdf_preview").attr("src", doc.output('datauristring'));
         //doc.save('two-by-four.pdf')
-        var string = doc.output('datauristring');
-        var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
-        var x = window.open();
-        x.document.open();
-        x.document.write(iframe);
-        x.document.close();
+        //var string = doc.output('datauristring');
+        // var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
+        // var x = window.open();
+        // x.document.open();
+        // x.document.write(iframe);
+        // x.document.close();
         //doc.output('dataurlnewwindow'); 
      },
      getPersonaAs(){
@@ -160,7 +168,7 @@ export default {
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
      box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    width: 80%;
+    width: 100%;
     margin: auto;
 }
 
