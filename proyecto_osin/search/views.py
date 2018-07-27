@@ -8,6 +8,7 @@ from .models import Auto
 from .models import Facebook
 from .models import Twitter
 from .models import Github
+from .models import Google
 from .models import PersonaRedes
 from .forms import AutoForm
 from fullcontact import FullContact
@@ -142,6 +143,31 @@ def createfacebook(request):
 
     return JsonResponse(mensaje)
 
+@login_required(login_url="/accounts/login")
+def creategoogle(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        img_google = valor['img_google']
+        info_google = valor['info_google']
+        nombre_google= valor['nombre_google']
+        url_google=valor['url_google']
+        mensaje={}
+        try:
+            google_exist=Google.objects.filter(url_google=url_google).exists()
+            if(google_exist):
+                mensaje['fail']="No se guardo, ya existe el registro"
+            else:
+                goog=Google.objects.create(img_google=img_google,info_google=info_google,nombre_google=nombre_google,url_google=url_google,estado=1)
+                if(goog):
+                    mensaje['success']="Se guardo exitosamente"
+                else:
+                    mensaje['fail']="No se guardo el registro"
+             
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo el registro"
+
+    return JsonResponse(mensaje)
+    
 
 @login_required(login_url="/accounts/login")
 def creategit(request):
@@ -178,13 +204,14 @@ def createasig(request):
         idfb_id=valor['idfb_id']
         idpersona_id=valor['idpersona_id']
         idtw_id=valor['idtw_id']
+        idgoogle_id=valor['idgoogle_id']
         idusuario_id = request.session["id_user"]
         estado=1
         mensaje={}
         try:
-            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idusuario_id=idusuario_id).count()
+            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idusuario_id=idusuario_id).count()
             if(cantidadRegistros<1):
-                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idusuario_id=idusuario_id,estado=1)
+                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idusuario_id=idusuario_id,estado=1)
                 if(perreds):
                     mensaje['success']="Se guardo exitosamente"
                 else:
@@ -404,12 +431,13 @@ def item_comercio(urlitem,buscador):
 
 @login_required(login_url="/accounts/login")
 def getgoogle(request):
-    soup=get_doc("https://plus.google.com/s/omar%20montoya/people")
+    buscador=request.GET.get('buscador')
+    soup=get_doc("https://plus.google.com/s/{}/people".format(buscador))
     response=[]
     for item in soup.select(".H68wj.t1KkGe > .NzRmxf.vCjazd"):
         result={}
         result['img_google']=item.select_one("a > img")['src']
-        result['id_google']=item.select_one("a")['href'].replace("./", "")
+        result['url_google']="https://plus.google.com/{}".format(item.select_one("a")['href'].replace("./", ""))      
         result['nombre_google']=item.select_one("a > div > div").text
         if(item.select_one("a > div:nth-of-type(2) > span")):
             result['info_google']=item.select_one("a > div:nth-of-type(2) > span").text
@@ -481,18 +509,29 @@ def gethit(request):
     return JsonResponse(data) 
 
 
-def getinstadet(url):
+def getinstadet(request):      
+    url="omarion"
+    cadena="Omarion"
     soup=get_doc("https://web.stagram.com/{}".format(url))
     response=[]
     for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
         for x in i.select("span"):
             result={}
-            result['resultado']=x.text
-            response.append(result)
+            response.append(x.text.strip())
     
-    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
-    #data={'post':response[0]}
-    return response
+    for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
+        response.append(i.text.strip())
+    
+
+    if(response[5].find(cadena)):
+        x=response[5].replace(cadena,"")
+        
+
+    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2],'bio':x}
+    data1={
+        'info':response
+    }
+    return JsonResponse(data) 
 
 @login_required(login_url="/accounts/login") 
 def getinsta(request):
@@ -505,7 +544,6 @@ def getinsta(request):
         result_inta['logo_inta']=i.select_one("div > a > img")['src'] 
         result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
         result_inta['name_inta']=i.select_one("div > a > div > p").text
-        #result_inta['detalles'] = getinstadet(i.select_one("div > a > div > h4").text)
         response_inta.append(result_inta)
     
     for item in soup.select(".row.photolist > .col-6.col-sm-4.col-md-3.mb-4"):

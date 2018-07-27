@@ -16,13 +16,17 @@
                  <v-select label="nombre_cuenta_tw" :options="optionstw" v-model="idtw"></v-select>    
             </div>
             <div class="form-group">
+                 <label for="exampleInputEmail1">Datos guardados de Google</label>
+                 <v-select label="nombre_google" :options="optionsgogle" v-model="idgoogle"></v-select>    
+            </div>
+            <div class="form-group">
              <button type="submit" id="envioasig" class="btn btn-primary">Guardar</button>
             </div>
             </form> 
         </div> 
     </div>
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
          <template v-if="idfb.id!=''">
                  <img :src="idfb.foto" width="100" height="100">
           </template>
@@ -30,12 +34,20 @@
                 <img src="/static/img/facebook-perfil.jpg" width="100" height="100"> 
           </template>
       </div>
-       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
              <template v-if="idtw.id!=''">
                  <img :src="idtw.img_tw" width="100" height="100">
           </template>
            <template v-else>
                 <img src="/static/img/twitter-perfil.jpg" width="100" height="100"> 
+           </template>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+             <template v-if="idgoogle.id!=''">
+                 <img :src="idgoogle.img_google" width="100" height="100">
+          </template>
+           <template v-else>
+                <img src="/static/img/google-perfil.jpg" width="100" height="100"> 
            </template>
       </div>
     </div>
@@ -53,6 +65,8 @@ export default{
      this.getPersonaAs();
      this.getFacebookAs();
      this.getTwitterAs();
+     this.getGoogleAs();
+     
     },
      components: {
          'vSelect':vSelect
@@ -65,11 +79,12 @@ export default{
        return{
            options: [],
            optionsfb:[],
+           optionsgogle:[],
            optionstw:[],
            idpersona:{id:"", nombre:"Seleccione"},
            idfb:{id: "", nombres: "Seleccione"},
-           idtw:{id: "", nombre_cuenta_tw: "Seleccione"}
-       
+           idtw:{id: "", nombre_cuenta_tw: "Seleccione"},
+           idgoogle:{id: "", nombre_google: "Seleccione"}  
       }
     },
     methods:{
@@ -94,7 +109,17 @@ export default{
                                 console.log(error);
                         }) 
         },
-         getFacebookAs(){
+         getGoogleAs(){
+            axios.get('http://127.0.0.1:8000/api/google/',{})
+                        .then(response=>{ 
+                                this.optionsgogle=response.data;
+       
+                        })
+                        .catch(error=>{
+                                console.log(error);
+                        }) 
+        },
+        getFacebookAs(){
             axios.get('http://127.0.0.1:8000/api/facebook/',{})
                         .then(response=>{ 
                                 this.optionsfb=response.data;
@@ -116,6 +141,7 @@ export default{
         getaddasig(){
               var data={
                     idfb_id:this.idfb.id,
+                    idgoogle_id:this.idgoogle.id,
                     idpersona_id:this.idpersona.id,
                     idtw_id:this.idtw.id
                      };

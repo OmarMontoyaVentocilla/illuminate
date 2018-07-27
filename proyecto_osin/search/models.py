@@ -48,9 +48,18 @@ class Twitter(models.Model):
     estado=models.CharField(max_length=2)
 
 
+class Google(models.Model):
+    nombre_google=models.CharField(max_length=150)
+    url_google=models.TextField()
+    img_google=models.TextField()
+    info_google=models.TextField()
+    estado=models.CharField(max_length=2)
+    
+
 class PersonaRedes(models.Model):
     idfb=models.ForeignKey(Facebook,related_name='facebookdata',on_delete=models.CASCADE)
-    idtw=models.ForeignKey(Twitter,related_name='twitterdata',on_delete=models.CASCADE) 
+    idtw=models.ForeignKey(Twitter,related_name='twitterdata',on_delete=models.CASCADE)
+    idgoogle=models.ForeignKey(Google,related_name='googledata',on_delete=models.CASCADE)  
     idusuario=models.ForeignKey(User,related_name='usuariodata',on_delete=models.CASCADE)
     idpersona=models.ForeignKey(Persona,related_name='personadata',on_delete=models.CASCADE)
     estado=models.CharField(max_length=2)

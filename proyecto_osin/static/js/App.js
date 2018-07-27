@@ -21,6 +21,7 @@ import example from './components/Example.vue';
 import persona from './components/Persona.vue';
 import twiter from './components/Twitter.vue';
 import github from './components/Github.vue';
+import google from './components/Google.vue';
 import instagram from './components/Instagram.vue';
 import clave from './components/Clave.vue';
 import asignacion from './components/Asignacion.vue';
@@ -34,6 +35,7 @@ const app = new Vue({
         persona,
         twiter,
         github,
+        google,
         instagram,
         clave,
         asignacion,

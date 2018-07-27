@@ -24,7 +24,6 @@
                      <th>#</th>
                      <th>Datos</th>
                      <th>Info</th>
-                     <th>Asignar</th>
                  </tr>
                  </thead>
                 <tbody>
@@ -45,12 +44,12 @@
                       <td align="center">
                 <button class="btn  btn-info"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
-                     <td align="center"><input type="checkbox" name=""></td> 
+
                      </tr>   
                      </template>
                      <template v-else>
                       	<tr>
-        	          <td colspan="4" align="center">No hay resultados disponibles</td>	
+        	          <td colspan="3" align="center">No hay resultados disponibles</td>	
         	          </tr>
                      </template>   
                 </tbody>
@@ -74,9 +73,7 @@
                  <thead>
                  <tr>
                      <th>#</th>
-                     <th>Datos</th>
-                     <th>Info</th>
-                     <th>Asignar</th>
+                     <th>Tendencia Hastags</th>
                  </tr>
                  </thead>
                 <tbody>
@@ -94,15 +91,11 @@
                               </tr>
                           </table>
                       </td>
-                      <td align="center">
-                <button class="btn  btn-info"><i class="fa fa-eye"></i> Vista previa</button>
-                     </td>  
-                     <td align="center"><input type="checkbox" name=""></td> 
                      </tr>   
                      </template>
                      <template v-else>
                       	<tr>
-        	          <td colspan="4" align="center">No hay resultados disponibles</td>	
+        	          <td colspan="2" align="center">No hay resultados disponibles</td>	
         	          </tr>
                      </template>   
                 </tbody>
