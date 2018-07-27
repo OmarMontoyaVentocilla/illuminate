@@ -42,7 +42,7 @@
                           </table>
                       </td>
                       <td align="center">
-                <button class="btn  btn-info"><i class="fa fa-eye"></i> Vista previa</button>
+                <button class="btn btn-info" v-on:click.prevent="getInfoInst(list)"><i class="fa fa-eye"></i> Vista previa</button>
                      </td>  
 
                      </tr>   
@@ -106,12 +106,65 @@
         </div>    
     
 
+           <!-- Modal INFO-->
+    <div id="myModalint" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Información</h4>
+      </div>
+      <div class="modal-body">
+     
+        <div class="row" > 
+           <form v-on:submit.prevent="getaddInfoinst()">
+              <table class="table table-bordered tablita">
+                  <tbody>
+                   <tr>
+                      <td rowspan="4"><center><img :src="data_info.logo_inta"></center></td>
+                      <td class="info_style centro">Nombre:</td>
+                      <td class="info_style centro">Usuario</td>
+                      <td class="info_style centro">URL:</td>
+                   </tr>
+                   <tr>
+                      <td class="centro">{{data_info.name_inta}}</td>
+                      <td class="centro">{{data_info.user_inta}}</td>
+                      <td class="centro"><a :href="data_info.nick_inta" target="_blank" >{{data_info.nick_inta}}</a></td>
+                   </tr>
+                   <tr>
+                      <td class="info_style centro">Seguidores:</td>
+                      <td class="info_style centro">Posts:</td>
+                      <td class="info_style centro">Siguiendo:</td>
+                   </tr>
+                   <tr>
+                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.seguidores}}</td>
+                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.post}}</td>
+                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.siguiendo}}</td>
+                   </tr>
+            
+                  </tbody>
+              </table>
+              <div class="modal-footer">
+             <button type="submit" class="btn btn-primary" id="envioinst">Guardar</button>      
+             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+             </div>
+           </form> 
+        </div>
+      </div>
+      
+    </div>
 
+  </div>
+</div>
 
     </div>  
 </template>
 <script>
 import swal from 'sweetalert';
+var tokent = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var config = {
+     headers: {'X-CSRFToken': tokent}
+};
     export default{
        created(){
        },
@@ -129,6 +182,9 @@ import swal from 'sweetalert';
          }
        },
        methods:{
+            disabl(valor){
+               $("#envioinst").prop('disabled', valor);
+            },
             mensaje(titulo,texto,icono){
              swal({
                  icon: icono,
@@ -137,6 +193,49 @@ import swal from 'sweetalert';
                  button: true,
                  timer: 1500
               })
+           },
+           getInfoInst(list){
+               $('#myModalint').modal('show');
+               this.data_info=list
+               console.log(this.data_info);            
+           },
+           getaddInfoinst(){
+            var foto_instagram=this.data_info.logo_inta;
+            var nombre_instagram=this.data_info.name_inta;
+            var usuario_instagram=this.data_info.user_inta;
+            var url_instagram=this.data_info.nick_inta;
+            var seguidores_instagram=this.data_info.detalles_inta.seguidores;
+            var post_instagram=this.data_info.detalles_inta.post;
+            var siguiendo_instagram=this.data_info.detalles_inta.siguiendo;
+
+            var data={
+                     foto_instagram:foto_instagram,
+                     nombre_instagram: nombre_instagram,
+                     url_instagram:url_instagram,
+                     usuario_instagram: usuario_instagram,
+                     seguidores_instagram:seguidores_instagram,
+                     post_instagram:post_instagram,
+                     siguiendo_instagram:siguiendo_instagram,
+                     };           
+            var sel_thi=this;
+            sel_thi.disabl(true);
+            setTimeout(function(){sel_thi.disabl(false); }, 2000);  
+            axios.post('http://127.0.0.1:8000/search/addainstagram',data,config)
+                .then(response=>{
+                         console.log(response);
+                          if(response.data.success){
+                           this.mensaje(response.data.success,'','success');
+                          }else if(response.data.fail){
+                           this.mensaje(response.data.fail,'','error');
+                          } 
+                     })
+                .catch(error=>{
+                     if(error.response.status==500){
+                          this.mensaje('Ya existe este registro','','error');
+                          console.clear();
+                     }
+                
+                })
            },
            getScrap_insta(){
               let buscador=this.buscador;
@@ -160,20 +259,15 @@ import swal from 'sweetalert';
                   }else{
                       console.log("Dato no ingresado");
                   } 
-           },
-           getInfo(info){
-               this.data_info=info;
-               //this.git_web=this.data_info.pagina_github;
-               console.log(info);
-              // $('#myModal4').modal('show');
-           },
-           validarwebgit(){
-               
            }
        } 
     }
 </script>
 <style scoped>
+
+.centro{
+  text-align:center;
+}
 
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border: 1px solid #afa8a8;

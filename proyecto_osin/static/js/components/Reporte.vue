@@ -43,7 +43,7 @@
                  </template>
                  <template v-else>
                    <tr>
-                       <td colspan="4" align="center">No hay resultados disponibles</td>
+                       <td colspan="5" align="center">No hay resultados disponibles</td>
                    </tr>
                  </template>
             </tbody>

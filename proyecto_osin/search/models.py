@@ -56,14 +56,15 @@ class Google(models.Model):
     estado=models.CharField(max_length=2)
     
 
-class PersonaRedes(models.Model):
-    idfb=models.ForeignKey(Facebook,related_name='facebookdata',on_delete=models.CASCADE)
-    idtw=models.ForeignKey(Twitter,related_name='twitterdata',on_delete=models.CASCADE)
-    idgoogle=models.ForeignKey(Google,related_name='googledata',on_delete=models.CASCADE)  
-    idusuario=models.ForeignKey(User,related_name='usuariodata',on_delete=models.CASCADE)
-    idpersona=models.ForeignKey(Persona,related_name='personadata',on_delete=models.CASCADE)
+class Instagram(models.Model):
+    nombre_instagram=models.TextField()
+    usuario_instagram=models.CharField(max_length=150)
+    url_instagram=models.CharField(max_length=250)
+    foto_instagram=models.CharField(max_length=280)
+    seguidores_instagram=models.CharField(max_length=150)
+    post_instagram=models.CharField(max_length=150)
+    siguiendo_instagram=models.CharField(max_length=150)
     estado=models.CharField(max_length=2)
-
 
 class Github(models.Model):
     biografia_github=models.TextField()
@@ -74,3 +75,18 @@ class Github(models.Model):
     pagina_github=models.TextField()
     pais_github=models.CharField(max_length=100)
     estado=models.CharField(max_length=2)
+
+
+class PersonaRedes(models.Model):
+    idfb=models.ForeignKey(Facebook,related_name='facebookdata',on_delete=models.CASCADE)
+    idtw=models.ForeignKey(Twitter,related_name='twitterdata',on_delete=models.CASCADE)
+    idgoogle=models.ForeignKey(Google,related_name='googledata',on_delete=models.CASCADE) 
+    idinstagram=models.ForeignKey(Instagram,related_name='instagramdata',on_delete=models.CASCADE)   
+    idusuario=models.ForeignKey(User,related_name='usuariodata',on_delete=models.CASCADE)
+    idpersona=models.ForeignKey(Persona,related_name='personadata',on_delete=models.CASCADE)
+    estado=models.CharField(max_length=2)
+
+
+
+
+

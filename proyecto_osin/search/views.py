@@ -9,6 +9,7 @@ from .models import Facebook
 from .models import Twitter
 from .models import Github
 from .models import Google
+from .models import Instagram
 from .models import PersonaRedes
 from .forms import AutoForm
 from fullcontact import FullContact
@@ -205,13 +206,14 @@ def createasig(request):
         idpersona_id=valor['idpersona_id']
         idtw_id=valor['idtw_id']
         idgoogle_id=valor['idgoogle_id']
+        idinstagram_id=valor['idinstagram_id']
         idusuario_id = request.session["id_user"]
         estado=1
         mensaje={}
         try:
-            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idusuario_id=idusuario_id).count()
+            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id).count()
             if(cantidadRegistros<1):
-                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idusuario_id=idusuario_id,estado=1)
+                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id,estado=1)
                 if(perreds):
                     mensaje['success']="Se guardo exitosamente"
                 else:
@@ -224,8 +226,36 @@ def createasig(request):
 
     return JsonResponse(mensaje)
 
+@login_required(login_url="/accounts/login")
+def createinstagram(request):
+    if(request.method == 'POST'):
+        valor=json.loads(request.body.decode("utf-8"))
+        nombre_instagram = valor['nombre_instagram']
+        usuario_instagram = valor['usuario_instagram']
+        url_instagram= valor['url_instagram']
+        foto_instagram=valor['foto_instagram']
+        seguidores_instagram=valor['seguidores_instagram']
+        post_instagram=valor['post_instagram']
+        siguiendo_instagram=valor['siguiendo_instagram']
+        estado=1
+        mensaje={}
+        try:
+            instagram_exist=Instagram.objects.filter(url_instagram=url_instagram).exists()
+            if(instagram_exist):
+                mensaje['fail']="No se guardo, ya existe el registro"
+            else:
+                instagram=Instagram.objects.create(nombre_instagram=nombre_instagram,usuario_instagram=usuario_instagram,url_instagram=url_instagram,foto_instagram=foto_instagram,seguidores_instagram=seguidores_instagram,post_instagram=post_instagram,siguiendo_instagram=siguiendo_instagram,estado=1)
+                if(instagram):
+                    mensaje['success']="Se guardo exitosamente"
+                else:
+                    mensaje['fail']="No se guardo el registro"
+             
+        except requests.exceptions.HTTPError as e:
+            mensaje['fail']="No se guardo el registro"
+
+    return JsonResponse(mensaje)
     
-    
+
 
 @login_required(login_url="/accounts/login")
 def createtw(request):
@@ -509,9 +539,8 @@ def gethit(request):
     return JsonResponse(data) 
 
 
-def getinstadet(request):      
-    url="omarion"
-    cadena="Omarion"
+def getinstadet(url):      
+
     soup=get_doc("https://web.stagram.com/{}".format(url))
     response=[]
     for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
@@ -522,16 +551,9 @@ def getinstadet(request):
     for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
         response.append(i.text.strip())
     
-
-    if(response[5].find(cadena)):
-        x=response[5].replace(cadena,"")
-        
-
-    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2],'bio':x}
-    data1={
-        'info':response
-    }
-    return JsonResponse(data) 
+    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
+   
+    return data
 
 @login_required(login_url="/accounts/login") 
 def getinsta(request):
@@ -541,11 +563,14 @@ def getinsta(request):
     response_inta=[]
     for i in soup.select(".row.photolist > .col-6.col-xs-12.col-sm-6.col-md-4.col-lg-3.mb-4"):
         result_inta={}
-        result_inta['logo_inta']=i.select_one("div > a > img")['src'] 
-        result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
+        result_inta['logo_inta']=i.select_one("div > a > img")['src']
+        result_inta['user_inta']=i.select_one("div > a > div > h4").text
         result_inta['name_inta']=i.select_one("div > a > div > p").text
-        response_inta.append(result_inta)
-    
+        result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
+        result_inta['detalles_inta']=getinstadet(result_inta['user_inta'])
+        response_inta.append(result_inta) 
+
+         
     for item in soup.select(".row.photolist > .col-6.col-sm-4.col-md-3.mb-4"):
         result={}
         result['logo_inta']="https://web.stagram.com{}".format(item.select_one("div > a > img")['src'])   

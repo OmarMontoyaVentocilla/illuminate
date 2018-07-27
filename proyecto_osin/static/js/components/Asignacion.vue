@@ -19,6 +19,10 @@
                  <label for="exampleInputEmail1">Datos guardados de Google</label>
                  <v-select label="nombre_google" :options="optionsgogle" v-model="idgoogle"></v-select>    
             </div>
+             <div class="form-group">
+                 <label for="exampleInputEmail1">Datos guardados de Instagram</label>
+                 <v-select label="usuario_instagram" :options="optionsinsta" v-model="idinstagram"></v-select>    
+            </div>
             <div class="form-group">
              <button type="submit" id="envioasig" class="btn btn-primary">Guardar</button>
             </div>
@@ -26,7 +30,7 @@
         </div> 
     </div>
     <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
          <template v-if="idfb.id!=''">
                  <img :src="idfb.foto" width="100" height="100">
           </template>
@@ -34,7 +38,7 @@
                 <img src="/static/img/facebook-perfil.jpg" width="100" height="100"> 
           </template>
       </div>
-       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
              <template v-if="idtw.id!=''">
                  <img :src="idtw.img_tw" width="100" height="100">
           </template>
@@ -42,12 +46,20 @@
                 <img src="/static/img/twitter-perfil.jpg" width="100" height="100"> 
            </template>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
              <template v-if="idgoogle.id!=''">
                  <img :src="idgoogle.img_google" width="100" height="100">
           </template>
            <template v-else>
                 <img src="/static/img/google-perfil.jpg" width="100" height="100"> 
+           </template>
+      </div>
+       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+             <template v-if="idinstagram.id!=''">
+                 <img :src="idinstagram.foto_instagram" width="100" height="100">
+          </template>
+           <template v-else>
+                <img src="/static/img/instagram-perfil.jpg" width="100" height="100"> 
            </template>
       </div>
     </div>
@@ -66,6 +78,7 @@ export default{
      this.getFacebookAs();
      this.getTwitterAs();
      this.getGoogleAs();
+     this.getInstagramAs();
      
     },
      components: {
@@ -81,10 +94,12 @@ export default{
            optionsfb:[],
            optionsgogle:[],
            optionstw:[],
+           optionsinsta:[],
            idpersona:{id:"", nombre:"Seleccione"},
            idfb:{id: "", nombres: "Seleccione"},
            idtw:{id: "", nombre_cuenta_tw: "Seleccione"},
-           idgoogle:{id: "", nombre_google: "Seleccione"}  
+           idgoogle:{id: "", nombre_google: "Seleccione"},
+           idinstagram:{id: "", usuario_instagram: "Seleccione"}    
       }
     },
     methods:{
@@ -119,6 +134,16 @@ export default{
                                 console.log(error);
                         }) 
         },
+         getInstagramAs(){
+            axios.get('http://127.0.0.1:8000/api/instagram/',{})
+                        .then(response=>{ 
+                                this.optionsinsta=response.data;
+       
+                        })
+                        .catch(error=>{
+                                console.log(error);
+                        }) 
+        },
         getFacebookAs(){
             axios.get('http://127.0.0.1:8000/api/facebook/',{})
                         .then(response=>{ 
@@ -142,6 +167,7 @@ export default{
               var data={
                     idfb_id:this.idfb.id,
                     idgoogle_id:this.idgoogle.id,
+                    idinstagram_id:this.idinstagram.id,
                     idpersona_id:this.idpersona.id,
                     idtw_id:this.idtw.id
                      };
@@ -149,7 +175,7 @@ export default{
             sel_thi.disabl(true);
             setTimeout(function(){sel_thi.disabl(false); }, 2000);
               
-            if(this.idfb.id!='' && this.idpersona.id!='' &&  this.idtw.id!=''){ 
+            if(this.idfb.id!='' && this.idpersona.id!='' &&  this.idtw.id!='' && this.idgoogle.id!='' && this.idinstagram.id!=''){ 
             axios.post('http://127.0.0.1:8000/search/addasignacion',data,config)
                 .then(response=>{
                          
