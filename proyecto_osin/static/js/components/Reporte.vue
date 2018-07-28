@@ -26,6 +26,9 @@
                      <th>Apodo</th>
                      <th>Facebook</th>
                      <th>Twitter</th>
+                     <th>Github</th>
+                     <th>Google</th>
+                     <th>Instagram</th>
                      <th>Acción</th>
                  </tr>
             </thead>
@@ -36,6 +39,9 @@
                      <td>{{list.apodo_persona}}</td>
                      <td><img :src="list.foto_fb" width="100" height="100"></td>
                      <td><img :src="list.img_tw" width="100" height="100"></td>
+                     <td><img :src="list.img_github" width="100" height="100"></td>
+                     <td><img :src="list.img_google" width="100" height="100"></td>
+                     <td><img :src="list.foto_instagram" width="100" height="100"></td>
                      <td><button class="btn btn-success" v-on:click.prevent="getexInfo(list)"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
                          <button class="btn btn-danger" v-on:click.prevent="getexDelete(list)"> <i class="fa fa-trash-o"></i> Eliminar</button>
                     </td>
