@@ -3,6 +3,8 @@ from .models import Facebook
 from .models import Twitter
 from .models import Google
 from .models import Instagram
+from .models import Github
+
 
 class FacebookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,4 +27,7 @@ class InstagramSerializer(serializers.ModelSerializer):
         model=Instagram
         fields='__all__'
     
-
+class GithubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Github
+        fields='__all__'

@@ -206,14 +206,15 @@ def createasig(request):
         idpersona_id=valor['idpersona_id']
         idtw_id=valor['idtw_id']
         idgoogle_id=valor['idgoogle_id']
+        idgithub_id=valor['idgithub_id']
         idinstagram_id=valor['idinstagram_id']
         idusuario_id = request.session["id_user"]
         estado=1
         mensaje={}
         try:
-            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id).count()
+            cantidadRegistros=PersonaRedes.objects.filter(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idgithub_id=idgithub_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id).count()
             if(cantidadRegistros<1):
-                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id,estado=1)
+                perreds=PersonaRedes.objects.create(idfb_id=idfb_id,idpersona_id=idpersona_id,idtw_id=idtw_id,idgoogle_id=idgoogle_id,idgithub_id=idgithub_id,idinstagram_id=idinstagram_id,idusuario_id=idusuario_id,estado=1)
                 if(perreds):
                     mensaje['success']="Se guardo exitosamente"
                 else:
@@ -330,18 +331,14 @@ def getgit(url_nick):
         result={}    
         response.append(i.text.strip())
     
+    new_lista=list(filter(lambda x: ('http') in x, response))
     error_res="No existe página web"
-    if(4==len(response)):
-        data=response[3]
-    elif(3==len(response)):
-        data=error_res
-    elif(2==len(response)):
-        data=error_res
-    elif(1==len(response)):
-        data=error_res   
+    if(new_lista):
+        str1 = ''.join(new_lista)
+        return str1
     else:
-        data=error_res
-    return data 
+        return error_res 
+        
 
 
 def getlinks(url):
@@ -518,19 +515,19 @@ def gethit(request):
         
     response=[]
 
-    for item in soup.select(".column.three-fourths.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
+    for item in soup.select(".col-12.col-md-9.float-left.px-2.pt-3.pt-md-0.codesearch-results > div > #user_search_results > div > .user-list-item.f5.py-4"):
         result={}
-        result['img_github']=item.select_one("div:nth-of-type(2) > a > img")['src']
-        result['nick_github']="https://github.com/{}".format(item.select_one("div:nth-of-type(2) > div > a").text)   
-        result['nombre_github']=item.select_one("div:nth-of-type(2) > div > span").text
-        result['email_github']=gethits(item.select_one("div:nth-of-type(2) > div > a").text)
-        result['pagina_github']=getgit(item.select_one("div:nth-of-type(2) > div > a").text)
-        if(item.select_one("div:nth-of-type(2) > div > p")):
-            result['biografia_github']=item.select_one("div:nth-of-type(2) > div > p").text.strip()
+        result['img_github']=item.select_one("div > a > img")['src']
+        result['nick_github']="https://github.com/{}".format(item.select_one("div > div > a").text)   
+        result['nombre_github']=item.select_one("div > div > div").text
+        result['email_github']=gethits(item.select_one("div > div > a").text)
+        result['pagina_github']=getgit(item.select_one("div > div > a").text)
+        if(item.select_one("div > div > p")):
+            result['biografia_github']=item.select_one("div > div > p").text.strip()
         else:
             result['biografia_github']="No existe biografia"
         
-        for i in item.select("div:nth-of-type(2) > div > ul > li"):
+        for i in item.select("div > div > ul > li"):
             result['pais_github']=i.text.strip()
         
         response.append(result) 
