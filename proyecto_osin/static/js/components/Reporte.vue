@@ -137,9 +137,26 @@ export default {
       var ubicacion_tw=value.ubicacion_tw;
       var url_fb=value.url_fb;
       var url_tw=value.url_tw;
+      var nombre_google=value.nombre_google;
+      var url_google=value.url_google;
+      var img_google=value.img_google;
+      var info_google=value.info_google;
+      var nombre_instagram=value.nombre_instagram;
+      var usuario_instagram=value.usuario_instagram;
+      var url_instagram=value.url_instagram;
+      var foto_instagram=value.foto_instagram;
+      var seguidores_instagram=value.seguidores_instagram;
+      var post_instagram=value.post_instagram;
+      var siguiendo_instagram=value.siguiendo_instagram;
+      var biografia_github=value.biografia_github;
+      var email_github=value.email_github;
+      var img_github=value.img_github;
+      var nick_github=value.nick_github;
+      var nombre_github=value.nombre_github;
+      var pagina_github=value.pagina_github;
+      var pais_github=value.pais_github;
 
-
-         var doc = new jsPDF({
+      var doc = new jsPDF({
                 // orientation: 'landscape',
                 // unit: 'in',
                 // format: [4, 2]

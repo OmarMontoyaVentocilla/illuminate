@@ -30,7 +30,7 @@ def deletereporte(request, id):
 @login_required(login_url="/accounts/login")
 def consultall(request):
     id_persona=request.GET.get('id_persona')
-    queryset = list(PersonaRedes.objects.prefetch_related('idfb','idtw','idpersona').filter(idusuario_id=request.session["id_user"],idpersona_id=id_persona,estado=1).all())
+    queryset = list(PersonaRedes.objects.prefetch_related('idfb','idtw','idgoogle','idinstagram','idgithub','idpersona').filter(idusuario_id=request.session["id_user"],idpersona_id=id_persona,estado=1).all())
     lista = []
     for row in queryset:
         result={}
@@ -57,10 +57,31 @@ def consultall(request):
         result['ubicacion_tw']=row.idtw.ubicacion
         result['likes_tw']=row.idtw.likes
         result['estado_tw']=row.idtw.estado
+        result['nombre_google']=row.idgoogle.nombre_google
+        result['url_google']=row.idgoogle.url_google
+        result['img_google']=row.idgoogle.img_google
+        result['info_google']=row.idgoogle.info_google
+        result['estado_google']=row.idgoogle.estado
         result['nombre_persona']=row.idpersona.nombre
         result['apodo_persona']=row.idpersona.apodo
         result['tregistro_persona']=row.idpersona.tiempo_registro
         result['estado_persona']=row.idpersona.estado
+        result['nombre_instagram']=row.idinstagram.nombre_instagram
+        result['usuario_instagram']=row.idinstagram.usuario_instagram
+        result['url_instagram']=row.idinstagram.url_instagram
+        result['foto_instagram']=row.idinstagram.foto_instagram
+        result['seguidores_instagram']=row.idinstagram.seguidores_instagram
+        result['post_instagram']=row.idinstagram.post_instagram
+        result['siguiendo_instagram']=row.idinstagram.siguiendo_instagram
+        result['estado_instagram']=row.idinstagram.estado
+        result['biografia_github']=row.idgithub.biografia_github
+        result['email_github']=row.idgithub.email_github
+        result['img_github']=row.idgithub.img_github
+        result['nick_github']=row.idgithub.nick_github
+        result['nombre_github']=row.idgithub.nombre_github
+        result['pagina_github']=row.idgithub.pagina_github
+        result['pais_github']=row.idgithub.pais_github
+        result['estado_github']=row.idgithub.estado
         lista.append(result)
         
     data={
