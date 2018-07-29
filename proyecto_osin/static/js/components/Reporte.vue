@@ -81,7 +81,8 @@ export default {
       return{
         lista:[],
         options: [],
-        combo:''
+        combo:'',
+        lista_base:[]
     }
   
  },
@@ -163,32 +164,29 @@ export default {
       var pagina_github=value.pagina_github;
       var pais_github=value.pais_github;
 
-var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
-
-
-            this.cargarImagen(img_google, function(dataUrl) {
-            var doc = new jsPDF();
-            console.log(dataUrl+"\n");
-
-            // doc.addImage(arreglo_fotos[arreglo_foto], 10, 10);
-            // $("#pdf_preview").attr("src", doc.output('datauristring'));
-})
-
-
-
-
-
+      var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
+      var arreglo_x=[];
+      var self=this;
+      
+      
  
- 
-    //   var img = new Image;
-    //   img.crossOrigin = "";
-    //   img.src = foto_instagram;
-    //   img.onload = function() {
+      
+      
 
-    //     doc.addImage(img.src, 10, 10);
-        
-    //     };
-    //   $("#pdf_preview").attr("src", doc.output('datauristring'));
+            for(let i in arreglo_fotos){
+                 this.cargarImagen(arreglo_fotos[i], function(dataUrl) {             
+                 arreglo_x.push(dataUrl);
+                 console.clear();
+                 if(arreglo_x.length>0){
+                   var doc = new jsPDF();
+                   doc.setFontSize(30);
+                   doc.text(35, 25, "Reporte");
+                   doc.addImage(arreglo_x[0], 10, 30);
+                   doc.addImage(arreglo_x[1], 10, 80);
+                   $("#pdf_preview").attr("src", doc.output('datauristring'));
+                }
+              })
+            }
      },
     cargarImagen(url,callback){
             
@@ -197,6 +195,7 @@ var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
                 var reader = new FileReader();
                 reader.onloadend = function() {
                     callback(reader.result);
+                    console.clear();
                 }
                 reader.readAsDataURL(xhr.response);
                 };
