@@ -49,7 +49,7 @@
                  </template>
                  <template v-else>
                    <tr>
-                       <td colspan="5" align="center">No hay resultados disponibles</td>
+                       <td colspan="8" align="center">No hay resultados disponibles</td>
                    </tr>
                  </template>
             </tbody>
@@ -58,10 +58,10 @@
             </div>
           </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-          <iframe id="pdf_preview" type="application/pdf" src="" width="530" height="400"></iframe>
+              <iframe id="pdf_preview" type="application/pdf" src="" width="530" height="400"></iframe>
            </div>
       </div>
-   
+      
 </div>      
 </template>
 
@@ -119,6 +119,7 @@ export default {
                     }
                });
      },
+
      getexInfo(value){
       var apodo_persona=value.apodo_persona;
       var biografia_fb=value.biografia_fb;
@@ -162,26 +163,47 @@ export default {
       var pagina_github=value.pagina_github;
       var pais_github=value.pais_github;
 
-      var doc = new jsPDF({
-                // orientation: 'landscape',
-                // unit: 'in',
-                // format: [4, 2]
-        })
-        doc.text(20, 20, apodo_persona);
-        doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-        doc.addPage();
-        doc.text(20, 20, 'Do you like that?');
+var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
 
-        // doc.text('Hello world!', 1, 1);
-        $("#pdf_preview").attr("src", doc.output('datauristring'));
-        //doc.save('two-by-four.pdf')
-        //var string = doc.output('datauristring');
-        // var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
-        // var x = window.open();
-        // x.document.open();
-        // x.document.write(iframe);
-        // x.document.close();
-        //doc.output('dataurlnewwindow'); 
+
+            this.cargarImagen(img_google, function(dataUrl) {
+            var doc = new jsPDF();
+            console.log(dataUrl+"\n");
+
+            // doc.addImage(arreglo_fotos[arreglo_foto], 10, 10);
+            // $("#pdf_preview").attr("src", doc.output('datauristring'));
+})
+
+
+
+
+
+ 
+ 
+    //   var img = new Image;
+    //   img.crossOrigin = "";
+    //   img.src = foto_instagram;
+    //   img.onload = function() {
+
+    //     doc.addImage(img.src, 10, 10);
+        
+    //     };
+    //   $("#pdf_preview").attr("src", doc.output('datauristring'));
+     },
+    cargarImagen(url,callback){
+            
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    callback(reader.result);
+                }
+                reader.readAsDataURL(xhr.response);
+                };
+                xhr.open('GET', url);
+                xhr.responseType = 'blob';
+                xhr.send();
+             
      },
      getPersonaAs(){
             axios.get('http://127.0.0.1:8000/api/persona/',{})
