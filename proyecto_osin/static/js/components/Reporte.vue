@@ -167,41 +167,56 @@ export default {
       var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
       var arreglo_x=[];
       var self=this;
-      
-      
- 
-      
-      
 
-            for(let i in arreglo_fotos){
-                 this.cargarImagen(arreglo_fotos[i], function(dataUrl) {             
-                 arreglo_x.push(dataUrl);
-                 console.clear();
-                 if(arreglo_x.length>0){
-                   var doc = new jsPDF();
-                   doc.setFontSize(30);
-                   doc.text(35, 25, "Reporte");
-                   doc.addImage(arreglo_x[0], 10, 30);
-                   doc.addImage(arreglo_x[1], 10, 80);
-                   $("#pdf_preview").attr("src", doc.output('datauristring'));
-                }
-              })
-            }
+      const toDataURL = url => fetch(url)
+        .then(response => response.blob())
+        .then(blob => new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => resolve(reader.result);console.clear();
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+        }))
+
+        for(let i in arreglo_fotos){
+        toDataURL(arreglo_fotos[i])
+             .then(dataUrl => {
+                    arreglo_x.push(dataUrl); 
+                    console.clear();
+                    if(arreglo_x.length>0){
+                        var doc = new jsPDF();
+                        doc.setFontSize(30);
+                         doc.text(35, 25, "Reporte");
+                         doc.addImage(arreglo_x[0], 10, 30);
+                         doc.addImage(arreglo_x[1], 10, 80);
+                         $("#pdf_preview").attr("src", doc.output('datauristring'));
+                    }
+         })
+        }
+    
      },
     cargarImagen(url,callback){
             
-                var xhr = new XMLHttpRequest();
-                xhr.onload = function() {
-                var reader = new FileReader();
-                reader.onloadend = function() {
-                    callback(reader.result);
-                    console.clear();
-                }
-                reader.readAsDataURL(xhr.response);
-                };
-                xhr.open('GET', url);
-                xhr.responseType = 'blob';
-                xhr.send();
+                // var xhr = new XMLHttpRequest();
+                // xhr.onload = function() {
+                // var reader = new FileReader();
+                // reader.onloadend = function() {
+                //     callback(reader.result);
+                //     console.clear();
+                // }
+                // reader.readAsDataURL(xhr.response);
+                // };
+                // xhr.open('GET', url);
+                // xhr.responseType = 'blob';
+                // xhr.send();
+    //    url => fetch(url)
+    //         .then(response => response.blob())
+    //         .then(blob => new Promise((resolve, reject) => {
+    //                 const reader = new FileReader()
+    //                 reader.onloadend = () => resolve(reader.result)
+    //                 reader.onerror = reject
+    //                 reader.readAsDataURL(blob)
+    //                 }))
+
              
      },
      getPersonaAs(){
