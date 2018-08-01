@@ -60,7 +60,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <iframe id="pdf_preview" type="application/pdf" src="" width="530" height="400"></iframe>
            </div>
-      </div>
+      </div> 
       
 </div>      
 </template>
