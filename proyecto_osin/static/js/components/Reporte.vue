@@ -122,33 +122,44 @@ export default {
      },
 
      getexInfo(value){
-      var apodo_persona=value.apodo_persona;
-      var biografia_fb=value.biografia_fb;
-      var biografia_tw=value.biografia_tw;
-      var cant_tw=value.cant_tw;
-      var estudio_fb=value.estudio_fb;
-      var foto_fb=value.foto_fb;
+      
+      //twiter
       var img_tw=value.img_tw;
       var inicio_tw=value.inicio_tw;
       var likes_tw=value.likes_tw;
-      var lugar_fb=value.lugar_fb;
+      var biografia_tw=value.biografia_tw;
+      var cant_tw=value.cant_tw;
       var nombre_cuenta_tw=value.nombre_cuenta_tw;
-      var nombre_persona=value.nombre_persona;
       var nombre_tw=value.nombre_tw;
-      var nombres_fb=value.nombres_fb;
       var pagina_web_tw=value.pagina_web_tw;
       var seguidores_tw=value.seguidores_tw;
       var siguiendo_tw=value.siguiendo_tw;
-      var trabajo_fb=value.trabajo_fb;
-      var tregistro_persona=value.tregistro_persona;
       var tweets_tw=value.tweets_tw;
       var ubicacion_tw=value.ubicacion_tw;
-      var url_fb=value.url_fb;
       var url_tw=value.url_tw;
+
+      //facebook
+      var biografia_fb=value.biografia_fb;
+      var estudio_fb=value.estudio_fb;
+      var foto_fb=value.foto_fb;    
+      var lugar_fb=value.lugar_fb;
+      var nombres_fb=value.nombres_fb;
+      var trabajo_fb=value.trabajo_fb;
+      var url_fb=value.url_fb;
+
+      //persona     
+      var apodo_persona=value.apodo_persona;
+      var nombre_persona=value.nombre_persona; 
+      var tregistro_persona=value.tregistro_persona;
+      
+
+      //google      
       var nombre_google=value.nombre_google;
       var url_google=value.url_google;
       var img_google=value.img_google;
       var info_google=value.info_google;
+
+      //instagram
       var nombre_instagram=value.nombre_instagram;
       var usuario_instagram=value.usuario_instagram;
       var url_instagram=value.url_instagram;
@@ -156,6 +167,8 @@ export default {
       var seguidores_instagram=value.seguidores_instagram;
       var post_instagram=value.post_instagram;
       var siguiendo_instagram=value.siguiendo_instagram;
+
+      //github
       var biografia_github=value.biografia_github;
       var email_github=value.email_github;
       var img_github=value.img_github;
@@ -163,6 +176,7 @@ export default {
       var nombre_github=value.nombre_github;
       var pagina_github=value.pagina_github;
       var pais_github=value.pais_github;
+
 
       var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
       var arreglo_x=[];
@@ -184,10 +198,154 @@ export default {
                     console.clear();
                     if(arreglo_x.length>0){
                         var doc = new jsPDF();
-                        doc.setFontSize(30);
-                         doc.text(35, 25, "Reporte");
-                         doc.addImage(arreglo_x[0], 10, 30);
-                         doc.addImage(arreglo_x[1], 10, 80);
+                         doc.setFontSize(24);
+                         doc.text(42,30, "Reporte de asignacion por persona");
+                         doc.line(35, 35, 180, 35);
+                         doc.setTextColor(255, 0, 0);
+                         doc.setFontSize(14);
+                         doc.setTextColor(255, 0, 0);
+                         doc.text(12,50, "Datos de persona:");
+                         doc.setFontSize(14);
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(12,60, "* Nombre");
+                         doc.text(55,60, ":");
+                         doc.text(72,60, "xxx:");
+                         doc.text(12,70, "* Apodo");
+                         doc.text(55,70, ":");
+                         doc.text(72,70, "xxxx:");
+                         doc.text(12,80, "* Fecha de registro");
+                         doc.text(55,80, ":");
+                         doc.text(72,80, "xxxxxxx");
+                         doc.line(12, 87, 180, 87);
+                         doc.setFontSize(14);
+                         doc.setTextColor(255, 0, 0);
+                         doc.text(12,95, "Datos de Redes sociales:");
+                         doc.setTextColor(1, 5, 93);
+                         doc.text(12,105, "- Facebook:"); 
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(12,115, "* Nombre");
+                         doc.text(55,115, ":");
+                         doc.text(72,115, "xxx:");
+                         doc.text(12,125, "* Url");
+                         doc.text(55,125, ":");
+                         doc.text(72,125, "xxx:");
+                         doc.text(12,135, "* Biografia");
+                         doc.text(55,135, ":");
+                         doc.text(72,135, "xxx:");
+                         doc.text(12,145, "* Estudio");
+                         doc.text(55,145, ":");
+                         doc.text(72,145, "xxx:");
+                         doc.text(12,155, "* Lugar");
+                         doc.text(55,155, ":");
+                         doc.text(72,155, "xxx:");
+                         doc.text(12,165, "* Trabajo");
+                         doc.text(55,165, ":");
+                         doc.text(72,165, "xxx:");
+                         doc.text(12,190, "* Foto");
+                         doc.text(55,190, ":");
+                         doc.addImage(arreglo_x[0], 72, 175, 30, 30);
+                         doc.setTextColor(1, 5, 93);
+                         doc.text(12,220, "- Twitter:"); 
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(12,230, "* Inicio");
+                         doc.text(55,230, ":");
+                         doc.text(72,230, "xxx:");
+                         doc.text(12,240, "* Likes");
+                         doc.text(55,240, ":");
+                         doc.text(72,240, "xxx:");
+                         doc.text(12,250, "* Biografia");
+                         doc.text(55,250, ":");
+                         doc.text(72,250, "xxx:");
+                         doc.text(12,260, "* Cantidad Twetts");
+                         doc.text(55,260, ":");
+                         doc.text(72,260, "xxx:");
+                         doc.text(12,270, "* Cuenta");
+                         doc.text(55,270, ":");
+                         doc.text(72,270, "xxx:");
+                         doc.text(12,280, "* Seguidores");
+                         doc.text(55,280, ":");
+                         doc.text(72,280, "xxx:");
+                         doc.addPage();
+                         doc.text(12,20, "* Siguiendo");
+                         doc.text(55,20, ":");
+                         doc.text(72,20, "xxx:");
+                         doc.text(12,30, "* Ubicacion");
+                         doc.text(55,30, ":");
+                         doc.text(72,30, "xxx:");
+                         doc.text(12,40, "* Tweets");
+                         doc.text(55,40, ":");
+                         doc.text(72,40, "xxx:");
+                         doc.text(12,50, "* Url");
+                         doc.text(55,50, ":");
+                         doc.text(72,50, "xxx:");
+                         doc.text(12,70, "* Foto");
+                         doc.text(55,70, ":");
+                         doc.addImage(arreglo_x[2], 72, 60, 30, 30);
+                         doc.setTextColor(1, 5, 93);
+                         doc.text(12,100, "- Instagram:"); 
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(12,113, "* Usuario");
+                         doc.text(55,113, ":");
+                         doc.text(72,113, "xxx:");
+                         doc.text(12,123, "* Nombre");
+                         doc.text(55,123, ":");
+                         doc.text(72,123, "xxx:");
+                         doc.text(12,133, "* Url");
+                         doc.text(55,133, ":");
+                         doc.text(72,133, "xxx:");
+                         doc.text(12,143, "* Seguidores");
+                         doc.text(55,143, ":");
+                         doc.text(72,143, "xxx:");
+                         doc.text(12,153, "* Post");
+                         doc.text(55,153, ":");
+                         doc.text(72,153, "xxx:");
+                         doc.text(12,163, "* Siguiendo");
+                         doc.text(55,163, ":");
+                         doc.text(72,163, "xxx:");
+                         doc.text(12,183, "* Foto");
+                         doc.text(55,183, ":");
+                         doc.addImage(arreglo_x[0], 72, 170, 30, 30);
+                         doc.setTextColor(1, 5, 93);
+                         doc.text(12,213, "- Google:");
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(72,223, "xxx:");
+                         doc.text(12,223, "* Informacion");
+                         doc.text(55,223, ":");
+                         doc.text(72,223, "xxx:");
+                         doc.text(12,233, "* Nombre");
+                         doc.text(55,233, ":");
+                         doc.text(72,233, "xxx:");
+                         doc.text(12,243, "* Url");
+                         doc.text(55,243, ":");
+                         doc.text(72,243, "xxx:");
+                         doc.text(12,263, "* Foto");
+                         doc.text(55,263, ":");
+                         doc.addImage(arreglo_x[2], 72, 253, 30, 30);
+                         doc.addPage();
+                         doc.setTextColor(1, 5, 93);
+                         doc.text(12,13, "- Github:");
+                         doc.setTextColor(1, 5, 3);
+                         doc.text(12,23, "* Nombre");
+                         doc.text(55,23, ":");
+                         doc.text(72,23, "xxx:");
+                         doc.text(12,33, "* Email");
+                         doc.text(55,33, ":");
+                         doc.text(72,33, "xxx:");
+                         doc.text(12,43, "* Pagina");
+                         doc.text(55,43, ":");
+                         doc.text(72,43, "xxx:");
+                         doc.text(12,53, "* Usuario");
+                         doc.text(55,53, ":");
+                         doc.text(72,53, "xxx:");
+                         doc.text(12,63, "* Pais");
+                         doc.text(55,63, ":");
+                         doc.text(72,63, "xxx:");
+                         doc.text(12,73, "* Biografia");
+                         doc.text(55,73, ":");
+                         doc.text(72,73, "xxx:");
+                         doc.text(12,93, "* Foto");
+                         doc.text(55,93, ":");
+                         doc.addImage(arreglo_x[0], 72, 83, 30, 30);
                          $("#pdf_preview").attr("src", doc.output('datauristring'));
                     }
          })
