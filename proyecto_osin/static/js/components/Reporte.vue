@@ -37,11 +37,11 @@
                 <tr v-for="(list,index) in lista">
                      <td>{{index+1}}</td>
                      <td>{{list.apodo_persona}}</td>
-                     <td><img crossOrigin="Anonymous" id="facebook_d" :src="list.foto_fb" width="100" height="100"></td>
-                     <td><img crossOrigin="Anonymous" id="twitter_d" :src="list.img_tw" width="100" height="100"></td>
-                     <td><img crossOrigin="Anonymous" id="github_d" :src="list.img_github" width="100" height="100"></td>
-                     <td><img crossOrigin="Anonymous" id="google_d" :src="list.img_google" width="100" height="100"></td>
-                     <td><img crossOrigin="Anonymous" id="instagram_d" :src="list.foto_instagram" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" v-bind:id="'facebook_d'+list.id" :src="list.foto_fb" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" v-bind:id="'twitter_d'+list.id" :src="list.img_tw" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" v-bind:id="'github_d'+list.id" :src="list.img_github" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" v-bind:id="'google_d'+list.id" :src="list.img_google" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" v-bind:id="'instagram_d'+list.id" :src="list.foto_instagram" width="100" height="100"></td>
                      <td><button class="btn btn-success" v-on:click.prevent="getexInfo(list)"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
                          <button class="btn btn-danger" v-on:click.prevent="getexDelete(list)"> <i class="fa fa-trash-o"></i> Eliminar</button>
                     </td>
@@ -133,6 +133,7 @@ export default {
      getexInfo(value){
       
       //twiter
+      var id=value.id;
       var img_tw=value.img_tw;
       var inicio_tw=value.inicio_tw;
       var likes_tw=value.likes_tw;
@@ -184,11 +185,11 @@ export default {
       var arreglo_x=[];
       var self=this;
       
-      var imgfb_new=this.cargarImagen("myCanvas","facebook_d");
-      var imgtw_new=this.cargarImagen("myCanvas2","twitter_d");
-      var imggit_new=this.cargarImagen("myCanvas3","github_d");
-      var imggoogl_new=this.cargarImagen("myCanvas4","google_d");
-      var imginstagr_new=this.cargarImagen("myCanvas5","instagram_d");
+      var imgfb_new=this.cargarImagen("myCanvas","facebook_d"+id);
+      var imgtw_new=this.cargarImagen("myCanvas2","twitter_d"+id);
+      var imggit_new=this.cargarImagen("myCanvas3","github_d"+id);
+      var imggoogl_new=this.cargarImagen("myCanvas4","google_d"+id);
+      var imginstagr_new=this.cargarImagen("myCanvas5","instagram_d"+id);
 
 
 
