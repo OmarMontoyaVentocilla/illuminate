@@ -37,11 +37,11 @@
                 <tr v-for="(list,index) in lista">
                      <td>{{index+1}}</td>
                      <td>{{list.apodo_persona}}</td>
-                     <td><img :src="list.foto_fb" width="100" height="100"></td>
-                     <td><img :src="list.img_tw" width="100" height="100"></td>
-                     <td><img :src="list.img_github" width="100" height="100"></td>
-                     <td><img :src="list.img_google" width="100" height="100"></td>
-                     <td><img :src="list.foto_instagram" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" id="facebook_d" :src="list.foto_fb" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" id="twitter_d" :src="list.img_tw" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" id="github_d" :src="list.img_github" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" id="google_d" :src="list.img_google" width="100" height="100"></td>
+                     <td><img crossOrigin="Anonymous" id="instagram_d" :src="list.foto_instagram" width="100" height="100"></td>
                      <td><button class="btn btn-success" v-on:click.prevent="getexInfo(list)"> <i class="fa fa-file-pdf-o"></i> Exportar</button>
                          <button class="btn btn-danger" v-on:click.prevent="getexDelete(list)"> <i class="fa fa-trash-o"></i> Eliminar</button>
                     </td>
@@ -61,6 +61,13 @@
               <iframe id="pdf_preview" type="application/pdf" src="" width="530" height="400"></iframe>
            </div>
       </div> 
+      <div>
+        <canvas id="myCanvas" style="display:none"/>
+        <canvas id="myCanvas2" style="display:none"/>
+        <canvas id="myCanvas3" style="display:none"/>
+        <canvas id="myCanvas4" style="display:none"/>
+        <canvas id="myCanvas5" style="display:none" />   
+      </div>
       
 </div>      
 </template>
@@ -123,7 +130,6 @@ export default {
                     }
                });
      },
-
      getexInfo(value){
       
       //twiter
@@ -140,7 +146,6 @@ export default {
       var tweets_tw=value.tweets_tw;
       var ubicacion_tw=value.ubicacion_tw;
       var url_tw=value.url_tw;
-
       //facebook
       var biografia_fb=value.biografia_fb;
       var estudio_fb=value.estudio_fb;
@@ -149,19 +154,16 @@ export default {
       var nombres_fb=value.nombres_fb;
       var trabajo_fb=value.trabajo_fb;
       var url_fb=value.url_fb;
-
       //persona     
       var apodo_persona=value.apodo_persona;
       var nombre_persona=value.nombre_persona; 
       var tregistro_persona=value.tregistro_persona;
       
-
       //google      
       var nombre_google=value.nombre_google;
       var url_google=value.url_google;
       var img_google=value.img_google;
       var info_google=value.info_google;
-
       //instagram
       var nombre_instagram=value.nombre_instagram;
       var usuario_instagram=value.usuario_instagram;
@@ -170,7 +172,6 @@ export default {
       var seguidores_instagram=value.seguidores_instagram;
       var post_instagram=value.post_instagram;
       var siguiendo_instagram=value.siguiendo_instagram;
-
       //github
       var biografia_github=value.biografia_github;
       var email_github=value.email_github;
@@ -179,29 +180,20 @@ export default {
       var nombre_github=value.nombre_github;
       var pagina_github=value.pagina_github;
       var pais_github=value.pais_github;
-
-
-      var arreglo_fotos=[foto_instagram,img_google,img_github,img_tw,foto_fb];
+      var arreglo_fotos=[foto_fb,img_tw,foto_instagram,img_google,img_github];
       var arreglo_x=[];
       var self=this;
+      
+      var imgfb_new=this.cargarImagen("myCanvas","facebook_d");
+      var imgtw_new=this.cargarImagen("myCanvas2","twitter_d");
+      var imggit_new=this.cargarImagen("myCanvas3","github_d");
+      var imggoogl_new=this.cargarImagen("myCanvas4","google_d");
+      var imginstagr_new=this.cargarImagen("myCanvas5","instagram_d");
 
-      const toDataURL = url => fetch(url)
-        .then(response => response.blob())
-        .then(blob => new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onloadend = () => resolve(reader.result);console.clear();
-            reader.onerror = reject
-            reader.readAsDataURL(blob)
-        }))
 
-        for(let i in arreglo_fotos){
-        toDataURL(arreglo_fotos[i])
-             .then(dataUrl => {
-                    arreglo_x.push(dataUrl); 
-                    console.clear();
-                    if(arreglo_x.length>0){
-                        var doc = new jsPDF();
-                         doc.setFontSize(24);
+
+              var doc = new jsPDF();
+                 doc.setFontSize(24);
                          doc.text(42,30, "Reporte de asignacion por persona");
                          doc.line(35, 35, 180, 35);
                          doc.setTextColor(255, 0, 0);
@@ -246,7 +238,7 @@ export default {
                          doc.text(72,165, trabajo_fb);
                          doc.text(12,190, "* Foto");
                          doc.text(55,190, ":");
-                         doc.addImage(arreglo_x[0], 72, 175, 30, 30);
+                         doc.addImage(imgfb_new, 72, 175, 30, 30);
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,220, "- Twitter:"); 
                          doc.setTextColor(1, 5, 3);
@@ -283,7 +275,7 @@ export default {
                          doc.text(72,50, url_tw);
                          doc.text(12,70, "* Foto");
                          doc.text(55,70, ":");
-                         doc.addImage(arreglo_x[2], 72, 60, 30, 30);
+                         doc.addImage(imgtw_new, 72, 60, 70, 70);
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,100, "- Instagram:"); 
                          doc.setTextColor(1, 5, 3);
@@ -307,7 +299,7 @@ export default {
                          doc.text(72,163, siguiendo_instagram);
                          doc.text(12,183, "* Foto");
                          doc.text(55,183, ":");
-                         doc.addImage(arreglo_x[0], 72, 170, 30, 30);
+                         doc.addImage(imggit_new, 72, 170, 50, 50);
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,213, "- Google:");
                          doc.setTextColor(1, 5, 3);
@@ -322,7 +314,7 @@ export default {
                          doc.text(72,243, url_google);
                          doc.text(12,263, "* Foto");
                          doc.text(55,263, ":");
-                         doc.addImage(arreglo_x[2], 72, 253, 30, 30);
+                         doc.addImage(imggoogl_new, 72, 253, 50, 50);
                          doc.addPage();
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,13, "- Github:");
@@ -347,38 +339,20 @@ export default {
                          doc.text(72,73, biografia_github);
                          doc.text(12,93, "* Foto");
                          doc.text(55,93, ":");
-                         doc.addImage(arreglo_x[0], 72, 83, 30, 30);
+                         doc.addImage(imginstagr_new, 72, 83, 50, 40);
+               
                          $("#pdf_preview").attr("src", doc.output('datauristring'));
-                    }
-         })
-        }
-    
+              
      },
-    cargarImagen(url,callback){
-            
-                // var xhr = new XMLHttpRequest();
-                // xhr.onload = function() {
-                // var reader = new FileReader();
-                // reader.onloadend = function() {
-                //     callback(reader.result);
-                //     console.clear();
-                // }
-                // reader.readAsDataURL(xhr.response);
-                // };
-                // xhr.open('GET', url);
-                // xhr.responseType = 'blob';
-                // xhr.send();
-    //    url => fetch(url)
-    //         .then(response => response.blob())
-    //         .then(blob => new Promise((resolve, reject) => {
-    //                 const reader = new FileReader()
-    //                 reader.onloadend = () => resolve(reader.result)
-    //                 reader.onerror = reject
-    //                 reader.readAsDataURL(blob)
-    //                 }))
+     cargarImagen(dcanvan,idmg){
 
-             
+           var cx = document.getElementById(dcanvan); 
+           var  ctx = cx.getContext("2d");
+           var img = document.getElementById(idmg);
+           ctx.drawImage(img, 1, 1);
+          return  cx.toDataURL()
      },
+
      getPersonaAs(){
             axios.get('http://127.0.0.1:8000/api/persona/',{})
                         .then(response=>{ 
@@ -410,7 +384,6 @@ export default {
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border: 1px solid #afa8a8;
 }
-
 .panel.panel-success.panel_estilo {
     border: 1px solid #2a3f54;
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
@@ -419,39 +392,30 @@ export default {
     width: 100%;
     margin: auto;
 }
-
 table.table.table-bordered.tablita {
     box-shadow: 0px 2px 8px 3px rgba(0,0,0,0.75);
 }
-
 td.estilo_wi_rows {
     width: 124px;
 }
-
 td.nombre_info {
     color: black;
     font-size: 15px;
 }
-
 td.nombre_link a {
     color: #2a3f54;
 }
-
 .div1{
      overflow-y:scroll;
      height:400px;
      width:100%;
      background: #ecf0f5;
 }
-
 .div1 table {
     width:100%;
 }
-
-
 thead {
     background: #2a3f54;
     color: white;
 }
 </style>
-      
