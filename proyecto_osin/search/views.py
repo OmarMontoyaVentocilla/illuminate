@@ -111,11 +111,12 @@ def search_by_name(url,pag):
     response=[]
     for item in soup.select('div#BrowseResultsContainer > div > div > div > div '):
         result={}
-        result['link']=item.select_one("a")['href'] 
-        result['img']= item.select_one("a > img")['src']
-        result['name']=item.select_one("div > div > div.clearfix > div:nth-of-type(2) > div > a").text
+        result['link']=item.select_one(" ._4bl7._3-90 > a")['href'] 
+        result['img']= item.select_one(" ._4bl7._3-90 > a > img")['src']
+        result['name']=item.select_one(" ._4bl7._3-90 > a > img")['alt'] 
+        #result['name']=item.select_one("div > div > div.clearfix > div:nth-of-type(2) > div > a").text
         response.append(result)
-    
+      
     return response
 
 
@@ -536,9 +537,10 @@ def gethit(request):
     return JsonResponse(data) 
 
 
-def getinstadet(url):      
-
-    soup=get_doc("https://web.stagram.com/{}".format(url))
+def getinstadet(request):      
+    
+    username_instahram=request.GET.get('username_instahram')
+    soup=get_doc("https://web.stagram.com/{}".format(username_instahram))
     response=[]
     for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
         for x in i.select("span"):
@@ -548,9 +550,9 @@ def getinstadet(url):
     for i in soup.select(".userdata.clearfix.text-center.mb-4 > p"):
         response.append(i.text.strip())
     
-    data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
-   
-    return data
+    #data={'post':response[0],'seguidores':response[1],'siguiendo':response[2]}
+    data={'info':response}
+    return JsonResponse(data)
 
 @login_required(login_url="/accounts/login") 
 def getinsta(request):
@@ -564,7 +566,7 @@ def getinsta(request):
         result_inta['user_inta']=i.select_one("div > a > div > h4").text
         result_inta['name_inta']=i.select_one("div > a > div > p").text
         result_inta['nick_inta']="https://www.instagram.com/{}/".format(i.select_one("div > a > div > h4").text)
-        result_inta['detalles_inta']=getinstadet(result_inta['user_inta'])
+        #result_inta['detalles_inta']=getinstadet(result_inta['user_inta'])
         response_inta.append(result_inta) 
 
          

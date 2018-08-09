@@ -115,8 +115,10 @@
         <h4 class="modal-title">Información</h4>
       </div>
       <div class="modal-body">
-     
-        <div class="row" > 
+         <div v-show="loading_info">
+           <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando info....
+        </div>
+        <div class="row" v-show="aparecer"> 
            <form v-on:submit.prevent="getaddInfoinst()">
               <table class="table table-bordered tablita">
                   <tbody>
@@ -137,9 +139,12 @@
                       <td class="info_style centro">Siguiendo:</td>
                    </tr>
                    <tr>
-                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.seguidores}}</td>
-                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.post}}</td>
-                      <td class="centro" v-if="data_info.detalles_inta">{{data_info.detalles_inta.siguiendo}}</td>
+                      <td class="centro" v-if="detalle_info.followers">{{detalle_info.followers}}</td>
+                      <td class="centro" v-if="detalle_info.post">{{detalle_info.post}}</td>
+                      <td class="centro" v-if="detalle_info.followins">{{detalle_info.followins}}</td>
+                   </tr>
+                   <tr>
+                       <td colspan="4" v-if="detalle_info.followers==undefined" class="text-danger centro">* Si no cargo la data vuelva a cargar porfavor..</td>   
                    </tr>
             
                   </tbody>
@@ -178,7 +183,12 @@ var config = {
            info_post:[],
            git_web:'',
            buscador:'',
-           data_info:[]     
+           data_info:[],
+           detalle_info:{
+               post:'',
+               followers:'',
+               followins:''
+           }     
          }
        },
        methods:{
@@ -195,18 +205,44 @@ var config = {
               })
            },
            getInfoInst(list){
-               $('#myModalint').modal('show');
-               this.data_info=list
-               console.log(this.data_info);            
+                $('#myModalint').modal('show');
+               this.data_info=list; 
+               this.loading_info = true;
+               this.aparecer=false;
+               var username_instahram=list.user_inta;
+               console.log(username_instahram);
+               axios.get('http://127.0.0.1:8000/search/getinstadet',{ 
+                            params: { 
+                                     username_instahram: username_instahram.trim()
+                                    }
+                        })
+                        .then(response=>{
+                              console.log(response);
+                              var post=response.data.info[0];
+                              var followers=response.data.info[1];
+                              var followins=response.data.info[2];
+                              this.detalle_info.post=post;
+                              this.detalle_info.followers=followers;
+                              this.detalle_info.followins=followins;
+                              this.loading_info = false;
+                              this.aparecer=true;
+                        })
+                        .catch(error=>{
+                                console.log(error);
+                        })
+              
+               
+                  
            },
            getaddInfoinst(){
             var foto_instagram=this.data_info.logo_inta;
             var nombre_instagram=this.data_info.name_inta;
             var usuario_instagram=this.data_info.user_inta;
             var url_instagram=this.data_info.nick_inta;
-            var seguidores_instagram=this.data_info.detalles_inta.seguidores;
-            var post_instagram=this.data_info.detalles_inta.post;
-            var siguiendo_instagram=this.data_info.detalles_inta.siguiendo;
+            //esto viene de otro array
+            var seguidores_instagram=this.detalle_info.followers;
+            var post_instagram=this.detalle_info.post;
+            var siguiendo_instagram=this.detalle_info.followins;
 
             var data={
                      foto_instagram:foto_instagram,
@@ -222,7 +258,6 @@ var config = {
             setTimeout(function(){sel_thi.disabl(false); }, 2000);  
             axios.post('http://127.0.0.1:8000/search/addainstagram',data,config)
                 .then(response=>{
-                         console.log(response);
                           if(response.data.success){
                            this.mensaje(response.data.success,'','success');
                           }else if(response.data.fail){
@@ -247,7 +282,6 @@ var config = {
                                     }
                         })
                         .then(response=>{ 
-                              console.log(response);
                                 this.lista=response.data.info_users;
                                 this.info_post=response.data.info_post;
                                 this.loading = false;

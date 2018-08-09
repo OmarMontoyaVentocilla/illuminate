@@ -1,6 +1,6 @@
 # from django.contrib import admin
 from django.urls import path
-from .views import create_auto, list_auto, update_auto, delete_auto, getAuto, customSearch, get_details, gettw, gethit, getinsta, getgoogle, getcomercio, createfacebook, createtw, creategit, createasig, creategoogle, createinstagram
+from .views import create_auto, list_auto, update_auto, delete_auto, getAuto, customSearch, get_details, gettw, gethit, getinsta, getgoogle, getcomercio, createfacebook, createtw, creategit, createasig, creategoogle, getinstadet, createinstagram
 # from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
          path('gettw',gettw,name='gettw'),
          path('gethit',gethit,name='gethit'),
          path('getinsta',getinsta,name='getinsta'),
+         path('getinstadet',getinstadet,name='getinstadet'),
          path('getgoogle',getgoogle,name='getgoogle'),
          path('getcomercio', getcomercio,name='getcomercio'),
          path('addfacebook', createfacebook,name='addfacebook'),
