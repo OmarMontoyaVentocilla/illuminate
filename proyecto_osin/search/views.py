@@ -536,9 +536,8 @@ def gethit(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
-
+@login_required(login_url="/accounts/login") 
 def getinstadet(request):      
-    
     username_instahram=request.GET.get('username_instahram')
     soup=get_doc("https://web.stagram.com/{}".format(username_instahram))
     response=[]

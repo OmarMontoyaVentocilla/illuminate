@@ -74,7 +74,7 @@
       </div>
     <!-- Modal INFO-->
     <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -142,6 +142,175 @@
                                </template>
                             
                              </td>
+                        </tr>
+                        <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/profile.png">Perfiles</td> 
+                        </tr>
+                        <tr>
+                            <td><img src="/static/img/iconos/camera.png">Fotos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/photos-by/'" >https://www.facebook.com/search/{{info_all.id}}/photos-by/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/videos.png">Videos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/videos-by/'" >https://www.facebook.com/search/{{info_all.id}}/videos-by/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/post.png">Posts</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/stories-by/'" >https://www.facebook.com/search/{{info_all.id}}/stories-by/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/groups.png">Grupos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/groups/intersect'" >https://www.facebook.com/search/{{info_all.id}}/groups/intersect</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/events.png">Futuros eventos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/events-joined'" >https://www.facebook.com/search/{{info_all.id}}/events-joined</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/events.png">Eventos pasados</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/events-joined/in-past/date/events/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/events-joined/in-past/date/events/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/game.png">Juegos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/apps-used/game/apps/intersect'" >https://www.facebook.com/search/{{info_all.id}}/apps-used/game/apps/intersect</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/apps.png">Apps</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/apps-used/'" >https://www.facebook.com/search/{{info_all.id}}/apps-used/</a></td>
+                        </tr>
+                         <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/tags.png">Tags</td> 
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/camera.png">Fotos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/photos-of/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/photos-of/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/videos.png">Videos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/videos-of/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/videos-of/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/post.png">Posts</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/stories-tagged/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/stories-tagged/intersect/</a></td>
+                        </tr>
+                         <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/comments.png">Comentarios</td> 
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/camera.png">Fotos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/photos-commented/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/photos-commented/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/videos.png">Videos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/videos-commented/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/videos-commented/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/post.png">Posts</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/stories-commented/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/stories-commented/intersect/</a></td>
+                        </tr>
+                         <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/likes.png">Me gusta</td> 
+                        </tr>
+                        <tr>
+                            <td><img src="/static/img/iconos/camera.png">Fotos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/photos-liked/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/photos-liked/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/videos.png">Videos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/videos-liked/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/videos-liked/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/post.png">Posts</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/stories-liked/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/stories-liked/intersect/</a></td>
+                        </tr>
+                           <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/location.png">Lugares</td> 
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/everything.png">Todo</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/bars.png">Bares</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/110290705711626/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/110290705711626/places/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/restaurants.png">Restaurantes</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/273819889375819/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/273819889375819/places/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/stores.png">Tiendas</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/200600219953504/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/200600219953504/places/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/outdoors.png">Parques</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/935165616516865/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/935165616516865/places/intersect/</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src="/static/img/iconos/hotels.png">Hoteles</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/164243073639257/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/164243073639257/places/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/theaters.png">Cine</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-visited/192511100766680/places/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-visited/192511100766680/places/intersect/</a></td>
+                        </tr>
+                           <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/surroundings.png">Personas</td> 
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/family.png">Familia</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/relatives/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/relatives/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/friends.png">Amigos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/friends/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/friends/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/friendsoffriends.png">Amigos de amigos</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/friends/friends/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/friends/friends/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/work.png">Compañeros de trabajo</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/employees/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/employees/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/education.png">Compañeros de clase</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/schools-attended/ever-past/intersect/students/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/schools-attended/ever-past/intersect/students/intersect/</a></td>
+                        </tr>
+                         <tr>
+                            <td><img src="/static/img/iconos/map.png">Locales</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/current-cities/residents-near/present/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/current-cities/residents-near/present/intersect/</a></td>
+                        </tr>
+                          <tr>
+                           <td class="info_style" colspan="2"><img src="/static/img/iconos/intrests.png">Intereses</td> 
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/everything.png">Paginas</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/politics.png">Politica</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/161431733929266/pages/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/161431733929266/pages/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/camera.png">Religion</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/religion/pages/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/religion/pages/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/music.png">Musica</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/musician/pages/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/musician/pages/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/movies.png">Pelicula</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/movie/pages/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/movie/pages/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/book.png">Libros</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/pages-liked/book/pages/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/pages-liked/book/pages/intersect/</a></td>
+                        </tr>
+                          <tr>
+                            <td><img src="/static/img/iconos/location.png">Lugares</td>
+                            <td><a target="_blank" :href="'https://www.facebook.com/search/'+info_all.id+'/places-liked/intersect/'" >https://www.facebook.com/search/{{info_all.id}}/places-liked/intersect/</a></td>
                         </tr>
                   </tbody>
               </table>
@@ -334,6 +503,11 @@ var config = {
 
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border: 1px solid #afa8a8;
+}
+
+td.info_style {
+    background: #15202a;
+    color: white;
 }
 
 .panel.panel-success.panel_estilo {
