@@ -26,7 +26,7 @@ import instagram from './components/Instagram.vue';
 import clave from './components/Clave.vue';
 import asignacion from './components/Asignacion.vue';
 import reporte from './components/Reporte.vue';
-
+import jastag from './components/Hastag.vue';
 
 const app = new Vue({
     el: '#app',
@@ -39,6 +39,7 @@ const app = new Vue({
         instagram,
         clave,
         asignacion,
-        reporte
+        reporte,
+        jastag
     }
 });
