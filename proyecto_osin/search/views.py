@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 import requests
+import time
+from selenium import webdriver
 import re, urllib.request as ur
 from django.core.serializers import serialize
 from django.http import HttpResponse
@@ -476,35 +478,6 @@ def getgoogle(request):
     data={'info_all':response}
     return JsonResponse(data) 
 
-# def getlinken(request):
-    # soup=get_doc("https://pe.linkedin.com/pub/dir/Omar/Montoya")
-    # response=[]
-    # result={}
-    # if(soup.select(".primary-section > .professionals.section.blue-cta-enabled > ul.content > li.has-country-specific-link")):
-    #      result['x']="bien"
-    # else:
-    #     result['x']="mal"
-    # response.append(result)
-    # data={'info_all':response}
-    # return JsonResponse(data) 
-    # return ''
-        
-    # for item in soup.select(".primary-section > .professionals.section.blue-cta-enabled > ul.content > li"):
-    #     result={}
-    #     result['fff']="fdfdf"
-    #     # result['link_linkend']=item.select_one("div > a")['href']
-    #     # result['foto_linkend']=item.select_one("a > img")['src']
-    #     # result['user_linkend']=item.select_one("div > h3 > a").text
-    #     # result['info_trabactu_linkend']=item.select_one("div > p").text
-    #     # result['info_lugar_linkend']=item.select_one("div > dl").text
-    #     response.append(result)
-
-    # data={'info_all':response}
-    # return JsonResponse(data) 
-
-
-    
-
 @login_required(login_url="/accounts/login") 
 def gethit(request):
     buscador=request.GET.get('buscador')
@@ -579,14 +552,37 @@ def getinsta(request):
     data={'info_post':response,'info_users':response_inta}
     return JsonResponse(data) 
     
-
-
- 
-
 @login_required(login_url="/accounts/login") 
 def gettw(request):
     buscador=request.GET.get('buscador')
-    soup=get_doc("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
+    option = webdriver.ChromeOptions()
+    option.add_argument("--start-maximized")
+    driverPath = r"C:/driver/chromedriver.exe"
+    browser = webdriver.Chrome(executable_path=driverPath, chrome_options=option)
+    browser.get("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
+    lenOfPage = browser.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    match=False
+    while(match==False):
+        lastCount = lenOfPage
+        time.sleep(3)
+        lenOfPage = browser.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+        if lastCount==lenOfPage:
+            match=True
+    source_data = browser.page_source
+    browser.close() 
+    soup = BeautifulSoup(source_data,"html.parser")
+    if(soup.findAll(['script', 'style'])):
+        [x.extract() for x in soup.findAll(['script', 'style'])]
+        
+    if(soup.findAll(['meta'])):
+        [y.extract() for y in soup.findAll(['meta'])]
+        
+    if(soup.findAll(['noscript'])):
+        [z.extract() for z in soup.findAll(['noscript'])]  
+        
+    if(soup.findAll(['link'])):
+        [a.extract() for a in soup.findAll(['link'])]
+    # soup=get_doc("https://twitter.com/search?f=users&vertical=default&q={}&src=typd".format(buscador))
     response=[]
     for item in soup.select('.GridTimeline > div > div > div > div > div > div'):
         result={}
