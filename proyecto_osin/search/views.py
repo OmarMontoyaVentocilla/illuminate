@@ -616,7 +616,7 @@ def gettw(request):
             result['ubicacion']="Ninguna"
         
         if(infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")):
-            result['pagina']=infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a")['title']
+            result['pagina']=infot.select_one(".ProfileHeaderCard-url > span:nth-of-type(2) > a").text
         else:
             result['pagina']="Ninguna"
         
