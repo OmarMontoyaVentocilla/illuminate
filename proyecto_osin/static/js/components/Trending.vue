@@ -4,77 +4,77 @@
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
          <div class="form-group">
               <label for="persona">ALGERIA</label>
-              <select class="form-control input-sm" v-model="combo_algeria" @change="gettrending()">
+              <select class="form-control input-sm" v-model="combo_algeria" @change="gettrending()" id="combo_algeria">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_algeria" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
          <div class="form-group">
               <label for="persona">ARGENTINA</label>
-              <select class="form-control input-sm" v-model="combo_argentina">
+              <select class="form-control input-sm" v-model="combo_argentina" @change="gettrending()" id="combo_argentina">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_argentina" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
           <div class="form-group">
               <label for="persona">AUSTRALIA</label>
-              <select class="form-control input-sm" v-model="combo_australia">
+              <select class="form-control input-sm" v-model="combo_australia" @change="gettrending()" id="combo_australia">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_australia" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
          <div class="form-group">
               <label for="persona">AUSTRIA</label>
-              <select class="form-control input-sm" v-model="combo_austria"> 
+              <select class="form-control input-sm" v-model="combo_austria" @change="gettrending()" id="combo_austria"> 
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_austria" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
           <div class="form-group">
               <label for="persona">BRAZIL</label>
-              <select class="form-control input-sm" v-model="combo_brazil">
+              <select class="form-control input-sm" v-model="combo_brazil" @change="gettrending()" id="combo_brazil">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_brasil" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
           <div class="form-group">
               <label for="persona">CHILE</label>
-              <select class="form-control input-sm" v-model="combo_chile">
+              <select class="form-control input-sm" v-model="combo_chile" @change="gettrending()" id="combo_chile">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_chile" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
            <div class="form-group">
               <label for="persona">COLOMBIA</label>
-              <select class="form-control input-sm" v-model="combo_colombia">
+              <select class="form-control input-sm" v-model="combo_colombia" @change="gettrending()" id="combo_colombia">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_colombia" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
           <div class="form-group">
               <label for="persona">ECUADOR</label>
-              <select class="form-control input-sm" v-model="combo_ecuador">
+              <select class="form-control input-sm" v-model="combo_ecuador" @change="gettrending()" id="combo_ecuador">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_ecuador" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
           <div class="form-group">
               <label for="persona">MEXICO</label>
-              <select class="form-control input-sm" v-model="combo_mexico">
+              <select class="form-control input-sm" v-model="combo_mexico" @change="gettrending()" id="combo_mexico">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_mexico" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
            <div class="form-group">
               <label for="persona">PERÚ</label>
-              <select class="form-control input-sm" v-model="combo_peru">
+              <select class="form-control input-sm" v-model="combo_peru" @change="gettrending()" id="combo_peru">
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_peru" :value="sel.id">{{sel.nombre}}</option>
                </select>         
          </div>
            <div class="form-group">
               <label for="persona">ESPAÑA</label>
-              <select class="form-control input-sm" v-model="combo_spain"> 
+              <select class="form-control input-sm" v-model="combo_spain" @change="gettrending()" id="combo_spain"> 
                  <option value="">Seleccione</option>
                  <option v-for="sel in options_spain" :value="sel.id">{{sel.nombre}}</option>
                </select>         
@@ -84,7 +84,7 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
              <div class="form-group" v-show="loading">
-              <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando....
+              <i class="fa fa-spinner fa-spin" style="font-size:48px"></i> Cargando tendencias....
             </div> 
                   <div class="panel-body div1 table-responsive">
             <table class="table table-bordered table-hover table-fixed table-striped" style="background:white;">
@@ -233,7 +233,154 @@
      },
      methods:{
              gettrending(){
-              let buscador=this.combo_algeria;
+              var buscador='';   
+               if(this.combo_algeria!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true);         
+                 var buscador=this.combo_algeria;
+               }else if(this.combo_argentina!=''){
+                 $("#combo_algeria").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                 var buscador=this.combo_argentina;
+               }else if(this.combo_australia!=''){
+                 $("#combo_algeria").prop('disabled', true);
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                  var buscador=this.combo_australia;
+               }else if(this.combo_austria!=''){
+                 $("#combo_algeria").prop('disabled', true);
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                  var buscador=this.combo_austria;
+               }else if(this.combo_brazil!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                   var buscador=this.combo_brazil;        
+               }else if(this.combo_chile!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                  var buscador=this.combo_chile;   
+               }else if(this.combo_colombia!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true);
+                 var buscador=this.combo_colombia;    
+               }else if(this.combo_ecuador!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true);
+                 var buscador=this.combo_ecuador;     
+               }else if(this.combo_mexico!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                  var buscador=this.combo_ecuador;    
+               }else if(this.combo_peru!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_spain").prop('disabled', true); 
+                  var buscador=this.combo_peru; 
+               }else if(this.combo_spain!=''){
+                 $("#combo_argentina").prop('disabled', true);
+                 $("#combo_australia").prop('disabled', true);
+                 $("#combo_austria").prop('disabled', true);
+                 $("#combo_brazil").prop('disabled', true); 
+                 $("#combo_algeria").prop('disabled', true); 
+                 $("#combo_chile").prop('disabled', true); 
+                 $("#combo_colombia").prop('disabled', true); 
+                 $("#combo_ecuador").prop('disabled', true); 
+                 $("#combo_mexico").prop('disabled', true); 
+                 $("#combo_peru").prop('disabled', true); 
+                 var buscador=this.combo_spain; 
+               }else{
+                 $("#combo_argentina").prop('disabled', false);
+                 $("#combo_australia").prop('disabled', false);
+                 $("#combo_austria").prop('disabled', false);
+                 $("#combo_brazil").prop('disabled', false); 
+                 $("#combo_algeria").prop('disabled', false); 
+                 $("#combo_chile").prop('disabled', false); 
+                 $("#combo_colombia").prop('disabled', false); 
+                 $("#combo_ecuador").prop('disabled', false); 
+                 $("#combo_mexico").prop('disabled', false); 
+                 $("#combo_peru").prop('disabled', false); 
+                 $("#combo_spain").prop('disabled', false); 
+                  var buscador=''; 
+               }
+
               this.loading = true;
                      axios.get('http://127.0.0.1:8000/search/gettrending',{ 
                             params: { 
