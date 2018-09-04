@@ -551,7 +551,24 @@ def getinsta(request):
 
     data={'info_post':response,'info_users':response_inta}
     return JsonResponse(data) 
-    
+
+
+def gettrending(request):
+    buscador=request.GET.get('buscador')
+    soup = get_doc('https://trends24.in/{}'.format(buscador))
+    tems=soup.select('div#trend-list')
+    response=[]
+    for i in tems:
+        div1=i.select_one('div > ol')
+        lista=div1.select('li')
+        for it in lista:
+            listali=it.select_one('a').text
+            response.append(listali)
+
+    data={'info_trending':response}
+    return JsonResponse(data) 
+     
+
 @login_required(login_url="/accounts/login") 
 def gettw(request):
     buscador=request.GET.get('buscador')

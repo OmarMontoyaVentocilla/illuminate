@@ -27,6 +27,7 @@ import clave from './components/Clave.vue';
 import asignacion from './components/Asignacion.vue';
 import reporte from './components/Reporte.vue';
 import jastag from './components/Hastag.vue';
+import trending from './components/Trending.vue';
 
 const app = new Vue({
     el: '#app',
@@ -40,6 +41,7 @@ const app = new Vue({
         clave,
         asignacion,
         reporte,
-        jastag
+        jastag,
+        trending
     }
 });
