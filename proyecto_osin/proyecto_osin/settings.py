@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'persona',
     'reporte',
+    'roles',
     'rest_framework'
 ]
 

@@ -192,19 +192,20 @@ export default{
                         }) 
         },
         getaddasig(){
-              var data={
+
+            var data={
                     idfb_id:this.idfb.id,
                     idgoogle_id:this.idgoogle.id,
                     idinstagram_id:this.idinstagram.id,
                     idpersona_id:this.idpersona.id,
                     idgithub_id:this.idgithub.id,
                     idtw_id:this.idtw.id
-                     };
+                    };      
             var sel_thi=this;
             sel_thi.disabl(true);
             setTimeout(function(){sel_thi.disabl(false); }, 2000);
               
-            if(this.idfb.id!='' && this.idpersona.id!='' &&  this.idtw.id!='' && this.idgoogle.id!='' && this.idinstagram.id!='' && this.idgithub.id!=''){ 
+            if(this.idpersona.id!=''){ 
             axios.post('http://127.0.0.1:8000/search/addasignacion',data,config)
                 .then(response=>{
                          

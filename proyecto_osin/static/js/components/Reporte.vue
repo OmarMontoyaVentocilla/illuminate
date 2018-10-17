@@ -37,8 +37,12 @@
                 <tr v-for="(list,index) in lista">
                      <td>{{index+1}}</td>
                      <td>{{list.apodo_persona}}</td>
-                     <td><img crossOrigin="Anonymous" v-bind:id="'facebook_d'+list.id" :src="list.foto_fb" width="100" height="100"></td>
-                     <td><img crossOrigin="Anonymous" v-bind:id="'twitter_d'+list.id" :src="list.img_tw" width="100" height="100"></td>
+                     <td>
+                <img v-if="list.foto_fb!=''" crossOrigin="Anonymous" v-bind:id="'facebook_d'+list.id" :src="list.foto_fb" width="100" height="100">
+                <img v-if="list.foto_fb==''" crossOrigin="Anonymous" v-bind:id="'facebook_d'+list.id" src="https://scrat.hellocoton.fr/img/classic/des-avatars-incognito-pour-facebook-7846209.jpg" width="100" height="100">
+                
+                </td>
+                     <td><img  crossOrigin="Anonymous" v-bind:id="'twitter_d'+list.id" :src="list.img_tw" width="100" height="100"></td>
                      <td><img crossOrigin="Anonymous" v-bind:id="'github_d'+list.id" :src="list.img_github" width="100" height="100"></td>
                      <td><img crossOrigin="Anonymous" v-bind:id="'google_d'+list.id" :src="list.img_google" width="100" height="100"></td>
                      <td><img crossOrigin="Anonymous" v-bind:id="'instagram_d'+list.id" :src="list.foto_instagram" width="100" height="100"></td>
@@ -131,10 +135,16 @@ export default {
                });
      },
      getexInfo(value){
-      
+      console.log(value);
+      var incognito="https://scrat.hellocoton.fr/img/classic/des-avatars-incognito-pour-facebook-7846209.jpg";
       //twiter
       var id=value.id;
-      var img_tw=value.img_tw;
+      if(value.img_tw!=''){
+        var img_tw=value.img_tw;
+      }else{
+         var img_tw=incognito; 
+      }
+      
       var inicio_tw=value.inicio_tw;
       var likes_tw=value.likes_tw;
       var biografia_tw=value.biografia_tw;
@@ -150,7 +160,14 @@ export default {
       //facebook
       var biografia_fb=value.biografia_fb;
       var estudio_fb=value.estudio_fb;
-      var foto_fb=value.foto_fb;    
+      
+      if(value.foto_fb!=''){
+         var foto_fb=value.foto_fb;  
+      }else{
+          var foto_fb=incognito;  
+      }
+        
+
       var lugar_fb=value.lugar_fb;
       var nombres_fb=value.nombres_fb;
       var trabajo_fb=value.trabajo_fb;
@@ -163,38 +180,84 @@ export default {
       //google      
       var nombre_google=value.nombre_google;
       var url_google=value.url_google;
+
+      if(value.img_google!=''){
       var img_google=value.img_google;
+      }else{
+       var img_google=incognito;    
+      }
+
       var info_google=value.info_google;
       //instagram
       var nombre_instagram=value.nombre_instagram;
       var usuario_instagram=value.usuario_instagram;
       var url_instagram=value.url_instagram;
+
+      if(value.foto_instagram!=''){
       var foto_instagram=value.foto_instagram;
+      }else{
+       var foto_instagram=incognito;    
+      }
+      
       var seguidores_instagram=value.seguidores_instagram;
       var post_instagram=value.post_instagram;
       var siguiendo_instagram=value.siguiendo_instagram;
       //github
       var biografia_github=value.biografia_github;
       var email_github=value.email_github;
+
+      if(value.img_github!=''){
       var img_github=value.img_github;
+      }else{
+       var img_github=incognito;    
+      }
+
       var nick_github=value.nick_github;
       var nombre_github=value.nombre_github;
       var pagina_github=value.pagina_github;
       var pais_github=value.pais_github;
+
+
       var arreglo_fotos=[foto_fb,img_tw,foto_instagram,img_google,img_github];
       var arreglo_x=[];
       var self=this;
       
-      var imgfb_new=this.cargarImagen("myCanvas","facebook_d"+id);
-      var imgtw_new=this.cargarImagen("myCanvas2","twitter_d"+id);
-      var imggit_new=this.cargarImagen("myCanvas3","github_d"+id);
-      var imggoogl_new=this.cargarImagen("myCanvas4","google_d"+id);
-      var imginstagr_new=this.cargarImagen("myCanvas5","instagram_d"+id);
+
+      if(value.foto_fb!=''){
+       var imgfb_new=this.cargarImagen("myCanvas","facebook_d"+id);
+      }else{
+       var imgfb_new="No hay informacion" ;  
+      }
+      
+      if(value.img_tw!=''){
+          var imgtw_new=this.cargarImagen("myCanvas2","twitter_d"+id);
+      }else{
+          var imgtw_new="No hay informacion"; 
+      }
 
 
+      if(value.img_google!=''){
+          var imggoogl_new=this.cargarImagen("myCanvas4","google_d"+id);
+      }else{
+          var imggoogl_new="No hay informacion";
+      }
 
-              var doc = new jsPDF();
-                 doc.setFontSize(24);
+      if(value.img_github!=''){
+         var imggit_new=this.cargarImagen("myCanvas3","github_d"+id);
+      }else{
+          var imggit_new="No hay informacion"; 
+      }
+     
+       if(value.foto_instagram!=''){
+         var imginstagr_new=this.cargarImagen("myCanvas5","instagram_d"+id);
+      }else{
+          var imginstagr_new="No hay informacion"; 
+      }
+      
+//aqui es el reporee
+                     var doc = new jsPDF('p','','a4');
+                         
+                         doc.setFontSize(24);
                          doc.text(42,30, "Reporte de asignacion por persona");
                          doc.line(35, 35, 180, 35);
                          doc.setTextColor(255, 0, 0);
@@ -221,127 +284,151 @@ export default {
                          doc.setTextColor(1, 5, 3);
                          doc.text(12,115, "* Nombre");
                          doc.text(55,115, ":");
-                         doc.text(72,115, nombres_fb);
+                         doc.text(72,115, doc.splitTextToSize(nombres_fb,120));
                          doc.text(12,125, "* Url");
                          doc.text(55,125, ":");
-                         doc.text(72,125, url_fb);
+                         doc.text(72,125, doc.splitTextToSize(url_fb,120));
                          doc.text(12,135, "* Biografia");
                          doc.text(55,135, ":");
-                         doc.text(72,135, biografia_fb);
-                         doc.text(12,145, "* Estudio");
-                         doc.text(55,145, ":");
-                         doc.text(72,145, estudio_fb);
+                         doc.text(72,135, doc.splitTextToSize(biografia_fb,120));
+                         doc.text(12,148, "* Estudio");
+                         doc.text(55,148, ":");
+                         doc.text(72,148, doc.splitTextToSize(estudio_fb,120));
                          doc.text(12,155, "* Lugar");
                          doc.text(55,155, ":");
-                         doc.text(72,155, lugar_fb);
+                         doc.text(72,155, doc.splitTextToSize(lugar_fb,120));
                          doc.text(12,165, "* Trabajo");
                          doc.text(55,165, ":");
-                         doc.text(72,165, trabajo_fb);
+                         doc.text(72,165, doc.splitTextToSize(trabajo_fb,120));
                          doc.text(12,190, "* Foto");
                          doc.text(55,190, ":");
+                         if(value.foto_fb!=''){
                          doc.addImage(imgfb_new, 72, 175, 30, 30);
+                         }else{
+                           doc.text(72,190,imgfb_new);   
+                         }
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,220, "- Twitter:"); 
                          doc.setTextColor(1, 5, 3);
                          doc.text(12,230, "* Inicio");
                          doc.text(55,230, ":");
-                         doc.text(72,230, inicio_tw);
+                         doc.text(72,230, doc.splitTextToSize(inicio_tw,120));
                          doc.text(12,240, "* Likes");
                          doc.text(55,240, ":");
-                         doc.text(72,240, likes_tw);
-                         doc.text(12,250, "* Biografia");
-                         doc.text(55,250, ":");
-                         doc.text(72,250, biografia_tw);
-                         doc.text(12,260, "* Cantidad Twetts");
-                         doc.text(55,260, ":");
-                         doc.text(72,260, cant_tw);
-                         doc.text(12,270, "* Cuenta");
-                         doc.text(55,270, ":");
-                         doc.text(72,270, nombre_cuenta_tw);
-                         doc.text(12,280, "* Seguidores");
-                         doc.text(55,280, ":");
-                         doc.text(72,280, seguidores_tw);
+                         doc.text(72,240, doc.splitTextToSize(likes_tw,120));
+                         doc.text(12,249, "* Biografia");
+                         doc.text(55,249, ":");
+                         doc.text(72,249, doc.splitTextToSize(biografia_tw,120));
+                         doc.text(12,272, "* Cantidad Twetts");
+                         doc.text(55,272, ":");
+                         doc.text(72,272, doc.splitTextToSize(cant_tw,120));
+                         doc.text(12,279, "* Cuenta");
+                         doc.text(55,279, ":");
+                         doc.text(72,279, doc.splitTextToSize(nombre_cuenta_tw,120));
+                         doc.text(12,284, "* Seguidores");
+                         doc.text(55,284, ":");
+                         doc.text(72,284, doc.splitTextToSize(seguidores_tw,120));
                          doc.addPage();
                          doc.text(12,20, "* Siguiendo");
                          doc.text(55,20, ":");
-                         doc.text(72,20, siguiendo_tw);
+                         doc.text(72,20, doc.splitTextToSize(siguiendo_tw,120));
                          doc.text(12,30, "* Ubicacion");
                          doc.text(55,30, ":");
-                         doc.text(72,30, ubicacion_tw);
+                         doc.text(72,30, doc.splitTextToSize(ubicacion_tw,120));
                          doc.text(12,40, "* Tweets");
                          doc.text(55,40, ":");
-                         doc.text(72,40, tweets_tw);
+                         doc.text(72,40, doc.splitTextToSize(tweets_tw,120));
                          doc.text(12,50, "* Url");
                          doc.text(55,50, ":");
-                         doc.text(72,50, url_tw);
+                         doc.text(72,50, doc.splitTextToSize(url_tw,120));
                          doc.text(12,70, "* Foto");
                          doc.text(55,70, ":");
-                         doc.addImage(imgtw_new, 72, 60, 70, 70);
+                          if(value.img_tw!=''){
+                           doc.addImage(imgtw_new, 72, 60, 70, 70);
+                         }else{
+                           doc.text(72,190,imgtw_new);   
+                         }
+
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,100, "- Instagram:"); 
                          doc.setTextColor(1, 5, 3);
                          doc.text(12,113, "* Usuario");
                          doc.text(55,113, ":");
-                         doc.text(72,113, usuario_instagram);
+                         doc.text(72,113, doc.splitTextToSize(usuario_instagram,120));
                          doc.text(12,123, "* Nombre");
                          doc.text(55,123, ":");
-                         doc.text(72,123, nombre_instagram);
+                         doc.text(72,123, doc.splitTextToSize(nombre_instagram,120));
                          doc.text(12,133, "* Url");
                          doc.text(55,133, ":");
-                         doc.text(72,133, url_instagram);
+                         doc.text(72,133, doc.splitTextToSize(url_instagram,120));
                          doc.text(12,143, "* Seguidores");
                          doc.text(55,143, ":");
-                         doc.text(72,143, seguidores_instagram);
+                         doc.text(72,143, doc.splitTextToSize(seguidores_instagram,120));
                          doc.text(12,153, "* Post");
                          doc.text(55,153, ":");
-                         doc.text(72,153, post_instagram);
+                         doc.text(72,153, doc.splitTextToSize(post_instagram,120));
                          doc.text(12,163, "* Siguiendo");
                          doc.text(55,163, ":");
-                         doc.text(72,163, siguiendo_instagram);
+                         doc.text(72,163, doc.splitTextToSize(siguiendo_instagram,120));
                          doc.text(12,183, "* Foto");
                          doc.text(55,183, ":");
-                         doc.addImage(imggit_new, 72, 170, 50, 50);
+                          if(value.foto_instagram!=''){
+                          doc.addImage(imginstagr_new, 72, 170, 50, 30);
+                         }else{
+                           doc.text(72,190,imginstagr_new);   
+                         }
+  
                          doc.setTextColor(1, 5, 93);
                          doc.text(12,213, "- Google:");
                          doc.setTextColor(1, 5, 3);
                          doc.text(12,223, "* Informacion");
                          doc.text(55,223, ":");
-                         doc.text(72,223, info_google);
-                         doc.text(12,233, "* Nombre");
-                         doc.text(55,233, ":");
-                         doc.text(72,233, nombre_google);
-                         doc.text(12,243, "* Url");
-                         doc.text(55,243, ":");
-                         doc.text(72,243, url_google);
-                         doc.text(12,263, "* Foto");
-                         doc.text(55,263, ":");
-                         doc.addImage(imggoogl_new, 72, 253, 50, 50);
+                         doc.text(72,223, doc.splitTextToSize(info_google,120));
+                         doc.text(12,264, "* Nombre");
+                         doc.text(55,264, ":");
+                         doc.text(72,264, doc.splitTextToSize(nombre_google,120));
+                         doc.text(12,273, "* Url");
+                         doc.text(55,273,    ":");
+                         doc.text(72,273, doc.splitTextToSize(url_google,120));
                          doc.addPage();
+                         doc.text(12,13, "* Foto");
+                         doc.text(55,13, ":");
+                         if(value.foto_instagram!=''){
+                          doc.addImage(imggoogl_new, 72, 12, 50, 50);
+                         }else{
+                           doc.text(22,190,imggoogl_new);   
+                         }
+                         
                          doc.setTextColor(1, 5, 93);
-                         doc.text(12,13, "- Github:");
+                         doc.text(12,53, "- Github:");
                          doc.setTextColor(1, 5, 3);
-                         doc.text(12,23, "* Nombre");
-                         doc.text(55,23, ":");
-                         doc.text(72,23, nombre_github);
-                         doc.text(12,33, "* Email");
-                         doc.text(55,33, ":");
-                         doc.text(72,33, email_github);
-                         doc.text(12,43, "* Pagina");
-                         doc.text(55,43, ":");
-                         doc.text(72,43, pagina_github);
-                         doc.text(12,53, "* Usuario");
-                         doc.text(55,53, ":");
-                         doc.text(72,53, nick_github);
-                         doc.text(12,63, "* Pais");
-                         doc.text(55,63, ":");
-                         doc.text(72,63, pais_github);
-                         doc.text(12,73, "* Biografia");
-                         doc.text(55,73, ":");
-                         doc.text(72,73, biografia_github);
-                         doc.text(12,93, "* Foto");
-                         doc.text(55,93, ":");
-                         doc.addImage(imginstagr_new, 72, 83, 50, 40);
-               
+                         doc.text(12,61, "* Nombre");
+                         doc.text(55,61, ":");
+                         doc.text(72,61, doc.splitTextToSize(nombre_github,120));
+                         doc.text(12,69, "* Email");
+                         doc.text(55,69, ":");
+                         doc.text(72,69, doc.splitTextToSize(email_github,120));
+                         doc.text(12,77, "* Pagina");
+                         doc.text(55,77, ":");
+                         doc.text(72,77, doc.splitTextToSize(pagina_github,120));
+                         doc.text(12,84, "* Usuario");
+                         doc.text(55,84, ":");
+                         doc.text(72,84, doc.splitTextToSize(nick_github,120));
+                         doc.text(12,91, "* Pais");
+                         doc.text(55,91, ":");
+                         doc.text(72,91, doc.splitTextToSize(pais_github,120));
+                         doc.text(12,99, "* Biografia");
+                         doc.text(55,99, ":");
+                         doc.text(72,99, doc.splitTextToSize(biografia_github,120));
+                         doc.text(12,110, "* Foto");
+                         doc.text(55,110, ":");
+                          if(value.img_github!=''){
+                           doc.addImage(imggit_new, 72, 110, 50, 40);
+                         }else{
+                           doc.text(22,110,imggit_new);   
+                         }
+                        
+                         doc.save(nombre_persona+'-'+nombre_persona+'-'+tregistro_persona+'.pdf');
                          $("#pdf_preview").attr("src", doc.output('datauristring'));
               
      },

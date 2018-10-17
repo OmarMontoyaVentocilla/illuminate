@@ -30,6 +30,7 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('persona/',include('persona.urls')),
     path('reporte/',include('reporte.urls')),
+    path('roles/',include('roles.urls')),
     # TemplateView.as_view(template_name='persona.html')
     #path('persona/',view=TemplateView.as_view(template_name='persona.html')),
     path('api/', include(router.urls))

@@ -205,6 +205,21 @@ def creategit(request):
 def createasig(request):
     if(request.method == 'POST'):
         valor=json.loads(request.body.decode("utf-8"))
+        if(valor['idfb_id']==''):
+            valor['idfb_id']=None
+        
+        if(valor['idtw_id']==''):
+            valor['idtw_id']=None
+        
+        if(valor['idgoogle_id']==''):
+            valor['idgoogle_id']=None
+        
+        if(valor['idgithub_id']==''):
+            valor['idgithub_id']=None
+        
+        if(valor['idinstagram_id']==''):
+            valor['idinstagram_id']=None
+            
         idfb_id=valor['idfb_id']
         idpersona_id=valor['idpersona_id']
         idtw_id=valor['idtw_id']
@@ -664,7 +679,7 @@ def gettw(request):
 def gettwts(url):
     infotws=get_doc(url)
     response=[]
-    for item in infotws.select('.ProfileTimeline > div > div:nth-of-type(2) > ol > li > div > div:nth-of-type(2)'):
+    for item in infotws.select('div#timeline > div > div:nth-of-type(2) > ol > li > div > div:nth-of-type(2)'):
         result={}
         result['cabezera_fecha']= item.select_one("div > small > a")['title']
         if(item.select_one(".js-tweet-text-container > p")):

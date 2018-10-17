@@ -28,6 +28,7 @@ import asignacion from './components/Asignacion.vue';
 import reporte from './components/Reporte.vue';
 import jastag from './components/Hastag.vue';
 import trending from './components/Trending.vue';
+import roles from './components/Roles.vue';
 
 const app = new Vue({
     el: '#app',
@@ -42,6 +43,7 @@ const app = new Vue({
         asignacion,
         reporte,
         jastag,
-        trending
+        trending,
+        roles
     }
 });

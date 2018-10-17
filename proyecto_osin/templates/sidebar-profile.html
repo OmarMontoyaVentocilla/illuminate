@@ -1,16 +1,17 @@
 <div class="navbar nav_title" style="border: 0;">
     <a href="##" class="site_title">
-        <img src="/media/logo-mgp.png" alt="" width="60" height="50">
-        <span>OSINT</span></a>
+        {% comment %} <img src="/media/logo-mgp.png" alt="" width="60" height="50"> {% endcomment %}
+        <span style="padding-left:46px;">OSINT</span></a>
 </div>
 
 <div class="clearfix"></div>
 
 <div class="profile clearfix">
+    {% comment %}
     <div class="profile_pic">
         <img src="/media/img.jpg" alt="..." class="img-circle profile_img">
-    </div>
-    <div class="prod_title">
+    </div> {% endcomment %}
+    <div class="prod_title" style="margin-left:15px;">
         <span>En línea <i class="fa fa-circle" aria-hidden="true" ></i></span> {% if user.is_authenticated %}
         <h2 id="nombreAdmin">{{ user.username }} </h2>
         {% else %}
