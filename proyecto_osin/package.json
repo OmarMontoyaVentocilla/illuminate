@@ -12,7 +12,7 @@
     "author": "OSINT",
     "license": "MIT",
     "dependencies": {
-        "axios": "^0.16.2",
+        "axios": "^0.21.1",
         "bootstrap-sass": "^3.3.7",
         "jquery": "^3.1.1",
         "jspdf": "^1.4.1",
